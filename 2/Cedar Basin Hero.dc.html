@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Jost:wght@400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" />
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:#14130F;-webkit-font-smoothing:antialiased}
+a{color:#2F332B;text-decoration:none}
+a:hover{color:#6A6153}
+:focus-visible{outline:1px solid #C9C0AE;outline-offset:6px}
+@keyframes cbBeam{0%{opacity:0.82}50%{opacity:1}100%{opacity:0.82}}
+@keyframes cbRise{from{opacity:0;transform:translate3d(0,20px,0)}to{opacity:1;transform:none}}
+@keyframes cbFade{from{opacity:0}to{opacity:1}}
+@keyframes cbTrack{from{opacity:0;letter-spacing:0.62em}to{opacity:1;letter-spacing:0.2em}}
+@keyframes cbTrackSm{from{opacity:0;letter-spacing:0.5em}to{opacity:0.68;letter-spacing:0.24em}}
+@keyframes cbDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@media (prefers-reduced-motion: reduce){[data-beam],[data-anim],[data-drift]{animation:none !important}[data-anim]{opacity:1 !important;transform:none !important}}
+</style>
+</helmet>
+<div style="position:relative;background:#14130F;font-family:Jost, system-ui, sans-serif;color:#2F332B">
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;pointer-events:none">
+    <filter id="cbRough" x="-14%" y="-24%" width="128%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.07 0.14" numOctaves="3" seed="7" result="n"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </svg>
+
+  <div data-tex="page" style="position:fixed;inset:0;z-index:0;background-image:url(assets/fur-tile.jpg);background-repeat:repeat;background-position:center center;background-size:520px 520px;background-attachment:fixed;opacity:1;pointer-events:none"></div>
+
+  <nav ref="{{ navRef }}" style="position:sticky;top:0;z-index:20;padding:0 clamp(16px,4vw,56px);background:rgba(249,246,239,0.9);backdrop-filter:blur(7px) saturate(0.94);-webkit-backdrop-filter:blur(7px) saturate(0.94);border-bottom:1px solid rgba(58,52,44,0.12)">
+    <div ref="{{ navInnerRef }}" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;height:78px">
+      <div ref="{{ navLeftRef }}" style="display:flex;gap:28px;justify-self:start">
+        <a href="#lifestyle" style="font-size:14px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px 1px">Lifestyle</a>
+        <a href="#ritual" style="font-size:14px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px 1px">Ritual</a>
+        <a href="#sourced" style="font-size:14px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px 1px">Sourced</a>
+      </div>
+      <a href="#top" ref="{{ markRef }}" data-anim="mark" style="justify-self:center;animation:cbTrack 1400ms cubic-bezier(.2,.7,.2,1) both;font-family:'Bodoni Moda', Georgia, serif;font-weight:600;font-size:25px;letter-spacing:0.2em;text-transform:uppercase;line-height:1;white-space:nowrap;padding:6px 2px">CEDAR<span style="display:inline-block;width:1px;height:0.74em;background:#2F332B;opacity:0.42;margin:0 0.12em"></span>BASIN</a>
+      <div ref="{{ navRightRef }}" style="display:flex;gap:28px;justify-self:end">
+        <a href="#index" style="font-size:14px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px 1px">The five</a>
+        <a href="#stories" style="font-size:14px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px 1px">Stories</a>
+        <a href="#contact" style="font-size:14px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px 1px">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section ref="{{ heroRef }}" style="position:relative;z-index:2;height:calc(100vh - 78px);min-height:520px;overflow:hidden;background:linear-gradient(180deg,rgba(20,19,16,0.5) 0%,rgba(16,15,13,0.62) 46%,rgba(10,10,9,0.76) 100%)">
+
+    <div style="position:absolute;inset:0;z-index:6;background:radial-gradient(96% 78% at 50% 42%,rgba(0,0,0,0) 52%,rgba(0,0,0,0.3) 100%);pointer-events:none"></div>
+
+    <div ref="{{ stageRef }}" style="--s:1;position:absolute;left:0;right:0;bottom:26%;z-index:4;display:flex;align-items:flex-end;justify-content:center;padding:0 clamp(12px,3vw,48px)">
+
+      <div data-col="1" style="display:flex;flex-direction:column;align-items:center;width:calc(var(--s)*130px);margin:0 calc(var(--s)*26px) 0 0">
+        <a href="Cedar%20Basin%20Product.dc.html?p=serum#serum" data-key="serum" onClick="{{ onProdClick }}" onMouseEnter="{{ onProdEnter }}" onMouseLeave="{{ onProdLeave }}" aria-label="Basin Serum — open product" style="display:flex;flex-direction:column;align-items:center;width:100%;color:inherit">
+          <div data-parallax="0.26" style="display:flex;flex-direction:column;align-items:center;width:100%;will-change:transform">
+            <img src="assets/serum.png" alt="Facial serum in a dropper bottle" style="display:block;height:calc(var(--s)*192px);width:auto;position:relative;z-index:2;filter:drop-shadow(0 calc(var(--s)*7px) calc(var(--s)*9px) rgba(0,0,0,0.55)) brightness(1.04);transition:transform 460ms cubic-bezier(.2,.7,.2,1)" />
+            <div style="position:relative;z-index:1;width:calc(var(--s)*120px);height:calc(var(--s)*44px);margin-top:calc(var(--s)*-12px);filter:url(#cbRough) drop-shadow(0 calc(var(--s)*10px) calc(var(--s)*14px) rgba(0,0,0,0.55))">
+              <div style="position:absolute;left:calc(var(--s)*4px);right:calc(var(--s)*4px);top:calc(var(--s)*11px);height:calc(var(--s)*26px);border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(180deg,#9A948A 0%,#514C44 42%,#2C2924 100%)"></div>
+              <div style="position:absolute;left:0;right:0;top:0;height:calc(var(--s)*24px);border-radius:50%;background-image:radial-gradient(58% 132% at 56% 24%,#F0EBE0 0%,#CDC6B7 44%,#968E80 76%,#6B6559 100%),url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E&quot;);background-size:auto,90px 90px;background-blend-mode:overlay;box-shadow:inset 0 calc(var(--s)*-2px) calc(var(--s)*3px) rgba(0,0,0,0.42)"></div>
+              <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(96deg,rgba(0,0,0,0.26) 0%,rgba(0,0,0,0) 62%);pointer-events:none"></div>
+            </div>
+          </div>
+          <div style="height:calc(var(--s)*44px)"></div>
+          <div data-shadow="1" style="width:calc(var(--s)*150px);height:calc(var(--s)*26px);transform:translateX(calc(var(--s)*-7px));border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.44) 46%,rgba(0,0,0,0) 74%);filter:blur(calc(var(--s)*4px));transition:transform 460ms cubic-bezier(.2,.7,.2,1), opacity 460ms ease"></div>
+          <div data-anim="cap" style="display:flex;flex-direction:column;align-items:center;gap:calc(var(--s)*3px);margin-top:calc(var(--s)*6px);animation:cbFade 900ms 980ms ease-out both">
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:max(11px,calc(var(--s)*13px));font-weight:500;letter-spacing:0.24em;color:rgba(233,226,211,0.86)">01</span>
+            <span style="font-size:max(9px,calc(var(--s)*10px));font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(233,226,211,0.5);white-space:nowrap">Serum</span>
+          </div>
+        </a>
+      </div>
+
+      <div data-col="2" style="display:flex;flex-direction:column;align-items:center;width:calc(var(--s)*148px);margin:0 calc(var(--s)*46px) 0 0">
+        <a href="Cedar%20Basin%20Product.dc.html?p=balm#balm" data-key="balm" onClick="{{ onProdClick }}" onMouseEnter="{{ onProdEnter }}" onMouseLeave="{{ onProdLeave }}" aria-label="Resin Balm — open product" style="display:flex;flex-direction:column;align-items:center;width:100%;color:inherit">
+          <div data-parallax="0.12" style="display:flex;flex-direction:column;align-items:center;width:100%;will-change:transform">
+            <img src="assets/balm.png" alt="Balm in a wide green jar" style="display:block;height:calc(var(--s)*126px);width:auto;position:relative;z-index:2;filter:drop-shadow(0 calc(var(--s)*7px) calc(var(--s)*9px) rgba(0,0,0,0.55)) brightness(1.04);transition:transform 460ms cubic-bezier(.2,.7,.2,1)" />
+            <div style="position:relative;z-index:1;width:calc(var(--s)*138px);height:calc(var(--s)*46px);margin-top:calc(var(--s)*-12px);filter:url(#cbRough) drop-shadow(0 calc(var(--s)*10px) calc(var(--s)*14px) rgba(0,0,0,0.55))">
+              <div style="position:absolute;left:calc(var(--s)*4px);right:calc(var(--s)*4px);top:calc(var(--s)*12px);height:calc(var(--s)*27px);border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(180deg,#9A948A 0%,#514C44 42%,#2C2924 100%)"></div>
+              <div style="position:absolute;left:0;right:0;top:0;height:calc(var(--s)*26px);border-radius:50%;background-image:radial-gradient(58% 132% at 53% 22%,#F3EEE3 0%,#D2CBBC 44%,#9A9284 76%,#6E685C 100%),url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E&quot;);background-size:auto,90px 90px;background-blend-mode:overlay;box-shadow:inset 0 calc(var(--s)*-2px) calc(var(--s)*3px) rgba(0,0,0,0.42)"></div>
+              <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(96deg,rgba(0,0,0,0.14) 0%,rgba(0,0,0,0) 58%);pointer-events:none"></div>
+            </div>
+          </div>
+          <div style="height:calc(var(--s)*30px)"></div>
+          <div data-shadow="1" style="width:calc(var(--s)*168px);height:calc(var(--s)*28px);transform:translateX(calc(var(--s)*-3px));border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,0.86) 0%,rgba(0,0,0,0.46) 46%,rgba(0,0,0,0) 74%);filter:blur(calc(var(--s)*4px));transition:transform 460ms cubic-bezier(.2,.7,.2,1), opacity 460ms ease"></div>
+          <div data-anim="cap" style="display:flex;flex-direction:column;align-items:center;gap:calc(var(--s)*3px);margin-top:calc(var(--s)*6px);animation:cbFade 900ms 1060ms ease-out both">
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:max(11px,calc(var(--s)*13px));font-weight:500;letter-spacing:0.24em;color:rgba(233,226,211,0.86)">02</span>
+            <span style="font-size:max(9px,calc(var(--s)*10px));font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(233,226,211,0.5);white-space:nowrap">Balm</span>
+          </div>
+        </a>
+      </div>
+
+      <div data-col="3" style="display:flex;flex-direction:column;align-items:center;width:calc(var(--s)*122px);margin:0 calc(var(--s)*28px) 0 0">
+        <a href="Cedar%20Basin%20Product.dc.html?p=cleanser#cleanser" data-key="cleanser" onClick="{{ onProdClick }}" onMouseEnter="{{ onProdEnter }}" onMouseLeave="{{ onProdLeave }}" aria-label="Ash Cleanser — open product" style="display:flex;flex-direction:column;align-items:center;width:100%;color:inherit">
+          <div data-parallax="0.34" style="display:flex;flex-direction:column;align-items:center;width:100%;will-change:transform">
+            <img src="assets/cleanser.png" alt="Cleanser in a tall pump bottle" style="display:block;height:calc(var(--s)*236px);width:auto;position:relative;z-index:2;filter:drop-shadow(0 calc(var(--s)*7px) calc(var(--s)*9px) rgba(0,0,0,0.55)) brightness(1.06);transition:transform 460ms cubic-bezier(.2,.7,.2,1)" />
+            <div style="position:relative;z-index:1;width:calc(var(--s)*112px);height:calc(var(--s)*42px);margin-top:calc(var(--s)*-11px);filter:url(#cbRough) drop-shadow(0 calc(var(--s)*10px) calc(var(--s)*14px) rgba(0,0,0,0.55))">
+              <div style="position:absolute;left:calc(var(--s)*4px);right:calc(var(--s)*4px);top:calc(var(--s)*10px);height:calc(var(--s)*26px);border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(180deg,#A29C91 0%,#565148 42%,#2E2B26 100%)"></div>
+              <div style="position:absolute;left:0;right:0;top:0;height:calc(var(--s)*22px);border-radius:50%;background-image:radial-gradient(58% 132% at 50% 20%,#FBF6EA 0%,#DAD2C2 44%,#A29A8B 76%,#726B5F 100%),url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E&quot;);background-size:auto,90px 90px;background-blend-mode:overlay;box-shadow:inset 0 calc(var(--s)*-2px) calc(var(--s)*3px) rgba(0,0,0,0.42)"></div>
+            </div>
+          </div>
+          <div style="height:calc(var(--s)*58px)"></div>
+          <div data-shadow="1" style="width:calc(var(--s)*146px);height:calc(var(--s)*24px);border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.5) 46%,rgba(0,0,0,0) 74%);filter:blur(calc(var(--s)*4px));transition:transform 460ms cubic-bezier(.2,.7,.2,1), opacity 460ms ease"></div>
+          <div data-anim="cap" style="display:flex;flex-direction:column;align-items:center;gap:calc(var(--s)*3px);margin-top:calc(var(--s)*6px);animation:cbFade 900ms 1140ms ease-out both">
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:max(11px,calc(var(--s)*13px));font-weight:500;letter-spacing:0.24em;color:rgba(233,226,211,0.9)">03</span>
+            <span style="font-size:max(9px,calc(var(--s)*10px));font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(233,226,211,0.54);white-space:nowrap">Cleanser</span>
+          </div>
+        </a>
+      </div>
+
+      <div data-col="4" style="display:flex;flex-direction:column;align-items:center;width:calc(var(--s)*168px);margin:0 calc(var(--s)*40px) 0 0">
+        <a href="Cedar%20Basin%20Product.dc.html?p=oil#oil" data-key="oil" onClick="{{ onProdClick }}" onMouseEnter="{{ onProdEnter }}" onMouseLeave="{{ onProdLeave }}" aria-label="Cold-pressed Oil — open product" style="display:flex;flex-direction:column;align-items:center;width:100%;color:inherit">
+          <div data-parallax="0.18" style="display:flex;flex-direction:column;align-items:center;width:100%;will-change:transform">
+            <img src="assets/oil.png" alt="Body oil in a flat-shouldered glass bottle" style="display:block;height:calc(var(--s)*198px);width:auto;position:relative;z-index:2;filter:drop-shadow(0 calc(var(--s)*7px) calc(var(--s)*9px) rgba(0,0,0,0.55)) brightness(1.04);transition:transform 460ms cubic-bezier(.2,.7,.2,1)" />
+            <div style="position:relative;z-index:1;width:calc(var(--s)*166px);height:calc(var(--s)*50px);margin-top:calc(var(--s)*-14px);filter:url(#cbRough) drop-shadow(0 calc(var(--s)*10px) calc(var(--s)*14px) rgba(0,0,0,0.55))">
+              <div style="position:absolute;left:calc(var(--s)*4px);right:calc(var(--s)*4px);top:calc(var(--s)*13px);height:calc(var(--s)*30px);border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(180deg,#989289 0%,#4E4941 44%,#2B2823 100%)"></div>
+              <div style="position:absolute;left:0;right:0;top:0;height:calc(var(--s)*28px);border-radius:50%;background-image:radial-gradient(58% 132% at 46% 22%,#F1ECE1 0%,#CFC8B9 44%,#978F81 76%,#6C665A 100%),url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E&quot;);background-size:auto,90px 90px;background-blend-mode:overlay;box-shadow:inset 0 calc(var(--s)*-2px) calc(var(--s)*3px) rgba(0,0,0,0.42)"></div>
+              <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(264deg,rgba(0,0,0,0.16) 0%,rgba(0,0,0,0) 58%);pointer-events:none"></div>
+            </div>
+          </div>
+          <div style="height:calc(var(--s)*36px)"></div>
+          <div data-shadow="1" style="width:calc(var(--s)*186px);height:calc(var(--s)*30px);transform:translateX(calc(var(--s)*4px));border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,0.86) 0%,rgba(0,0,0,0.46) 46%,rgba(0,0,0,0) 74%);filter:blur(calc(var(--s)*5px));transition:transform 460ms cubic-bezier(.2,.7,.2,1), opacity 460ms ease"></div>
+          <div data-anim="cap" style="display:flex;flex-direction:column;align-items:center;gap:calc(var(--s)*3px);margin-top:calc(var(--s)*6px);animation:cbFade 900ms 1220ms ease-out both">
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:max(11px,calc(var(--s)*13px));font-weight:500;letter-spacing:0.24em;color:rgba(233,226,211,0.86)">04</span>
+            <span style="font-size:max(9px,calc(var(--s)*10px));font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(233,226,211,0.5);white-space:nowrap">Oil</span>
+          </div>
+        </a>
+      </div>
+
+      <div data-rowbreak="1" style="display:none;flex:0 0 100%;height:0;order:3"></div>
+
+      <div data-col="5" style="display:flex;flex-direction:column;align-items:center;width:calc(var(--s)*138px);margin:0">
+        <a href="Cedar%20Basin%20Product.dc.html?p=tin#tin" data-key="tin" onClick="{{ onProdClick }}" onMouseEnter="{{ onProdEnter }}" onMouseLeave="{{ onProdLeave }}" aria-label="Pocket Salve — open product" style="display:flex;flex-direction:column;align-items:center;width:100%;color:inherit">
+          <div data-parallax="0.44" style="display:flex;flex-direction:column;align-items:center;width:100%;will-change:transform">
+            <img src="assets/tin.png" alt="Salve in a small aluminium tin" style="display:block;height:calc(var(--s)*58px);width:auto;position:relative;z-index:2;filter:drop-shadow(0 calc(var(--s)*6px) calc(var(--s)*8px) rgba(0,0,0,0.55)) brightness(1.04);transition:transform 460ms cubic-bezier(.2,.7,.2,1)" />
+            <div style="position:relative;z-index:1;width:calc(var(--s)*128px);height:calc(var(--s)*44px);margin-top:calc(var(--s)*-10px);filter:url(#cbRough) drop-shadow(0 calc(var(--s)*10px) calc(var(--s)*14px) rgba(0,0,0,0.55))">
+              <div style="position:absolute;left:calc(var(--s)*4px);right:calc(var(--s)*4px);top:calc(var(--s)*11px);height:calc(var(--s)*27px);border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(180deg,#948E84 0%,#4C473F 42%,#292620 100%)"></div>
+              <div style="position:absolute;left:0;right:0;top:0;height:calc(var(--s)*24px);border-radius:50%;background-image:radial-gradient(58% 132% at 44% 24%,#EDE8DD 0%,#C9C2B3 44%,#928A7C 76%,#686256 100%),url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E&quot;);background-size:auto,90px 90px;background-blend-mode:overlay;box-shadow:inset 0 calc(var(--s)*-2px) calc(var(--s)*3px) rgba(0,0,0,0.42)"></div>
+              <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(264deg,rgba(0,0,0,0.28) 0%,rgba(0,0,0,0) 62%);pointer-events:none"></div>
+            </div>
+          </div>
+          <div style="height:calc(var(--s)*22px)"></div>
+          <div data-shadow="1" style="width:calc(var(--s)*156px);height:calc(var(--s)*26px);transform:translateX(calc(var(--s)*8px));border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.44) 46%,rgba(0,0,0,0) 74%);filter:blur(calc(var(--s)*4px));transition:transform 460ms cubic-bezier(.2,.7,.2,1), opacity 460ms ease"></div>
+          <div data-anim="cap" style="display:flex;flex-direction:column;align-items:center;gap:calc(var(--s)*3px);margin-top:calc(var(--s)*6px);animation:cbFade 900ms 1300ms ease-out both">
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:max(11px,calc(var(--s)*13px));font-weight:500;letter-spacing:0.24em;color:rgba(233,226,211,0.86)">05</span>
+            <span style="font-size:max(9px,calc(var(--s)*10px));font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(233,226,211,0.5);white-space:nowrap">Salve</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <div ref="{{ bandRef }}" style="position:absolute;left:0;right:0;bottom:0;height:clamp(172px,30%,236px);z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 24px;background:linear-gradient(180deg,rgba(10,9,8,0) 0%,rgba(10,9,8,0.62) 32%,rgba(8,8,7,0.9) 100%);pointer-events:none">
+      <p data-anim="eyebrow" style="margin:0;animation:cbTrackSm 1100ms 300ms cubic-bezier(.2,.7,.2,1) both;font-family:'DM Mono', ui-monospace, monospace;font-size:13px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;white-space:nowrap;color:rgba(236,229,214,0.68)">Raw · unrefined · five</p>
+      <p data-anim="head" style="margin:0;animation:cbRise 900ms 460ms cubic-bezier(.2,.7,.2,1) both;font-family:'Bodoni Moda', Georgia, serif;font-weight:600;font-size:clamp(34px,5.2vw,70px);line-height:1.0;letter-spacing:-0.02em;text-align:center;text-wrap:balance;max-width:28ch;color:#F4EFE3">Five essentials. <em data-anim="em" style="font-style:italic;animation:cbFade 1200ms 900ms ease-out both;color:rgba(244,239,227,0.72)">Nothing else.</em></p>
+      <div style="display:flex;align-items:center;gap:26px">
+        <a href="#index" data-anim="cta" style="animation:cbRise 800ms 760ms cubic-bezier(.2,.7,.2,1) both;font-size:14px;font-weight:600;letter-spacing:0.17em;text-transform:uppercase;padding-bottom:7px;border-bottom:1.5px solid rgba(236,229,214,0.5);pointer-events:auto;white-space:nowrap;color:#F1EBDF" style-hover="color:#FFFFFF;border-bottom-color:rgba(255,255,255,0.9)">Shop the five</a>
+        <a href="#ritual" data-anim="cta2" style="animation:cbRise 800ms 860ms cubic-bezier(.2,.7,.2,1) both;font-family:'DM Mono', ui-monospace, monospace;font-size:12px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(236,229,214,0.6);pointer-events:auto;white-space:nowrap" style-hover="color:rgba(255,255,255,0.9)">The ritual ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <div style="position:relative;z-index:2;overflow:hidden;background:rgba(11,10,9,0.66);border-top:1px solid rgba(236,229,214,0.1);border-bottom:1px solid rgba(236,229,214,0.1);padding:15px 0">
+    <div data-drift="1" style="display:flex;width:max-content;animation:cbDrift 60s linear infinite">
+      <span style="flex:0 0 auto;font-family:'DM Mono', ui-monospace, monospace;font-size:13px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:rgba(236,229,214,0.52);white-space:nowrap;padding-right:1.4em">Cedarwood · basin salt · cold-pressed · unfussed · five essentials · nothing else · Cedarwood · basin salt · cold-pressed · unfussed · five essentials · nothing else · </span>
+      <span aria-hidden="true" style="flex:0 0 auto;font-family:'DM Mono', ui-monospace, monospace;font-size:13px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:rgba(236,229,214,0.52);white-space:nowrap;padding-right:1.4em">Cedarwood · basin salt · cold-pressed · unfussed · five essentials · nothing else · Cedarwood · basin salt · cold-pressed · unfussed · five essentials · nothing else · </span>
+    </div>
+  </div>
+
+  <section id="lifestyle" style="position:relative;z-index:2;padding:clamp(64px,12vh,150px) clamp(24px,6vw,96px);display:flex;flex-direction:column;align-items:flex-start;gap:0">
+    <div style="max-width:760px;display:flex;flex-direction:column;gap:22px;background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(28px,4vw,52px)">
+      <p data-reveal="0" style="position:relative;z-index:1;margin:0;opacity:0;transform:translate3d(0,16px,0);transition:opacity 700ms ease-out, transform 700ms cubic-bezier(.2,.7,.2,1);font-family:'DM Mono', ui-monospace, monospace;font-size:13px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase">The line</p>
+      <p data-reveal="120" style="position:relative;z-index:1;margin:0;max-width:640px;opacity:0;transform:translate3d(0,20px,0);transition:opacity 800ms ease-out, transform 800ms cubic-bezier(.2,.7,.2,1);font-family:'Bodoni Moda', Georgia, serif;font-weight:500;font-size:clamp(27px,3.4vw,46px);line-height:1.18;letter-spacing:-0.015em;text-wrap:pretty">Cold-pressed cedarwood, basin salt, and nothing that needs explaining on the back of the bottle.</p>
+      <p data-reveal="260" style="position:relative;z-index:1;margin:8px 0 0;max-width:520px;opacity:0;transform:translate3d(0,20px,0);transition:opacity 800ms ease-out, transform 800ms cubic-bezier(.2,.7,.2,1);font-family:'Bodoni Moda', Georgia, serif;font-style:italic;font-size:clamp(19px,2vw,26px);line-height:1.4;color:#3E3A2E">Made in small runs, in a shed that smells of resin.</p>
+      <div data-reveal="380" style="position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;margin-top:14px;background:rgba(58,52,44,0.14);opacity:0;transform:translate3d(0,20px,0);transition:opacity 800ms ease-out, transform 800ms cubic-bezier(.2,.7,.2,1)">
+        <div style="background:#F7F4ED;padding:16px 18px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6">Batch</span><span style="font-family:'Bodoni Moda', Georgia, serif;font-size:22px">No. 14</span></div>
+        <div style="background:#F7F4ED;padding:16px 18px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6">Ingredients</span><span style="font-family:'Bodoni Moda', Georgia, serif;font-size:22px">9 total</span></div>
+        <div style="background:#F7F4ED;padding:16px 18px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6">Pressed</span><span style="font-family:'Bodoni Moda', Georgia, serif;font-size:22px">Cold</span></div>
+        <div style="background:#F7F4ED;padding:16px 18px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6">Refills</span><span style="font-family:'Bodoni Moda', Georgia, serif;font-size:22px">Always</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ritual" style="position:relative;z-index:2;padding:0 clamp(24px,6vw,96px) clamp(64px,10vh,120px);display:flex;justify-content:flex-end">
+    <div style="width:min(100%,720px);display:flex;flex-direction:column;gap:0;background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14)">
+      <div style="padding:clamp(24px,3vw,36px) clamp(26px,4vw,44px) 8px;display:flex;align-items:baseline;justify-content:space-between;gap:20px">
+        <p data-reveal="0" style="margin:0;opacity:0;transform:translate3d(0,14px,0);transition:opacity 700ms ease-out, transform 700ms cubic-bezier(.2,.7,.2,1);font-family:'DM Mono', ui-monospace, monospace;font-size:13px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase">The ritual</p>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.55;white-space:nowrap">Four minutes</span>
+      </div>
+      <div data-reveal="120" style="opacity:0;transform:translate3d(0,18px,0);transition:opacity 800ms ease-out, transform 800ms cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column">
+        <div style="display:flex;gap:clamp(16px,3vw,32px);align-items:baseline;padding:22px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12)">
+          <span style="flex:0 0 auto;font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5;padding-top:6px">I</span>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(21px,2.4vw,30px);line-height:1.15">Wet the basin, not the face</span>
+            <span style="font-size:15px;line-height:1.55;opacity:0.72;max-width:46ch;text-wrap:pretty">Two pumps of cleanser into cold standing water. Work it in the palms first so it never hits skin neat.</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:clamp(16px,3vw,32px);align-items:baseline;padding:22px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12)">
+          <span style="flex:0 0 auto;font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5;padding-top:6px">II</span>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(21px,2.4vw,30px);line-height:1.15">Serum while damp</span>
+            <span style="font-size:15px;line-height:1.55;opacity:0.72;max-width:46ch;text-wrap:pretty">Three drops, pressed rather than rubbed. Wait until it stops feeling like anything at all.</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:clamp(16px,3vw,32px);align-items:baseline;padding:22px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12)">
+          <span style="flex:0 0 auto;font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5;padding-top:6px">III</span>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(21px,2.4vw,30px);line-height:1.15">Balm the edges, oil the rest</span>
+            <span style="font-size:15px;line-height:1.55;opacity:0.72;max-width:46ch;text-wrap:pretty">Beard, knuckles, anywhere the weather lands first. The salve stays in a coat pocket for the same reason.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="index" style="position:relative;z-index:2;padding:0 clamp(24px,6vw,96px) clamp(64px,10vh,120px)">
+    <div style="display:flex;flex-direction:column;gap:0;background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14)">
+      <div style="padding:clamp(24px,3vw,36px) clamp(26px,4vw,44px) 20px;display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <p data-reveal="0" style="margin:0;opacity:0;transform:translate3d(0,14px,0);transition:opacity 700ms ease-out, transform 700ms cubic-bezier(.2,.7,.2,1);font-family:'DM Mono', ui-monospace, monospace;font-size:13px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase">The five</p>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.55">Free refills on returns</span>
+      </div>
+      <a href="Cedar%20Basin%20Product.dc.html?p=serum#serum" data-key="serum" onClick="{{ onProdClick }}" style="display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:clamp(14px,3vw,34px);padding:20px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12);transition:background 240ms ease" style-hover="background:rgba(255,253,247,0.75)">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5">01</span>
+        <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(20px,2.2vw,27px);line-height:1.2">Basin Serum</span>
+        <span style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;white-space:nowrap">30 ml</span>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:14px;white-space:nowrap">$42</span>
+      </a>
+      <a href="Cedar%20Basin%20Product.dc.html?p=balm#balm" data-key="balm" onClick="{{ onProdClick }}" style="display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:clamp(14px,3vw,34px);padding:20px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12);transition:background 240ms ease" style-hover="background:rgba(255,253,247,0.75)">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5">02</span>
+        <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(20px,2.2vw,27px);line-height:1.2">Resin Balm</span>
+        <span style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;white-space:nowrap">60 ml</span>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:14px;white-space:nowrap">$34</span>
+      </a>
+      <a href="Cedar%20Basin%20Product.dc.html?p=cleanser#cleanser" data-key="cleanser" onClick="{{ onProdClick }}" style="display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:clamp(14px,3vw,34px);padding:20px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12);transition:background 240ms ease" style-hover="background:rgba(255,253,247,0.75)">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5">03</span>
+        <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(20px,2.2vw,27px);line-height:1.2">Ash Cleanser</span>
+        <span style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;white-space:nowrap">200 ml</span>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:14px;white-space:nowrap">$28</span>
+      </a>
+      <a href="Cedar%20Basin%20Product.dc.html?p=oil#oil" data-key="oil" onClick="{{ onProdClick }}" style="display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:clamp(14px,3vw,34px);padding:20px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12);transition:background 240ms ease" style-hover="background:rgba(255,253,247,0.75)">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5">04</span>
+        <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(20px,2.2vw,27px);line-height:1.2">Cold-Pressed Oil</span>
+        <span style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;white-space:nowrap">100 ml</span>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:14px;white-space:nowrap">$46</span>
+      </a>
+      <a href="Cedar%20Basin%20Product.dc.html?p=tin#tin" data-key="tin" onClick="{{ onProdClick }}" style="display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:clamp(14px,3vw,34px);padding:20px clamp(26px,4vw,44px);border-top:1px solid rgba(58,52,44,0.12);transition:background 240ms ease" style-hover="background:rgba(255,253,247,0.75)">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.5">05</span>
+        <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(20px,2.2vw,27px);line-height:1.2">Pocket Salve</span>
+        <span style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;white-space:nowrap">15 g</span>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:14px;white-space:nowrap">$18</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="sourced" style="position:relative;z-index:2;padding:0 clamp(24px,6vw,96px) clamp(64px,10vh,120px);display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(16px,2vw,26px)">
+    <div data-reveal="0" style="opacity:0;transform:translate3d(0,18px,0);transition:opacity 800ms ease-out, transform 800ms cubic-bezier(.2,.7,.2,1);background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;gap:10px">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.55">Cedarwood</span>
+      <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(22px,2.4vw,29px);line-height:1.2">Fallen, never felled</span>
+      <span style="font-size:15px;line-height:1.55;opacity:0.72;text-wrap:pretty">Steam-distilled from windfall in the same valley the basin sits in. Two barrels a year, and that sets the batch size.</span>
+    </div>
+    <div data-reveal="120" style="opacity:0;transform:translate3d(0,18px,0);transition:opacity 800ms ease-out, transform 800ms cubic-bezier(.2,.7,.2,1);background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;gap:10px">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.55">Basin salt</span>
+      <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(22px,2.4vw,29px);line-height:1.2">Raked by hand</span>
+      <span style="font-size:15px;line-height:1.55;opacity:0.72;text-wrap:pretty">Coarse, grey, faintly mineral. It buffers the cleanser instead of stripping, which is why the line has no toner.</span>
+    </div>
+    <div data-reveal="240" style="opacity:0;transform:translate3d(0,18px,0);transition:opacity 800ms ease-out, transform 800ms cubic-bezier(.2,.7,.2,1);background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;gap:10px">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.55">The shed</span>
+      <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(22px,2.4vw,29px);line-height:1.2">Nine ingredients, no lab</span>
+      <span style="font-size:15px;line-height:1.55;opacity:0.72;text-wrap:pretty">Everything is blended, filled and labelled in one room. If a batch turns cloudy it goes to the staff shelf, not the shop.</span>
+    </div>
+  </section>
+
+  <footer id="contact" style="position:relative;z-index:2;background:rgba(11,10,9,0.72);border-top:1px solid rgba(236,229,214,0.12);padding:clamp(40px,6vw,66px) clamp(24px,6vw,96px) 26px;color:rgba(236,229,214,0.8)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:clamp(24px,4vw,48px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'Bodoni Moda', Georgia, serif;font-weight:600;font-size:19px;letter-spacing:0.2em;text-transform:uppercase;color:#F2ECE0">CEDAR<span style="display:inline-block;width:1px;height:0.74em;background:#F2ECE0;opacity:0.42;margin:0 0.12em"></span>BASIN</span>
+        <span style="font-size:14px;line-height:1.6;color:rgba(236,229,214,0.55);max-width:24ch">Shed 4, Basin Road. Open Saturdays, or by knock.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(236,229,214,0.45)">Shop</span>
+        <a href="Cedar%20Basin%20Product.dc.html?p=serum#serum" data-key="serum" onClick="{{ onProdClick }}" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">Basin Serum</a>
+        <a href="Cedar%20Basin%20Product.dc.html?p=cleanser#cleanser" data-key="cleanser" onClick="{{ onProdClick }}" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">Ash Cleanser</a>
+        <a href="Cedar%20Basin%20Product.dc.html?p=oil#oil" data-key="oil" onClick="{{ onProdClick }}" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">Cold-Pressed Oil</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(236,229,214,0.45)">House</span>
+        <a href="#ritual" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">The ritual</a>
+        <a href="#sourced" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">Sourcing</a>
+        <a href="#index" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">Refills &amp; returns</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(236,229,214,0.45)">Post</span>
+        <span style="font-size:14px;line-height:1.6;color:rgba(236,229,214,0.55);max-width:26ch">One letter a season, when the batch changes.</span>
+        <a href="#subscribe" style="font-size:14px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding-bottom:6px;border-bottom:1.5px solid rgba(236,229,214,0.4);align-self:flex-start;color:#F2ECE0" style-hover="color:#FFFFFF">Join the list</a>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:clamp(30px,5vw,54px);padding-top:18px;border-top:1px solid rgba(236,229,214,0.1);font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(236,229,214,0.38)">
+      <span>© 2026 Cedar Basin</span>
+      <span>Batch No. 14 · Pressed in the valley</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;scrollLift&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;section&quot;:&quot;Scroll motion&quot;},&quot;furStrength&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.92,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0.2,&quot;max&quot;:1,&quot;step&quot;:0.04,&quot;section&quot;:&quot;Leopard texture&quot;},&quot;furZoom&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;section&quot;:&quot;Leopard texture&quot;},&quot;textureDrift&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.08,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0,&quot;max&quot;:0.4,&quot;step&quot;:0.02,&quot;section&quot;:&quot;Leopard texture&quot;},&quot;beamIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;section&quot;:&quot;Gallery light&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    ["navRef","navInnerRef","navLeftRef","navRightRef","markRef","heroRef","stageRef","bandRef"].forEach(k => this[k] = React.createRef());
+    this.timers = [];
+  }
+
+  get lift() { return this.props.scrollLift ?? 1; }
+
+  applyLayout() {
+    const w = window.innerWidth;
+    const narrow = w <= 720;
+    const inner = this.navInnerRef.current;
+    const mark = this.markRef.current;
+    if (inner) {
+      inner.style.display = narrow ? "flex" : "grid";
+      inner.style.flexDirection = "column";
+      inner.style.justifyContent = "center";
+      inner.style.gap = narrow ? "12px" : "20px";
+      inner.style.height = narrow ? "auto" : "78px";
+      inner.style.padding = narrow ? "15px 0 17px" : "0";
+    }
+    [this.navLeftRef.current, this.navRightRef.current].forEach(g => {
+      if (!g) return;
+      g.style.gap = narrow ? "18px" : "34px";
+      g.style.justifySelf = "center";
+    });
+    if (mark) mark.style.fontSize = narrow ? "21px" : "25px";
+
+    const hero = this.heroRef.current;
+    const navH = this.navRef.current ? Math.round(this.navRef.current.getBoundingClientRect().height) : 78;
+    if (hero) hero.style.height = "calc(100vh - " + navH + "px)";
+
+    const stage = this.stageRef.current;
+    if (!stage) return;
+    const cols = Array.from(stage.querySelectorAll("[data-col]"));
+    const heroH = hero ? hero.offsetHeight : window.innerHeight;
+    const pad = w < 480 ? 24 : 96;
+    const avail = Math.min(w, 1500) - pad;
+    const band = this.bandRef.current ? this.bandRef.current.offsetHeight : Math.max(112, Math.min(heroH * 0.3, 236));
+    const brk = stage.querySelector("[data-rowbreak]");
+    if (brk) brk.style.display = narrow ? "block" : "none";
+    if (narrow) {
+      stage.style.flexWrap = "wrap";
+      stage.style.justifyContent = "center";
+      const order = { "1": 0, "3": 1, "5": 2, "2": 4, "4": 5 };
+      cols.forEach(c => {
+        const k = c.getAttribute("data-col");
+        c.style.order = order[k];
+        c.style.marginRight = (k === "5" || k === "4") ? "0" : "calc(var(--s)*26px)";
+        c.style.marginTop = (k === "2" || k === "4") ? "calc(var(--s)*30px)" : "0";
+      });
+      const sW = avail / 470;
+      const sH = (heroH - band - heroH * 0.08) / 800;
+      stage.style.setProperty("--s", Math.max(0.24, Math.min(sW, sH, 1)).toFixed(3));
+    } else {
+      stage.style.flexWrap = "nowrap";
+      cols.forEach(c => {
+        const k = c.getAttribute("data-col");
+        c.style.order = "0";
+        c.style.marginTop = "0";
+        c.style.marginRight = k === "5" ? "0" : "calc(var(--s)*" + ({ "1": 26, "2": 46, "3": 28, "4": 40 })[k] + "px)";
+      });
+      const sW = avail / 846;
+      const sH = (heroH - band - heroH * 0.12) / 404;
+      stage.style.setProperty("--s", Math.max(0.3, Math.min(sW, sH, 1.3)).toFixed(3));
+    }
+    stage.style.bottom = Math.round(band + 10) + "px";
+  }
+
+  onScroll = () => {
+    if (this.reduced) return;
+    if (this.texEls && this.texEls.length) {
+      const yy = window.scrollY || 0;
+      this.texEls.forEach(({ el, f }) => { el.style.backgroundPosition = "center calc(50% + " + (yy * f).toFixed(1) + "px)"; });
+    }
+    if (!this.parallaxEls || this.rafPending) return;
+    this.rafPending = true;
+    requestAnimationFrame(() => {
+      this.rafPending = false;
+      const y = window.scrollY || 0;
+      const hero = this.heroRef.current;
+      const span = hero ? hero.offsetHeight : window.innerHeight;
+      const p = Math.min(y / span, 1);
+      this.parallaxEls.forEach(({ el, f }) => {
+        el.style.transform = "translate3d(0," + (-p * span * f * 0.55 * this.lift).toFixed(2) + "px,0)";
+      });
+    });
+  };
+
+  onProdClick = (e) => {
+    const k = e.currentTarget.getAttribute("data-key");
+    try { if (k) window.localStorage.setItem("cb.product", k); } catch (err) {}
+  };
+
+  onProdEnter = (e) => {
+    if (!this.hoverable || this.reduced) return;
+    const a = e.currentTarget;
+    const img = a.querySelector("img");
+    const sh = a.querySelector("[data-shadow]");
+    if (img) img.style.transform = "translate3d(0,calc(var(--s) * -10px),0)";
+    if (sh) { sh.style.opacity = "0.72"; }
+  };
+
+  onProdLeave = (e) => {
+    const a = e.currentTarget;
+    const img = a.querySelector("img");
+    const sh = a.querySelector("[data-shadow]");
+    if (img) img.style.transform = "none";
+    if (sh) { sh.style.opacity = "1"; }
+  };
+
+  componentDidMount() {
+    this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    this.hoverable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const root = this.heroRef.current;
+    this.parallaxEls = root ? Array.from(root.querySelectorAll("[data-parallax]")).map(el => ({ el, f: parseFloat(el.getAttribute("data-parallax")) || 0 })) : [];
+    const drift = this.props.textureDrift ?? 0.08;
+    this.texEls = Array.from(document.querySelectorAll("[data-tex]")).map(el => ({ el, f: el.getAttribute("data-tex") === "hero" ? drift * 0.5 : drift }));
+    if (this.props.furStrength != null) {
+      const page = document.querySelector('[data-tex="page"]');
+      const hero = document.querySelector('[data-tex="hero"]');
+      if (page) page.style.opacity = String(this.props.furStrength);
+      if (hero) hero.style.opacity = String(Math.min(0.55, this.props.furStrength * 0.34));
+    }
+    if (this.props.furZoom != null) {
+      this.texEls.forEach(({ el }) => {
+        const base = el.getAttribute("data-tex") === "hero" ? 440 : 520;
+        const px = Math.round(base * this.props.furZoom);
+        el.style.backgroundSize = px + "px " + px + "px";
+      });
+    }
+    if (this.props.beamIntensity != null) {
+      const beam = document.querySelector("[data-beam]");
+      if (beam) beam.style.opacity = String(this.props.beamIntensity);
+    }
+
+    this.applyLayout();
+    this._resize = () => this.applyLayout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.applyLayout());
+    window.addEventListener("resize", this._resize);
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    this.onScroll();
+    this.setupReveals();
+  }
+
+  setupReveals() {
+    const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
+    if (this.reduced || !("IntersectionObserver" in window)) {
+      nodes.forEach(el => { el.style.opacity = "1"; el.style.transform = "none"; });
+      return;
+    }
+    this.revealIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target, d = parseInt(el.getAttribute("data-reveal"), 10) || 0;
+        this.timers.push(setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, d));
+        this.revealIO.unobserve(el);
+      });
+    }, { threshold: 0.2 });
+    nodes.forEach(el => this.revealIO.observe(el));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this._resize);
+    window.removeEventListener("scroll", this.onScroll);
+    this.timers.forEach(clearTimeout);
+    if (this.revealIO) this.revealIO.disconnect();
+  }
+
+  renderVals() {
+    return {
+      navRef: this.navRef, navInnerRef: this.navInnerRef, navLeftRef: this.navLeftRef,
+      navRightRef: this.navRightRef, markRef: this.markRef, heroRef: this.heroRef,
+      stageRef: this.stageRef, bandRef: this.bandRef, onProdClick: this.onProdClick,
+      onProdEnter: this.onProdEnter, onProdLeave: this.onProdLeave
+    };
+  }
+}
+</script>
+</body>
+</html>

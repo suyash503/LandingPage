@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Jost:wght@400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" />
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:#0D0C0B;-webkit-font-smoothing:antialiased}
+a{color:#2F332B;text-decoration:none}
+a:hover{color:#6A6153}
+:focus-visible{outline:1px solid #C9C0AE;outline-offset:6px}
+@keyframes cbBeam{0%{opacity:0.84}50%{opacity:1}100%{opacity:0.84}}
+@keyframes cbHover{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-7px,0)}100%{transform:translate3d(0,0,0)}}
+@keyframes cbRise{from{opacity:0;transform:translate3d(0,22px,0)}to{opacity:1;transform:none}}
+@keyframes cbFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion: reduce){[data-beam],[data-anim],[data-float]{animation:none !important}[data-anim]{opacity:1 !important;transform:none !important}}
+</style>
+</helmet>
+<div style="position:relative;background:#0D0C0B;font-family:Jost, system-ui, sans-serif;color:#2F332B">
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;pointer-events:none">
+    <filter id="cbRoughP" x="-14%" y="-24%" width="128%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.11" numOctaves="3" seed="4" result="n"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+    <filter id="cbRoughS" x="-14%" y="-24%" width="128%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.12 0.2" numOctaves="2" seed="4" result="n"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </svg>
+
+  <div style="position:fixed;inset:0;z-index:0;background-image:url(assets/fur-tile.jpg);background-repeat:repeat;background-position:center center;background-size:520px 520px;background-attachment:fixed;mix-blend-mode:multiply;opacity:0.92;pointer-events:none"></div>
+
+  <nav style="position:sticky;top:0;z-index:20;padding:0 clamp(16px,4vw,56px);background:rgba(249,246,239,0.92);backdrop-filter:blur(7px) saturate(0.94);-webkit-backdrop-filter:blur(7px) saturate(0.94);border-bottom:1px solid rgba(58,52,44,0.12)">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px">
+      <a href="Cedar%20Basin%20Hero.dc.html" style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;white-space:nowrap">← All five</a>
+      <a href="Cedar%20Basin%20Hero.dc.html" style="font-family:'Bodoni Moda', Georgia, serif;font-weight:600;font-size:21px;letter-spacing:0.2em;text-transform:uppercase;line-height:1;white-space:nowrap">CEDAR<span style="display:inline-block;width:1px;height:0.74em;background:#2F332B;opacity:0.42;margin:0 0.12em"></span>BASIN</a>
+      <a href="Cedar%20Basin%20Hero.dc.html#index" style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;white-space:nowrap">Basket (0)</a>
+    </div>
+  </nav>
+
+  <section style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));align-items:stretch;background:radial-gradient(120% 84% at 34% -6%,#3A3630 0%,#221F1B 46%,#100F0D 78%,#080807 100%)">
+    <div style="position:relative;min-height:clamp(460px,74vh,780px);overflow:hidden;background:#07070A">
+      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;aspect-ratio:1 / 1;background-image:url(assets/slab.jpg);background-size:cover;background-position:center center;background-repeat:no-repeat">
+        <div data-beam="1" style="position:absolute;left:50%;top:-18%;width:64%;height:82%;transform:translateX(-50%);clip-path:polygon(44% 0%,56% 0%,100% 100%,0% 100%);background:linear-gradient(180deg,rgba(226,238,226,0.09) 0%,rgba(226,238,226,0.04) 46%,rgba(226,238,226,0) 100%);filter:blur(34px);animation:cbBeam 9s ease-in-out infinite;pointer-events:none"></div>
+        <div style="position:absolute;left:50%;bottom:50%;width:34%;height:9%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(214,232,214,0.16) 0%,rgba(214,232,214,0.05) 44%,rgba(214,232,214,0) 74%);filter:blur(10px);pointer-events:none"></div>
+        <div style="position:absolute;left:50%;bottom:52.4%;width:20%;height:3%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.45) 48%,rgba(0,0,0,0) 76%);filter:blur(5px)"></div>
+        <sc-if value="{{ img }}" hint-placeholder-val="{{ false }}">
+          <img src="assets/serum.png" ref="{{ heroImgRef }}" alt="{{ name }}" data-float="1" style="position:absolute;left:50%;bottom:53.4%;transform:translateX(-50%);height:26%;width:auto;display:block;filter:drop-shadow(0 10px 16px rgba(0,0,0,0.7)) brightness(1.06) contrast(1.02)" />
+        </sc-if>
+        <div style="position:absolute;inset:0;background:radial-gradient(78% 62% at 50% 46%,rgba(0,0,0,0) 40%,rgba(0,0,0,0.5) 100%);pointer-events:none"></div>
+        <span data-anim="plaque" style="position:absolute;left:0;right:0;bottom:6%;text-align:center;animation:cbFade 900ms 500ms ease-out both;font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.28em;color:rgba(226,236,222,0.6)">{{ numLabel }}</span>
+      </div>
+    </div>
+
+    <div style="position:relative;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:clamp(44px,7vw,86px) clamp(26px,5vw,72px);background:linear-gradient(180deg,rgba(10,9,8,0.4),rgba(10,9,8,0.72))">
+      <p data-anim="a1" style="margin:0;animation:cbRise 800ms 120ms cubic-bezier(.2,.7,.2,1) both;font-family:'DM Mono', ui-monospace, monospace;font-size:12px;font-weight:500;letter-spacing:0.26em;text-transform:uppercase;color:rgba(236,229,214,0.55)">{{ category }}</p>
+      <h1 data-anim="a2" style="margin:0;animation:cbRise 900ms 200ms cubic-bezier(.2,.7,.2,1) both;font-family:'Bodoni Moda', Georgia, serif;font-weight:600;font-size:clamp(40px,5.4vw,74px);line-height:0.98;letter-spacing:-0.02em;color:#F4EFE3;text-wrap:balance">{{ name }}</h1>
+      <p data-anim="a3" style="margin:0;max-width:42ch;animation:cbRise 900ms 280ms cubic-bezier(.2,.7,.2,1) both;font-family:'Bodoni Moda', Georgia, serif;font-style:italic;font-size:clamp(19px,2vw,26px);line-height:1.4;color:rgba(244,239,227,0.74)">{{ tagline }}</p>
+      <p data-anim="a4" style="margin:0;max-width:46ch;animation:cbRise 900ms 360ms cubic-bezier(.2,.7,.2,1) both;font-size:16px;line-height:1.62;color:rgba(236,229,214,0.62);text-wrap:pretty">{{ story }}</p>
+
+      <div data-anim="a5" style="display:flex;align-items:baseline;gap:18px;margin-top:6px;animation:cbRise 900ms 440ms cubic-bezier(.2,.7,.2,1) both">
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:clamp(26px,3vw,36px);color:#F4EFE3">{{ price }}</span>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(236,229,214,0.5)">{{ size }}</span>
+      </div>
+
+      <div data-anim="a6" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:4px;animation:cbRise 900ms 520ms cubic-bezier(.2,.7,.2,1) both">
+        <button onClick="{{ onAdd }}" style="appearance:none;border:1px solid rgba(236,229,214,0.5);background:rgba(244,239,227,0.94);color:#15140F;font-family:Jost, system-ui, sans-serif;font-size:14px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:16px 30px;cursor:pointer;transition:background 220ms ease, transform 220ms ease" style-hover="background:#FFFFFF;transform:translateY(-1px)">{{ addLabel }}</button>
+        <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(236,229,214,0.42)">Refill · {{ refillPrice }} · returns welcome</span>
+      </div>
+
+      <div data-anim="a7" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;margin-top:14px;background:rgba(236,229,214,0.14);animation:cbRise 900ms 600ms cubic-bezier(.2,.7,.2,1) both">
+        <sc-for list="{{ specs }}" as="spec" hint-placeholder-count="3">
+          <div style="background:#0F0E0C;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(236,229,214,0.42)">{{ spec.k }}</span>
+            <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:20px;color:rgba(244,239,227,0.9)">{{ spec.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:2;padding:clamp(56px,9vh,110px) clamp(24px,6vw,96px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(16px,2vw,26px);align-items:start">
+    <div style="background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;gap:16px">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;opacity:0.55">Notes</span>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ notes }}" as="note" hint-placeholder-count="3">
+          <div style="display:flex;align-items:baseline;gap:16px;padding:13px 0;border-top:1px solid rgba(58,52,44,0.12)">
+            <span style="flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:rgba(58,52,44,0.28)"></span>
+            <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(19px,2vw,24px);line-height:1.25">{{ note }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;gap:16px">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;opacity:0.55">Everything in it</span>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ ingredients }}" as="ing" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:12px 0;border-top:1px solid rgba(58,52,44,0.12)">
+            <span style="font-size:15px;line-height:1.5">{{ ing.n }}</span>
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.1em;opacity:0.55;white-space:nowrap">{{ ing.p }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <span style="font-size:13px;line-height:1.55;opacity:0.6;text-wrap:pretty">No fragrance beyond the oils listed. Nothing added to make it foam, look clearer, or last longer on a shelf.</span>
+    </div>
+
+    <div style="background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;gap:16px">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;opacity:0.55">How it is used</span>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ steps }}" as="step" hint-placeholder-count="3">
+          <div style="display:flex;gap:18px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(58,52,44,0.12)">
+            <span style="flex:0 0 auto;font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;opacity:0.45">{{ step.n }}</span>
+            <span style="font-size:15px;line-height:1.58;opacity:0.78;text-wrap:pretty">{{ step.t }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:2;padding:clamp(40px,6vh,72px) clamp(24px,6vw,96px) clamp(56px,9vh,110px)">
+    <div style="background:rgba(249,246,239,0.86);backdrop-filter:blur(6px) saturate(0.92);-webkit-backdrop-filter:blur(6px) saturate(0.92);border:1px solid rgba(58,52,44,0.14);padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;gap:10px">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;opacity:0.55">From the shed</span>
+      <p style="margin:0;max-width:60ch;font-family:'Bodoni Moda', Georgia, serif;font-size:clamp(22px,2.6vw,32px);line-height:1.3;text-wrap:pretty">{{ quote }}</p>
+      <span style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.5;margin-top:6px">Marek, who fills every bottle</span>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:2;background:radial-gradient(110% 120% at 50% -20%,#2B2823 0%,#141312 60%,#0A0908 100%);padding:clamp(48px,8vh,96px) clamp(24px,6vw,96px) clamp(56px,9vh,104px);border-top:1px solid rgba(236,229,214,0.1)">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:clamp(28px,4vh,48px)">
+      <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(236,229,214,0.5)">The rest of the five</span>
+      <a href="Cedar%20Basin%20Hero.dc.html#index" style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(236,229,214,0.72)" style-hover="color:#FFFFFF">See the index →</a>
+    </div>
+    <div ref="{{ othersRef }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:clamp(14px,2vw,28px)">
+      <sc-for list="{{ others }}" as="o" hint-placeholder-count="0">
+        <a href="{{ o.href }}" onMouseEnter="{{ onOtherEnter }}" onMouseLeave="{{ onOtherLeave }}" style="display:flex;flex-direction:column;align-items:center;gap:0;padding:26px 12px 20px;border:1px solid rgba(236,229,214,0.12);background:linear-gradient(180deg,rgba(255,250,236,0.05),rgba(255,250,236,0));transition:border-color 240ms ease, background 240ms ease" style-hover="border-color:rgba(236,229,214,0.3);background:linear-gradient(180deg,rgba(255,250,236,0.1),rgba(255,250,236,0.02))">
+          <img src="assets/serum.png" data-other-img="1" alt="{{ o.name }}" style="display:block;height:96px;width:auto;position:relative;z-index:2;filter:drop-shadow(0 6px 8px rgba(0,0,0,0.55)) brightness(1.05);transition:transform 420ms cubic-bezier(.2,.7,.2,1)" />
+          <div style="position:relative;z-index:1;width:82px;height:24px;margin-top:-9px;filter:url(#cbRoughS)">
+            <div style="position:absolute;left:3px;right:3px;top:7px;height:14px;border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(180deg,#3A3B39 0%,#1E201E 46%,#0F100F 100%)"></div>
+            <div style="position:absolute;left:0;right:0;top:0;height:13px;border-radius:50%;background:radial-gradient(58% 132% at 50% 22%,#6E736D 0%,#464A45 46%,#23261F 100%)"></div>
+          </div>
+          <div style="width:100px;height:12px;border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0) 72%);filter:blur(3px);margin-top:2px"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:12px">
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.24em;color:rgba(233,226,211,0.6)">{{ o.num }}</span>
+            <span style="font-family:'Bodoni Moda', Georgia, serif;font-size:19px;color:rgba(244,239,227,0.92);white-space:nowrap">{{ o.name }}</span>
+            <span style="font-family:'DM Mono', ui-monospace, monospace;font-size:12px;color:rgba(236,229,214,0.5)">{{ o.price }}</span>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <footer style="position:relative;z-index:2;background:#0B0A09;border-top:1px solid rgba(236,229,214,0.12);padding:clamp(36px,5vw,58px) clamp(24px,6vw,96px) 24px;color:rgba(236,229,214,0.8)">
+    <div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'Bodoni Moda', Georgia, serif;font-weight:600;font-size:18px;letter-spacing:0.2em;text-transform:uppercase;color:#F2ECE0">CEDAR<span style="display:inline-block;width:1px;height:0.74em;background:#F2ECE0;opacity:0.42;margin:0 0.12em"></span>BASIN</span>
+        <span style="font-size:14px;line-height:1.6;color:rgba(236,229,214,0.55);max-width:26ch">Shed 4, Basin Road. Open Saturdays, or by knock.</span>
+      </div>
+      <div style="display:flex;gap:clamp(24px,4vw,54px);flex-wrap:wrap">
+        <a href="Cedar%20Basin%20Hero.dc.html#ritual" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">The ritual</a>
+        <a href="Cedar%20Basin%20Hero.dc.html#sourced" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">Sourcing</a>
+        <a href="Cedar%20Basin%20Hero.dc.html#index" style="font-size:14px;color:rgba(236,229,214,0.82)" style-hover="color:#FFFFFF">Refills &amp; returns</a>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:clamp(26px,4vw,44px);padding-top:16px;border-top:1px solid rgba(236,229,214,0.1);font-family:'DM Mono', ui-monospace, monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(236,229,214,0.38)">
+      <span>© 2026 Cedar Basin</span>
+      <span>Batch No. 14 · Pressed in the valley</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;product&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;serum&quot;,&quot;options&quot;:[&quot;serum&quot;,&quot;balm&quot;,&quot;cleanser&quot;,&quot;oil&quot;,&quot;tin&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Product&quot;}}">
+const CATALOG = {
+  serum: {
+    num: "01", name: "Basin Serum", size: "30 ml", price: "$42", refill: "$30", img: "assets/serum.png",
+    category: "Face · morning and night",
+    tagline: "Three drops, pressed in while the skin is still damp.",
+    story: "A thin, almost watery serum built on cold-pressed cedarwood and a low dose of basin salt. It disappears in about forty seconds and leaves nothing behind but the smell of the valley after rain.",
+    specs: [{ k: "Batch", v: "No. 14" }, { k: "Ingredients", v: "6" }, { k: "Shelf", v: "9 months" }],
+    notes: ["Wet cedar", "Cold mineral", "Green pepper"],
+    ingredients: [{ n: "Cedarwood distillate", p: "62%" }, { n: "Basin salt solution", p: "19%" }, { n: "Squalane, olive-derived", p: "12%" }, { n: "Sea buckthorn oil", p: "4%" }, { n: "Vitamin E", p: "2%" }, { n: "Rosemary extract", p: "1%" }],
+    steps: [{ n: "I", t: "Cleanse and leave the face wet. The serum needs the water to spread." }, { n: "II", t: "Three drops in the palm, pressed rather than rubbed into the skin." }, { n: "III", t: "Wait until it stops feeling like anything, then oil or balm on top." }],
+    quote: "The first version was too thick and men used too much of it, so we took things out until three drops was the honest dose."
+  },
+  balm: {
+    num: "02", name: "Resin Balm", size: "60 ml", price: "$34", refill: "$24", img: "assets/balm.png",
+    category: "Beard, knuckles, weather",
+    tagline: "For the edges that meet the wind first.",
+    story: "Thick, slow, faintly tacky for the first minute. Beeswax and cedar resin over an oil base, whipped cold so it stays soft in a cold bathroom and never goes greasy in a warm one.",
+    specs: [{ k: "Batch", v: "No. 14" }, { k: "Ingredients", v: "5" }, { k: "Shelf", v: "14 months" }],
+    notes: ["Pine resin", "Warm wax", "Dry smoke"],
+    ingredients: [{ n: "Cold-pressed sunflower oil", p: "48%" }, { n: "Beeswax, unbleached", p: "26%" }, { n: "Cedar resin", p: "16%" }, { n: "Shea butter", p: "8%" }, { n: "Vitamin E", p: "2%" }],
+    steps: [{ n: "I", t: "Warm a fingertip's worth between both palms until it turns clear." }, { n: "II", t: "Work into beard, knuckles, and the bridge of the nose." }, { n: "III", t: "Leave it. It sets matte in about two minutes." }],
+    quote: "We whip it cold for forty minutes. Warm-whipped balm looks nicer in the tin and behaves worse on the face."
+  },
+  cleanser: {
+    num: "03", name: "Ash Cleanser", size: "200 ml", price: "$28", refill: "$19", img: "assets/cleanser.png",
+    category: "Face and body · daily",
+    tagline: "Wet the basin, not the face.",
+    story: "A low-foam wash buffered with basin salt so it cleans without stripping. That buffering is the whole reason the line has no toner and never needed one.",
+    specs: [{ k: "Batch", v: "No. 14" }, { k: "Ingredients", v: "7" }, { k: "Shelf", v: "12 months" }],
+    notes: ["Wood ash", "Grey salt", "Cold water"],
+    ingredients: [{ n: "Filtered valley water", p: "58%" }, { n: "Coconut-derived surfactant", p: "18%" }, { n: "Basin salt solution", p: "12%" }, { n: "Birch ash lye, neutralised", p: "6%" }, { n: "Cedarwood oil", p: "3%" }, { n: "Glycerin", p: "2%" }, { n: "Rosemary extract", p: "1%" }],
+    steps: [{ n: "I", t: "Two pumps into cold standing water, never straight onto skin." }, { n: "II", t: "Work it in the palms first, then over the face in one pass." }, { n: "III", t: "Rinse once. Leave the skin damp for the serum." }],
+    quote: "It foams less than people expect and cleans more than they expect, and we have stopped apologising for the first part."
+  },
+  oil: {
+    num: "04", name: "Cold-Pressed Oil", size: "100 ml", price: "$46", refill: "$33", img: "assets/oil.png",
+    category: "Body · after the basin",
+    tagline: "Pressed cold, bottled the same week.",
+    story: "Two barrels of windfall cedar a year set the batch size, and this is where most of it goes. Heavier than the serum, meant for shoulders, forearms and shins in the dry months.",
+    specs: [{ k: "Batch", v: "No. 14" }, { k: "Ingredients", v: "5" }, { k: "Shelf", v: "10 months" }],
+    notes: ["Sap", "Toasted seed", "Cold air"],
+    ingredients: [{ n: "Cold-pressed cedar seed oil", p: "54%" }, { n: "Sunflower oil", p: "28%" }, { n: "Jojoba", p: "12%" }, { n: "Sea buckthorn oil", p: "4%" }, { n: "Vitamin E", p: "2%" }],
+    steps: [{ n: "I", t: "Four or five drops into still-damp skin straight out of the basin." }, { n: "II", t: "Shoulders and shins first, they take the most weather." }, { n: "III", t: "Give it a minute before a shirt goes on." }],
+    quote: "Cold pressing gives half the yield of the hot method. It also gives an oil that still smells like the tree it came out of."
+  },
+  tin: {
+    num: "05", name: "Pocket Salve", size: "15 g", price: "$18", refill: "$12", img: "assets/tin.png",
+    category: "Pocket · lips, cuticles, splits",
+    tagline: "The one that lives in a coat pocket.",
+    story: "The balm formula, harder set and poured into an aluminium tin that survives being sat on. It is the product people replace most often, and the cheapest to refill.",
+    specs: [{ k: "Batch", v: "No. 14" }, { k: "Ingredients", v: "4" }, { k: "Shelf", v: "18 months" }],
+    notes: ["Clean wax", "Faint cedar", "Nothing else"],
+    ingredients: [{ n: "Beeswax, unbleached", p: "42%" }, { n: "Cold-pressed sunflower oil", p: "38%" }, { n: "Shea butter", p: "16%" }, { n: "Cedarwood oil", p: "4%" }],
+    steps: [{ n: "I", t: "Thumbnail's worth, warmed on the fingertip." }, { n: "II", t: "Lips, cuticles, and any split that catches on wool." }, { n: "III", t: "Back in the pocket. It will not leak." }],
+    quote: "We tried a plastic pot for one batch. It cracked in a coat pocket in February and we went back to the tin."
+  }
+};
+const ORDER = ["serum", "balm", "cleanser", "oil", "tin"];
+
+class Component extends DCLogic {
+  state = { added: false };
+  heroImgRef = React.createRef();
+  othersRef = React.createRef();
+
+  get key() {
+    let k = null;
+    try { k = new URLSearchParams(window.location.search).get("p"); } catch (e) {}
+    if (!CATALOG[k]) {
+      try { k = decodeURIComponent((window.location.hash || "").replace(/^#/, "")); } catch (e) {}
+    }
+    if (!CATALOG[k] && CATALOG[this.props.product]) k = this.props.product;
+    if (!CATALOG[k]) {
+      try { k = window.localStorage.getItem("cb.product"); } catch (e) {}
+    }
+    if (!CATALOG[k]) k = "serum";
+    return k;
+  }
+
+  syncHeroImg() {
+    const el = this.heroImgRef && this.heroImgRef.current;
+    if (el) el.src = CATALOG[this.key].img;
+    const box = this.othersRef && this.othersRef.current;
+    if (box) {
+      const rest = ORDER.filter(x => x !== this.key);
+      Array.from(box.querySelectorAll("img[data-other-img]")).forEach((img, i) => {
+        const p = CATALOG[rest[i]];
+        if (p) { img.src = p.img; img.alt = p.name; }
+      });
+    }
+  }
+
+  onAdd = () => {
+    this.setState({ added: true });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ added: false }), 2200);
+  };
+
+  onOtherEnter = (e) => {
+    const img = e.currentTarget.querySelector("img");
+    if (img) img.style.transform = "translate3d(0,-8px,0)";
+  };
+
+  onOtherLeave = (e) => {
+    const img = e.currentTarget.querySelector("img");
+    if (img) img.style.transform = "none";
+  };
+
+  componentDidMount() {
+    this._onHash = () => {
+      try {
+        const k = decodeURIComponent((window.location.hash || "").replace(/^#/, ""));
+        if (CATALOG[k]) window.localStorage.setItem("cb.product", k);
+      } catch (e) {}
+      this.forceUpdate();
+    };
+    window.addEventListener("hashchange", this._onHash);
+    this.syncHeroImg();
+    try {
+      const k = this.key;
+      if (CATALOG[k]) window.localStorage.setItem("cb.product", k);
+    } catch (e) {}
+  }
+
+  componentDidUpdate() { this.syncHeroImg(); }
+
+  componentWillUnmount() {
+    clearTimeout(this._t);
+    window.removeEventListener("hashchange", this._onHash);
+  }
+
+  renderVals() {
+    const k = this.key;
+    const p = CATALOG[k];
+    return {
+      img: p.img, heroImgRef: this.heroImgRef, othersRef: this.othersRef, name: p.name, size: p.size, price: p.price, refillPrice: p.refill,
+      numLabel: p.num + " / 05", category: p.category, tagline: p.tagline, story: p.story,
+      specs: p.specs, notes: p.notes, ingredients: p.ingredients, steps: p.steps, quote: p.quote,
+      addLabel: this.state.added ? "In the basket" : "Add to basket",
+      onAdd: this.onAdd, onOtherEnter: this.onOtherEnter, onOtherLeave: this.onOtherLeave,
+      others: ORDER.filter(x => x !== k).map(x => ({
+        href: "Cedar%20Basin%20Product.dc.html?p=" + x + "#" + x,
+        img: CATALOG[x].img, name: CATALOG[x].name, num: CATALOG[x].num, price: CATALOG[x].price
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
