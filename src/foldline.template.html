@@ -2,8 +2,8 @@
 <html><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Foldline — a landing page team on tap for $299 a month</title>
-<meta name="description" content="Send a brief, get a designed landing page in 48 hours, revise until you're happy, and we build and publish it live. Unlimited requests, $299 a month, pause anytime.">
+<title>Suyash Web Studio — landing pages, designed and built</title>
+<meta name="description" content="I design and build landing pages that convert — hand-coded, responsive, delivered with the source files. Two live demos you can open, and fixed prices from $120.">
 <script src="912e2f4a-bdc2-4a32-b176-c8c46ab88e3c"></script>
 </head>
 <body>
@@ -268,6 +268,68 @@
     .fl-card-body { padding: 20px; }
   }
 
+  /* ───────── pricing tiers ───────── */
+  .fl-tier {
+    position: relative; display: flex; flex-direction: column; isolation: isolate;
+    border: 1px solid var(--fl-line); border-radius: 14px; padding: 34px 30px 30px;
+    background: rgba(245,241,232,.03);
+    transition: border-color .35s ease, transform .5s var(--fl-ease), box-shadow .5s var(--fl-ease);
+  }
+  .fl-tier:hover { transform: translateY(-6px); border-color: rgba(232,197,71,.38); }
+  .fl-tier[data-featured] {
+    border-color: rgba(232,197,71,.45);
+    background: linear-gradient(180deg, rgba(232,197,71,.1), rgba(232,197,71,.02));
+    box-shadow: 0 50px 100px -45px rgba(232,197,71,.35);
+  }
+  .fl-tier-flag {
+    position: absolute; top: -12px; left: 30px;
+    background: var(--gold,#E8C547); color: #0B0A09; border-radius: 999px; padding: 6px 12px;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .fl-tier-name { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold,#E8C547); }
+  .fl-tier-price {
+    font-family: 'Instrument Serif', Georgia, serif; font-size: 58px; line-height: 1;
+    margin: 16px 0 6px; font-variant-numeric: tabular-nums;
+  }
+  .fl-tier-meta { font-size: 13px; letter-spacing: .04em; color: rgba(245,241,232,.48); }
+  .fl-tier-copy { margin: 18px 0 24px; font-size: 15px; line-height: 1.6; color: var(--fl-mute); text-wrap: pretty; }
+  .fl-tier .fl-btn { justify-content: center; width: 100%; }
+  .fl-tier-list {
+    list-style: none; margin: 26px 0 0; padding: 24px 0 0;
+    border-top: 1px solid rgba(245,241,232,.1); display: grid; gap: 11px;
+  }
+  .fl-tier[data-featured] .fl-tier-list { border-top-color: rgba(232,197,71,.25); }
+  .fl-tier-list li {
+    position: relative; padding-left: 24px; font-size: 14.5px; line-height: 1.5; color: rgba(245,241,232,.8);
+  }
+  .fl-tier-list li::before {
+    content: "✓"; position: absolute; left: 0; top: 0; color: var(--gold,#E8C547); font-size: 13px;
+  }
+
+  /* ───────── enquiry form ───────── */
+  .fl-form { display: grid; gap: 12px; max-width: 560px; margin: 0 auto; text-align: left; }
+  .fl-input {
+    width: 100%; background: rgba(245,241,232,.05); border: 1px solid rgba(245,241,232,.2);
+    border-radius: 14px; padding: 17px 22px; font-size: 16px; color: #F5F1E8;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; outline: none;
+    transition: border-color .2s ease;
+  }
+  .fl-input:focus { border-color: var(--gold,#E8C547); }
+  .fl-textarea { resize: vertical; min-height: 92px; line-height: 1.55; }
+  .fl-submit {
+    background: var(--gold,#E8C547); color: #0B0A09; border: none; border-radius: 999px;
+    padding: 18px 32px; font-size: 16px; font-weight: 600; cursor: pointer;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    box-shadow: 0 18px 46px -18px rgba(232,197,71,.85); transition: background .18s ease;
+  }
+  .fl-submit:disabled { opacity: .6; cursor: progress; }
+  .fl-note {
+    max-width: 560px; margin: 16px auto 0; border-radius: 12px; padding: 16px 20px;
+    font-size: 14.5px; line-height: 1.6; text-align: left;
+    border: 1px solid rgba(245,241,232,.2); background: rgba(245,241,232,.04); color: var(--fl-mute);
+  }
+  .fl-note[data-bad] { border-color: rgba(232,120,71,.5); background: rgba(232,120,71,.09); color: #F0C9B4; }
+
   /* ───────── quick look (Popover API + view transitions) ───────── */
   .fl-ql {
     inset: 0; width: min(1180px, 94vw); height: min(84vh, 900px); margin: auto; padding: 0;
@@ -354,14 +416,14 @@
     <div data-pad="" data-tight="" style="max-width:1240px;margin:0 auto;padding:0 40px;height:76px;display:flex;align-items:center;justify-content:space-between;gap:32px">
       <a href="#top" style="display:flex;align-items:center;gap:11px">
         <span style="width:11px;height:11px;background:var(--gold,#E8C547);transform:rotate(45deg);display:inline-block"></span>
-        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:25px;letter-spacing:-.01em">Foldline</span>
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:25px;letter-spacing:-.01em">Suyash Web Studio</span>
       </a>
       <nav class="fl-navwrap" style="display:flex;align-items:center;gap:34px">
         <a class="fl-navlink" href="#work" style="font-size:14.5px;color:rgba(245,241,232,.66)">Work</a>
         <a class="fl-navlink" href="#how" style="font-size:14.5px;color:rgba(245,241,232,.66)">How it works</a>
         <a class="fl-navlink" href="#included" style="font-size:14.5px;color:rgba(245,241,232,.66)">What's included</a>
         <a class="fl-navlink" href="#pricing" style="font-size:14.5px;color:rgba(245,241,232,.66)">Pricing</a>
-        <a href="#start" style="background:var(--gold,#E8C547);color:#0B0A09;font-size:14.5px;font-weight:600;padding:12px 22px;border-radius:999px;box-shadow:0 0 0 1px rgba(232,197,71,.4),0 8px 30px -12px rgba(232,197,71,.6);transition:transform .18s ease" style-hover="background:var(--gold-deep,#C9A62F);color:#0B0A09;transform:translateY(-1px)">Claim a slot</a>
+        <a href="#start" style="background:var(--gold,#E8C547);color:#0B0A09;font-size:14.5px;font-weight:600;padding:12px 22px;border-radius:999px;box-shadow:0 0 0 1px rgba(232,197,71,.4),0 8px 30px -12px rgba(232,197,71,.6);transition:transform .18s ease" style-hover="background:var(--gold-deep,#C9A62F);color:#0B0A09;transform:translateY(-1px)">Start a project</a>
       </nav>
       <button class="fl-menu" type="button" aria-label="Open the menu">Menu</button>
     </div>
@@ -372,7 +434,7 @@
     <a href="#how">How it works</a>
     <a href="#included">What's included</a>
     <a href="#pricing">Pricing</a>
-    <a href="#start">Claim a slot</a>
+    <a href="#start">Start a project</a>
   </div>
 
   <section id="top" style="position:relative;overflow:hidden">
@@ -381,16 +443,16 @@
       <sc-if value="{{ showBadge }}" hint-placeholder-val="{{ true }}">
         <div style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(245,241,232,.16);background:rgba(245,241,232,.04);border-radius:999px;padding:8px 16px 8px 13px;margin-bottom:34px">
           <span style="width:6px;height:6px;border-radius:999px;background:var(--gold,#E8C547);animation:om-pulse 2s ease-in-out infinite"></span>
-          <span style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,241,232,.7)">3 client slots open · September</span>
+          <span style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,241,232,.7)">Open for new projects</span>
         </div>
       </sc-if>
-      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(50px,7vw,94px);line-height:.98;letter-spacing:-.025em;margin:0 0 28px;text-wrap:balance">A landing page team<br>on tap for <em style="font-style:italic;color:var(--gold,#E8C547)">$299 a month</em></h1>
-      <p style="font-size:20px;line-height:1.6;color:rgba(245,241,232,.68);margin:0 auto 40px;max-width:35em;text-wrap:pretty">Send a brief. Get a designed page back in 48 hours. Revise it until you're happy — then we build it and publish it live. Unlimited requests, one at a time, one flat monthly fee.</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(50px,7vw,94px);line-height:.98;letter-spacing:-.025em;margin:0 0 28px;text-wrap:balance">I design and build<br>landing pages that <em style="font-style:italic;color:var(--gold,#E8C547)">convert</em></h1>
+      <p style="font-size:20px;line-height:1.6;color:rgba(245,241,232,.68);margin:0 auto 40px;max-width:35em;text-wrap:pretty">Not a template with your logo dropped in. Every page is designed around your offer, hand-coded to load fast on any screen, and handed over with the source files.</p>
       <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin-bottom:20px">
-        <a href="#start" style="background:var(--gold,#E8C547);color:#0B0A09;font-size:16.5px;font-weight:600;padding:19px 34px;border-radius:999px;box-shadow:0 0 0 1px rgba(232,197,71,.45),0 20px 50px -20px rgba(232,197,71,.7);transition:transform .18s ease,background .18s ease" style-hover="background:var(--gold-deep,#C9A62F);color:#0B0A09;transform:translateY(-2px)">Claim a September slot</a>
+        <a href="#start" style="background:var(--gold,#E8C547);color:#0B0A09;font-size:16.5px;font-weight:600;padding:19px 34px;border-radius:999px;box-shadow:0 0 0 1px rgba(232,197,71,.45),0 20px 50px -20px rgba(232,197,71,.7);transition:transform .18s ease,background .18s ease" style-hover="background:var(--gold-deep,#C9A62F);color:#0B0A09;transform:translateY(-2px)">Start a project</a>
         <a href="#work" style="border:1px solid rgba(245,241,232,.22);color:#F5F1E8;font-size:16.5px;padding:18px 30px;border-radius:999px;transition:border-color .18s ease,background .18s ease" style-hover="border-color:rgba(245,241,232,.5);background:rgba(245,241,232,.04);color:#F5F1E8">See the work first</a>
       </div>
-      <p style="font-size:13px;letter-spacing:.05em;color:rgba(245,241,232,.42);margin:0 0 68px">Pause any month. Cancel anytime. Every file and account stays yours.</p>
+      <p style="font-size:13px;letter-spacing:.05em;color:rgba(245,241,232,.42);margin:0 0 68px">Fixed price agreed before I start. Source files always yours.</p>
     </div>
 
     <div style="position:relative;padding:0 0 84px">
@@ -423,9 +485,9 @@
 
   <section data-reveal="" style="border-top:1px solid rgba(245,241,232,.08);border-bottom:1px solid rgba(245,241,232,.08)">
     <div class="fl-stats" data-pad="">
-      <div><div class="fl-stat-n" style="color:var(--gold,#E8C547)"><span class="fl-count" data-count="48">48</span> hrs</div><div class="fl-stat-l">To your first draft</div></div>
-      <div><div class="fl-stat-n">Unlimited</div><div class="fl-stat-l">Requests &amp; revisions</div></div>
-      <div><div class="fl-stat-n">$<span class="fl-count" data-count="299">299</span></div><div class="fl-stat-l">Flat, per month</div></div>
+      <div><div class="fl-stat-n" style="color:var(--gold,#E8C547)"><span class="fl-count" data-count="3">3</span> days</div><div class="fl-stat-l">To your first draft</div></div>
+      <div><div class="fl-stat-n">Hand-coded</div><div class="fl-stat-l">No page builders</div></div>
+      <div><div class="fl-stat-n">$<span class="fl-count" data-count="120">120</span></div><div class="fl-stat-l">Projects start from</div></div>
       <div><div class="fl-stat-n"><span class="fl-count" data-count="2">2</span></div><div class="fl-stat-l">Live demos you can open</div></div>
     </div>
   </section>
@@ -433,41 +495,41 @@
   <section data-pad="" data-tight="" id="how" data-reveal="" style="max-width:1240px;margin:0 auto;padding:128px 40px">
     <div style="max-width:700px;margin-bottom:72px">
       <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">How it works</div>
-      <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(36px,4.4vw,58px);line-height:1.04;letter-spacing:-.02em;margin:0 0 20px">You write the brief. We do everything after it.</h2>
-      <p style="font-size:18.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0;max-width:33em">No design calls to sit through, no revision threads to chase, no developer to hire afterwards. One portal, one queue, one bill.</p>
+      <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(36px,4.4vw,58px);line-height:1.04;letter-spacing:-.02em;margin:0 0 20px">You describe the offer. I do everything after it.</h2>
+      <p style="font-size:18.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0;max-width:33em">No agency onboarding, no discovery deck, no separate developer to hire once the design is signed off. One person, start to finish.</p>
     </div>
     <div class="fl-g4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
       <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:32px;background:linear-gradient(180deg,rgba(245,241,232,.04),rgba(245,241,232,.01))">
         <div style="font-family:'Instrument Serif',Georgia,serif;font-size:42px;line-height:1;color:var(--gold,#E8C547)">01</div>
-        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">Brief it in ten minutes</h3>
-        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0">A short form in your portal: the offer, the audience, the proof you hold. A voice note works just as well.</p>
+        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">Tell me the offer</h3>
+        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0">What you sell, who buys it, and the proof you already hold. A voice note works just as well as a document.</p>
       </div>
       <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:32px;background:linear-gradient(180deg,rgba(245,241,232,.04),rgba(245,241,232,.01))">
         <div style="font-family:'Instrument Serif',Georgia,serif;font-size:42px;line-height:1;color:var(--gold,#E8C547)">02</div>
-        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">First draft in 48 hours</h3>
-        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0">A designed page, structured around your offer — not a template with your logo dropped in.</p>
+        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">First draft in 3 days</h3>
+        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0">A designed page built around your offer — not a template with your logo dropped into it.</p>
       </div>
       <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:32px;background:linear-gradient(180deg,rgba(245,241,232,.04),rgba(245,241,232,.01))">
         <div style="font-family:'Instrument Serif',Georgia,serif;font-size:42px;line-height:1;color:var(--gold,#E8C547)">03</div>
-        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">Comment until it's right</h3>
-        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0">Click any element and leave a note. Revisions come back same day, as many rounds as it takes.</p>
+        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">Comment until it&#39;s right</h3>
+        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0">Point at anything that is off and I revise it, usually the same day, within your package&#39;s rounds.</p>
       </div>
       <div style="border:1px solid rgba(232,197,71,.4);border-radius:10px;padding:32px;background:linear-gradient(180deg,rgba(232,197,71,.1),rgba(232,197,71,.02))">
         <div style="font-family:'Instrument Serif',Georgia,serif;font-size:42px;line-height:1;color:var(--gold,#E8C547)">04</div>
-        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">You approve, we publish</h3>
-        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.72);margin:0">We build the real page, wire the tracking and push it live on your domain. Nothing goes live before your yes.</p>
+        <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;margin:20px 0 11px">You approve, I hand over</h3>
+        <p style="font-size:15.5px;line-height:1.6;color:rgba(245,241,232,.72);margin:0">I build the real page, check it on a phone and hand you the files — deployed live too, on Complete and Studio.</p>
       </div>
     </div>
 
     <div style="margin-top:24px;border:1px solid rgba(245,241,232,.12);border-radius:12px;overflow:hidden;background:#131210">
       <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid rgba(245,241,232,.1);background:rgba(245,241,232,.03);flex-wrap:wrap">
-        <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,241,232,.44)">Your portal</span>
-        <span style="font-size:12.5px;color:rgba(245,241,232,.4);border:1px solid rgba(245,241,232,.12);border-radius:999px;padding:5px 14px">Request 07 — Spring offer page</span>
+        <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,241,232,.44)">How revisions work</span>
+        <span style="font-size:12.5px;color:rgba(245,241,232,.4);border:1px solid rgba(245,241,232,.12);border-radius:999px;padding:5px 14px">Draft 2 — spring offer page</span>
         <span style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold,#E8C547)"><span style="width:6px;height:6px;border-radius:999px;background:var(--gold,#E8C547);display:inline-block"></span>In review · draft 2</span>
       </div>
       <div class="fl-aside" style="display:grid;grid-template-columns:1fr 300px;min-height:340px">
-        <div style="background-image:repeating-linear-gradient(135deg,rgba(245,241,232,.05) 0 1px,transparent 1px 11px);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px">
-          <span style="font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,241,232,.4);line-height:1.9">Drop portal screenshot — page in review<br>1800 × 1000</span>
+        <div style="overflow:hidden">
+          <img src="assets/work/closebook.webp" width="1000" height="625" alt="A landing page draft under review" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center">
         </div>
         <div style="border-left:1px solid rgba(245,241,232,.1);padding:24px;display:flex;flex-direction:column;gap:16px">
           <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,241,232,.38)">Comments</span>
@@ -476,10 +538,10 @@
             <p style="margin:0;font-size:13.5px;line-height:1.55;color:rgba(245,241,232,.78)">Make the guarantee louder — it's the reason people buy.</p>
           </div>
           <div style="border:1px solid rgba(232,197,71,.3);background:rgba(232,197,71,.07);border-radius:8px;padding:14px">
-            <div style="font-size:12px;color:var(--gold,#E8C547);margin-bottom:7px">Foldline · 11:02</div>
+            <div style="font-size:12px;color:var(--gold,#E8C547);margin-bottom:7px">Suyash · 11:02</div>
             <p style="margin:0;font-size:13.5px;line-height:1.55;color:rgba(245,241,232,.8)">Moved it under the hero and set it in the accent. Draft 2 is up.</p>
           </div>
-          <button type="button" style="margin-top:auto;background:var(--gold,#E8C547);border:none;color:#0B0A09;border-radius:999px;padding:12px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">Approve &amp; publish</button>
+          <button type="button" style="margin-top:auto;background:var(--gold,#E8C547);border:none;color:#0B0A09;border-radius:999px;padding:12px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">Approve &amp; hand over</button>
         </div>
       </div>
     </div>
@@ -491,16 +553,16 @@
         <div>
           <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">What's included</div>
           <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.04;letter-spacing:-.02em;margin:0 0 20px">Everything between the brief and the live URL.</h2>
-          <p style="font-size:17.5px;line-height:1.62;color:rgba(245,241,232,.62);margin:0 0 28px;max-width:30em">Design, build, publish, and the files. If a step stands between your offer and a working page, it's in the subscription.</p>
-          <a href="#pricing" style="font-size:14.5px;border-bottom:1px solid var(--gold,#E8C547);padding-bottom:4px">See the one price →</a>
+          <p style="font-size:17.5px;line-height:1.62;color:rgba(245,241,232,.62);margin:0 0 28px;max-width:30em">Design, build, handover and the files. If a step stands between your offer and a working page, it is part of the job.</p>
+          <a href="#pricing" style="font-size:14.5px;border-bottom:1px solid var(--gold,#E8C547);padding-bottom:4px">See the packages →</a>
         </div>
         <div class="fl-g2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Page design</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">Structure, layout, type and imagery direction, desktop and mobile.</p></div>
-          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Copy polish</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">You give us the facts; we sharpen the headline, the proof and the CTA.</p></div>
+          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Copy polish</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">You give me the facts; I sharpen the headline, the proof and the CTA.</p></div>
           <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Built for real</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">Fast, responsive, accessible. Forms connected, tracking wired.</p></div>
-          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Published live</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">On your domain, after your approval. We handle the deploy.</p></div>
-          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Source files</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">Design files and code handed over. Yours to keep, edit or take elsewhere.</p></div>
-          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Ongoing edits</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">Live page needs a change? It's just another request in the queue.</p></div>
+          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Published live</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">On your domain, after your approval. I handle the deploy on Complete and Studio.</p></div>
+          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Source files</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">Design files and code handed over on every package. Yours to keep, edit or take elsewhere.</p></div>
+          <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:24px;background:rgba(245,241,232,.03)"><div style="color:var(--gold,#E8C547);font-size:18px;margin-bottom:10px">✓</div><h3 style="font-size:16.5px;font-weight:600;margin:0 0 7px">Edits after launch</h3><p style="margin:0;font-size:14.5px;line-height:1.55;color:rgba(245,241,232,.58)">Studio includes 30 days of small edits after the page goes live.</p></div>
         </div>
       </div>
     </div>
@@ -512,14 +574,14 @@
         <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">Who it's for</div>
         <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.04;letter-spacing:-.02em;margin:0">If a page has been on your list for a month, it's for you.</h2>
       </div>
-      <p style="font-size:15px;line-height:1.7;color:rgba(245,241,232,.5);margin:0;max-width:24em">One request at a time keeps the queue honest — you always know exactly what we're working on.</p>
+      <p style="font-size:15px;line-height:1.7;color:rgba(245,241,232,.5);margin:0;max-width:24em">One project at a time keeps the schedule honest — you always know exactly where yours stands.</p>
     </div>
     <div class="fl-g5" style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px">
       <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Solo founders</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">Shipping alone, no designer, no time to become one.</p></div>
       <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Startup marketers</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">Campaigns queued behind an engineering backlog.</p></div>
-      <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Agencies</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">White-label us and keep your margin on the retainer.</p></div>
-      <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Freelance devs</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">You can build anything; you'd rather not design it.</p></div>
-      <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Paid-ads brands</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">A fresh page per offer, per audience, every month.</p></div>
+      <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Agencies</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">White-label me and keep your margin on the build.</p></div>
+      <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Freelance devs</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">You can build anything; you would rather not design it.</p></div>
+      <div style="border:1px solid rgba(245,241,232,.12);border-radius:10px;padding:26px;background:rgba(245,241,232,.03)"><h3 style="font-size:16px;font-weight:600;margin:0 0 9px">Paid-ads brands</h3><p style="margin:0;font-size:14px;line-height:1.55;color:rgba(245,241,232,.56)">A fresh page per offer, per audience, per campaign.</p></div>
     </div>
   </section>
 
@@ -529,7 +591,7 @@
         <div style="max-width:640px">
           <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">Selected work</div>
           <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.04;letter-spacing:-.02em;margin:0 0 18px;text-wrap:balance">Two pages you can open right now.</h2>
-          <p style="font-size:17px;line-height:1.62;color:rgba(245,241,232,.62);margin:0;max-width:44em;text-wrap:pretty">Both are live in this repo, not mockups in a case-study PDF. Every preview below is the real page rendering in a frame — open it full screen, resize it, read the copy, view the source.</p>
+          <p style="font-size:17px;line-height:1.62;color:rgba(245,241,232,.62);margin:0;max-width:44em;text-wrap:pretty">Both are live, not mockups in a case-study PDF. Every preview below is the real page rendering in a frame — open it full screen, resize it, read the copy, view the source.</p>
         </div>
       </div>
 
@@ -615,43 +677,67 @@
 
   <sc-if value="{{ showPricing }}" hint-placeholder-val="{{ true }}">
   <section data-pad="" data-tight="" id="pricing" data-reveal="" style="max-width:1240px;margin:0 auto;padding:120px 40px">
-    <div style="text-align:center;max-width:640px;margin:0 auto 56px">
-      <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">Pricing</div>
-      <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(36px,4.4vw,58px);line-height:1.04;letter-spacing:-.02em;margin:0 0 18px">One plan. One price. No proposals.</h2>
-      <p style="font-size:17.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0">Less than three hours of a senior freelancer's time, for a month of unlimited requests.</p>
+    <div style="text-align:center;max-width:660px;margin:0 auto 56px">
+      <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">Packages</div>
+      <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(36px,4.4vw,58px);line-height:1.04;letter-spacing:-.02em;margin:0 0 18px;text-wrap:balance">Fixed price. Agreed before I start.</h2>
+      <p style="font-size:17.5px;line-height:1.6;color:rgba(245,241,232,.62);margin:0;text-wrap:pretty">Pick the package that matches the job. No proposals, no hourly billing, no scope creep on my side of the invoice.</p>
     </div>
-    <div class="fl-split" style="display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:stretch;max-width:1000px;margin:0 auto">
-      <div style="border:1px solid rgba(232,197,71,.45);border-radius:12px;padding:44px;background:linear-gradient(180deg,rgba(232,197,71,.1),rgba(232,197,71,.02));box-shadow:0 50px 100px -45px rgba(232,197,71,.35);position:relative">
-        <div style="position:absolute;top:-12px;left:44px;background:var(--gold,#E8C547);color:#0B0A09;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:999px">Membership</div>
-        <div style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold,#E8C547)">Foldline monthly</div>
-        <div style="display:flex;align-items:baseline;gap:10px;margin:20px 0 10px">
-          <span style="font-family:'Instrument Serif',Georgia,serif;font-size:76px;line-height:1">$299</span>
-          <span style="font-size:15px;color:rgba(245,241,232,.5)">per month</span>
-        </div>
-        <p style="font-size:16.5px;line-height:1.6;color:rgba(245,241,232,.7);margin:0 0 28px;max-width:32em">Unlimited landing page requests, one active at a time. Pause the month you don't need us — your slot is held for 30 days.</p>
-        <a href="#start" style="display:block;text-align:center;background:var(--gold,#E8C547);color:#0B0A09;border-radius:999px;padding:18px;font-size:16.5px;font-weight:600;box-shadow:0 18px 46px -18px rgba(232,197,71,.85)" style-hover="background:var(--gold-deep,#C9A62F);color:#0B0A09">Claim a September slot</a>
-        <div class="fl-g2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px;padding-top:28px;border-top:1px solid rgba(232,197,71,.25)">
-          <div style="display:flex;gap:11px;font-size:15px;color:rgba(245,241,232,.82)"><span style="color:var(--gold,#E8C547)">✓</span>48-hour first drafts</div>
-          <div style="display:flex;gap:11px;font-size:15px;color:rgba(245,241,232,.82)"><span style="color:var(--gold,#E8C547)">✓</span>Revisions until you're happy</div>
-          <div style="display:flex;gap:11px;font-size:15px;color:rgba(245,241,232,.82)"><span style="color:var(--gold,#E8C547)">✓</span>Built and published for you</div>
-          <div style="display:flex;gap:11px;font-size:15px;color:rgba(245,241,232,.82)"><span style="color:var(--gold,#E8C547)">✓</span>Source files handed over</div>
-          <div style="display:flex;gap:11px;font-size:15px;color:rgba(245,241,232,.82)"><span style="color:var(--gold,#E8C547)">✓</span>Edits to live pages included</div>
-          <div style="display:flex;gap:11px;font-size:15px;color:rgba(245,241,232,.82)"><span style="color:var(--gold,#E8C547)">✓</span>Cancel or pause anytime</div>
-        </div>
+
+    <div class="fl-g3 fl-tiers" data-stagger="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;max-width:1140px;margin:0 auto">
+
+      <div class="fl-tier">
+        <div class="fl-tier-name">Starter</div>
+        <div class="fl-tier-price">$<span class="fl-count" data-count="120">120</span></div>
+        <div class="fl-tier-meta">One page · 3-day delivery</div>
+        <p class="fl-tier-copy">A single landing page with up to five sections. Right for one offer, one audience, one call to action.</p>
+        <a class="fl-btn" href="#start">Start with Starter</a>
+        <ul class="fl-tier-list">
+          <li>One landing page, up to 5 sections</li>
+          <li>Designed around your offer</li>
+          <li>Mobile, tablet and desktop</li>
+          <li>2 rounds of revisions</li>
+          <li>Source files handed over</li>
+        </ul>
       </div>
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div style="border:1px solid rgba(245,241,232,.12);border-radius:12px;padding:30px;background:rgba(245,241,232,.03);flex:1">
-          <h3 style="font-size:19px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em">Compare it honestly</h3>
-          <div style="display:flex;justify-content:space-between;gap:12px;font-size:15px;color:rgba(245,241,232,.6);padding:11px 0;border-bottom:1px solid rgba(245,241,232,.1)"><span>Senior freelancer</span><span style="color:rgba(245,241,232,.82)">$2–5k per page</span></div>
-          <div style="display:flex;justify-content:space-between;gap:12px;font-size:15px;color:rgba(245,241,232,.6);padding:11px 0;border-bottom:1px solid rgba(245,241,232,.1)"><span>Agency retainer</span><span style="color:rgba(245,241,232,.82)">$6k+ per month</span></div>
-          <div style="display:flex;justify-content:space-between;gap:12px;font-size:15px;color:rgba(245,241,232,.6);padding:11px 0;border-bottom:1px solid rgba(245,241,232,.1)"><span>In-house designer</span><span style="color:rgba(245,241,232,.82)">$7k+ per month</span></div>
-          <div style="display:flex;justify-content:space-between;gap:12px;font-size:15px;padding:11px 0;color:var(--gold,#E8C547)"><span>Foldline</span><span style="font-weight:600">$299 per month</span></div>
-        </div>
-        <div style="border:1px solid rgba(245,241,232,.12);border-radius:12px;padding:30px;background:rgba(245,241,232,.03)">
-          <h3 style="font-size:19px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em">Pause, don't cancel</h3>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:rgba(245,241,232,.6)">Between launches? Pause billing and keep your slot for 30 days. No exit call, no retention offer, no contract to read.</p>
-        </div>
+
+      <div class="fl-tier" data-featured="">
+        <div class="fl-tier-flag">Most picked</div>
+        <div class="fl-tier-name">Complete</div>
+        <div class="fl-tier-price">$<span class="fl-count" data-count="260">260</span></div>
+        <div class="fl-tier-meta">One page · 5-day delivery</div>
+        <p class="fl-tier-copy">A full landing page with no section limit, custom scroll motion and the copy sharpened around your offer.</p>
+        <a class="fl-btn" data-primary="" href="#start">Start with Complete</a>
+        <ul class="fl-tier-list">
+          <li>Everything in Starter</li>
+          <li>No limit on sections</li>
+          <li>Custom scroll and hover motion</li>
+          <li>Headline and CTA copy polish</li>
+          <li>4 rounds of revisions</li>
+          <li>Deployed live for you</li>
+        </ul>
       </div>
+
+      <div class="fl-tier">
+        <div class="fl-tier-name">Studio</div>
+        <div class="fl-tier-price">$<span class="fl-count" data-count="520">520</span></div>
+        <div class="fl-tier-meta">Up to 3 pages · 8-day delivery</div>
+        <p class="fl-tier-copy">A small site rather than a single page — the Cedar Basin build in the work section is this package.</p>
+        <a class="fl-btn" href="#start">Start with Studio</a>
+        <ul class="fl-tier-list">
+          <li>Everything in Complete</li>
+          <li>Up to 3 pages, one design system</li>
+          <li>Art direction and image treatment</li>
+          <li>Unlimited revisions</li>
+          <li>Deployed live for you</li>
+          <li>30 days of small edits after launch</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="fl-work-foot" style="max-width:1140px;margin-left:auto;margin-right:auto">
+      <p><strong style="color:rgba(245,241,232,.72);font-weight:500">Something bigger, or not sure which fits?</strong> Send the details and I'll quote it before either of us commits. Prices are in USD and cover design, build and handover.</p>
+      <a class="fl-btn" href="#start">Ask for a quote<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11"></path><path d="M9.5 4l4 4-4 4"></path></svg></a>
     </div>
   </section>
   </sc-if>
@@ -661,32 +747,32 @@
       <div class="fl-split" style="display:grid;grid-template-columns:.72fr 1.28fr;gap:72px;align-items:start">
         <div>
           <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">Questions</div>
-          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(32px,3.6vw,48px);line-height:1.06;letter-spacing:-.02em;margin:0">The things people ask before their first brief.</h2>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(32px,3.6vw,48px);line-height:1.06;letter-spacing:-.02em;margin:0">The things people ask before they book.</h2>
         </div>
         <div>
           <details style="border-top:1px solid rgba(245,241,232,.12);padding:26px 0">
-            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">What does “one request at a time” mean?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
-            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">You can queue as many pages as you like, and we work through them one at a time so nothing sits half-finished. As soon as one is approved, the next starts — a typical month is three to five pages.</p>
+            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">Do I get a design, or a working page?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
+            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">A working page. I design it, you approve it, then I build the real thing in HTML and CSS — responsive, fast, and checked on a phone. You get the code and the design files either way. On Complete and Studio I also deploy it live for you.</p>
           </details>
           <details style="border-top:1px solid rgba(245,241,232,.12);padding:26px 0">
-            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">Do I get a design, or a working page?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
-            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">A working page. We design it, you approve it, then we build it and publish it live on your domain — forms connected, analytics wired, mobile checked. You also get the design files and the code.</p>
+            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">What do you need from me to start?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
+            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">What you sell, who buys it, and any proof you already have — testimonials, numbers, screenshots, logos. A voice note works as well as a document. If you have brand colours or fonts, send them; if you don't, I'll pick and show you why.</p>
           </details>
           <details style="border-top:1px solid rgba(245,241,232,.12);padding:26px 0">
             <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">What if I don't like the first draft?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
-            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">You comment and we revise — as many rounds as it takes, usually same day. Nothing is published until you press approve, and if it's still not right you can pause or cancel before the next month.</p>
+            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">You point at what's wrong and I revise it — 2 rounds on Starter, 4 on Complete, unlimited on Studio. Revisions usually come back the same day. Nothing gets marked delivered until you say it's right.</p>
           </details>
           <details style="border-top:1px solid rgba(245,241,232,.12);padding:26px 0">
             <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">Do you write the copy?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
-            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">You bring the substance — the offer, the proof, the objections you hear on calls. We shape it into the headline, the section order and the CTA. You'll never be handed a page full of lorem ipsum.</p>
+            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">You bring the substance — the offer, the proof, the objections you hear from buyers. On Complete and Studio I sharpen it into the headline, the section order and the CTA. You will never be handed a page full of lorem ipsum.</p>
           </details>
           <details style="border-top:1px solid rgba(245,241,232,.12);padding:26px 0">
-            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">Can agencies white-label this?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
-            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">Yes, and plenty do. We stay invisible: no branding on your deliverables, and you can invite clients into the portal under your own name.</p>
+            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">Is it WordPress, or a page builder?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
+            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">Neither. Pages are hand-written HTML and CSS, so there is no plugin to renew, no builder licence, and nothing to slow the page down. That means it will run anywhere — your host, Netlify, Vercel, GitHub Pages — and any developer can pick it up later.</p>
           </details>
-          <details style="border-top:1px solid rgba(245,241,232,.12);border-bottom:1px solid rgba(245,241,232,.12);padding:26px 0">
-            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">What happens to my pages if I cancel?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
-            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">They're yours and they stay live — the domain, the files and the code were always in your name. Cancel in the dashboard whenever you like; come back when the next page is due.</p>
+          <details style="border-top:1px solid rgba(245,241,232,.12);padding:26px 0">
+            <summary style="display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:19px;font-weight:500;letter-spacing:-.01em">Who owns the work when it's done?<span style="color:var(--gold,#E8C547);font-size:22px">+</span></summary>
+            <p style="font-size:16.5px;line-height:1.65;color:rgba(245,241,232,.64);margin:16px 0 0;max-width:52em">You do, completely. The code, the design files and the domain are yours from the moment the project is delivered. There is nothing to keep paying me for, and nothing locked to my account.</p>
           </details>
         </div>
       </div>
@@ -696,47 +782,59 @@
   <section id="start" data-reveal="" style="position:relative;overflow:hidden;border-top:1px solid rgba(245,241,232,.08)">
     <div style="position:absolute;bottom:-420px;left:50%;transform:translateX(-50%);width:1100px;height:820px;background:radial-gradient(circle at 50% 50%, rgba(232,197,71,.16), rgba(232,197,71,0) 62%);pointer-events:none"></div>
     <div data-pad="" data-tight="" style="position:relative;max-width:880px;margin:0 auto;padding:128px 40px;text-align:center">
-      <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(40px,5.4vw,72px);line-height:1.02;letter-spacing:-.022em;margin:0 0 22px;text-wrap:balance">Brief us tonight. See it Thursday.</h2>
-      <p style="font-size:19px;line-height:1.6;color:rgba(245,241,232,.66);margin:0 auto 40px;max-width:31em">Three slots open for September. Leave your email and we'll send the brief form plus two times for a 15-minute intro call.</p>
-      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
-        <form sc-camel-on-submit="{{ submit }}" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:560px;margin:0 auto">
-          <input type="email" required="" placeholder="you@company.com" style="flex:1;min-width:260px;background:rgba(245,241,232,.05);border:1px solid rgba(245,241,232,.2);border-radius:999px;padding:18px 24px;font-size:16px;color:#F5F1E8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;outline:none" style-focus="border-color:var(--gold,#E8C547)">
-          <button type="submit" style="background:var(--gold,#E8C547);color:#0B0A09;border:none;border-radius:999px;padding:18px 32px;font-size:16px;font-weight:600;cursor:pointer;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-shadow:0 18px 46px -18px rgba(232,197,71,.85);transition:background .18s ease" style-hover="background:var(--gold-deep,#C9A62F)">Claim a slot</button>
+      <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(40px,5.4vw,72px);line-height:1.02;letter-spacing:-.022em;margin:0 0 22px;text-wrap:balance">Tell me about the page.</h2>
+      <p style="font-size:19px;line-height:1.6;color:rgba(245,241,232,.66);margin:0 auto 40px;max-width:33em;text-wrap:pretty">What you sell, who buys it, and when you need it live. I'll reply with a fixed price and a delivery date — usually the same day.</p>
+
+      <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ true }}">
+        <form class="fl-form" sc-camel-on-submit="{{ submit }}">
+          <input class="fl-input" type="email" name="email" required="" placeholder="you@company.com" autocomplete="email" style-focus="border-color:var(--gold,#E8C547)">
+          <textarea class="fl-input fl-textarea" name="project" rows="3" placeholder="What's the page for? Any deadline or link to your current site." style-focus="border-color:var(--gold,#E8C547)"></textarea>
+          <button class="fl-submit" type="submit" style-hover="background:var(--gold-deep,#C9A62F)">{{ submitLabel }}</button>
         </form>
       </sc-if>
-      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+
+      <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+        <div class="fl-note" data-bad="">{{ errorMessage }}</div>
+      </sc-if>
+
+      <sc-if value="{{ formDone }}" hint-placeholder-val="{{ false }}">
         <div style="max-width:520px;margin:0 auto;border:1px solid rgba(232,197,71,.4);background:rgba(232,197,71,.07);border-radius:12px;padding:32px">
-          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;line-height:1.15;margin-bottom:10px">Slot held for 24 hours.</div>
-          <p style="margin:0;font-size:16px;line-height:1.6;color:rgba(245,241,232,.68)">Check your inbox for the brief form and two call times. Reply with your current page and we'll review it before we talk.</p>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;line-height:1.15;margin-bottom:10px">Got it — thank you.</div>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:rgba(245,241,232,.68)">Your message is with me. I'll come back with a fixed price and a delivery date, usually within a few hours.</p>
         </div>
       </sc-if>
-      <p style="font-size:13px;letter-spacing:.05em;color:rgba(245,241,232,.42);margin:22px 0 0">Pause any month · Cancel anytime · Every file and account stays yours</p>
+
+      <p style="font-size:13px;letter-spacing:.05em;color:rgba(245,241,232,.42);margin:22px 0 0">No obligation · Fixed price before I start · Source files always yours</p>
     </div>
   </section>
 
   <footer style="border-top:1px solid rgba(245,241,232,.08)">
     <div data-pad="" data-tight="" style="max-width:1240px;margin:0 auto;padding:44px 40px 64px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
-      <span style="display:flex;align-items:center;gap:10px;font-family:'Instrument Serif',Georgia,serif;font-size:21px"><span style="width:9px;height:9px;background:var(--gold,#E8C547);transform:rotate(45deg);display:inline-block"></span>Foldline</span>
+      <span style="display:flex;align-items:center;gap:10px;font-family:'Instrument Serif',Georgia,serif;font-size:21px"><span style="width:9px;height:9px;background:var(--gold,#E8C547);transform:rotate(45deg);display:inline-block"></span>Suyash Web Studio</span>
       <div style="display:flex;gap:28px;font-size:14px">
         <a href="#work" style="color:rgba(245,241,232,.6)">Work</a>
         <a href="#how" style="color:rgba(245,241,232,.6)">How it works</a>
         <a href="#pricing" style="color:rgba(245,241,232,.6)">Pricing</a>
-        <a href="#start" style="color:rgba(245,241,232,.6)">Claim a slot</a>
+        <a href="#start" style="color:rgba(245,241,232,.6)">Start a project</a>
       </div>
-      <span style="font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,241,232,.34)">© 2026 Foldline</span>
+      <span style="font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,241,232,.34)">© 2026 Suyash Web Studio</span>
     </div>
   </footer>
 
   <div data-pad="" data-tight="" data-stickycta="" style="position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(14,13,11,.92);backdrop-filter:blur(16px);border-top:1px solid rgba(245,241,232,.12);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;transform:translateY(120%);opacity:0;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .35s ease">
-    <span style="font-size:15.5px;color:rgba(245,241,232,.72)"><strong style="font-weight:600;color:#F5F1E8">$299/month, unlimited requests.</strong> Three slots open for September.</span>
-    <a href="#start" style="background:var(--gold,#E8C547);color:#0B0A09;font-size:15px;font-weight:600;padding:12px 24px;border-radius:999px" style-hover="background:var(--gold-deep,#C9A62F);color:#0B0A09">Claim a slot</a>
+    <span style="font-size:15.5px;color:rgba(245,241,232,.72)"><strong style="font-weight:600;color:#F5F1E8">Landing pages from $120.</strong> First draft in three days.</span>
+    <a href="#start" style="background:var(--gold,#E8C547);color:#0B0A09;font-size:15px;font-weight:600;padding:12px 24px;border-radius:999px" style-hover="background:var(--gold-deep,#C9A62F);color:#0B0A09">Start a project</a>
   </div>
 </div>
 
 </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E8C547&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#E8C547&quot;,&quot;#E8481F&quot;,&quot;#5B8CFF&quot;,&quot;#3DDC97&quot;],&quot;section&quot;:&quot;Look&quot;},&quot;showBadge&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conversion&quot;},&quot;showPricing&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conversion&quot;}}">
 class Component extends DCLogic {
-  state = { submitted: false };
+  // ⚠ Paste your Formspree endpoint here (https://formspree.io/f/xxxxxxxx).
+  //   Until you do, the form shows an error instead of silently losing enquiries.
+  static FORM_ENDPOINT = 'https://formspree.io/f/PASTE_YOUR_FORM_ID';
+
+  state = { submitted: false, sending: false, error: null };
 
   componentDidMount() {
     this.applyAccent();
@@ -900,15 +998,52 @@ class Component extends DCLogic {
   }
 
   renderVals() {
+    const st = this.state;
     return {
       showBadge: this.props.showBadge ?? true,
       showPricing: this.props.showPricing ?? true,
-      submitted: this.state.submitted,
-      notSubmitted: !this.state.submitted,
-      submit: (e) => { e.preventDefault(); this.setState({ submitted: true }); }
+      formOpen: !st.submitted,
+      formDone: st.submitted,
+      formError: !!st.error,
+      errorMessage: st.error || '',
+      submitLabel: st.sending ? 'Sending…' : 'Send it over',
+      submit: (e) => this.sendEnquiry(e)
     };
   }
+
+  // Static hosting has no backend, so the form posts to Formspree, which
+  // emails each enquiry. Until FORM_ENDPOINT is set the form refuses to
+  // pretend it worked — a silent no-op would lose real leads.
+  async sendEnquiry(e) {
+    e.preventDefault();
+    if (this.state.sending) return;
+
+    const form = e.target;
+    if (!Component.FORM_ENDPOINT || Component.FORM_ENDPOINT.includes('PASTE_YOUR')) {
+      this.setState({
+        error: 'This form is not connected yet. Create a free form at formspree.io and put its endpoint in FORM_ENDPOINT (src/foldline.template.html) — until then nothing is delivered.'
+      });
+      return;
+    }
+
+    this.setState({ sending: true, error: null });
+    try {
+      const res = await fetch(Component.FORM_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      this.setState({ sending: false, submitted: true, error: null });
+    } catch (err) {
+      this.setState({
+        sending: false,
+        error: 'That did not send (' + err.message + '). Email me directly and I will pick it up from there.'
+      });
+    }
+  }
 }
+
 </script>
 
 
