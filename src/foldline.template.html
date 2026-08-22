@@ -306,6 +306,28 @@
     content: "✓"; position: absolute; left: 0; top: 0; color: var(--gold,#E8C547); font-size: 13px;
   }
 
+  /* ───────── one-tap package chips ───────── */
+  .fl-chips { display: flex; flex-wrap: wrap; gap: 9px; padding: 2px 4px; }
+  /* Kept focusable and in the a11y tree; only visually replaced by the label. */
+  .fl-chip-in {
+    position: absolute; width: 1px; height: 1px; margin: -1px;
+    padding: 0; border: 0; overflow: hidden; clip-path: inset(50%);
+  }
+  .fl-chip {
+    cursor: pointer; user-select: none;
+    border: 1px solid rgba(245,241,232,.2); border-radius: 999px;
+    padding: 10px 18px; font-size: 14.5px; color: rgba(245,241,232,.72);
+    transition: border-color .18s ease, background .18s ease, color .18s ease;
+  }
+  .fl-chip:hover { border-color: rgba(245,241,232,.45); color: var(--fl-ink); }
+  .fl-chip-in:checked + .fl-chip {
+    background: var(--gold,#E8C547); border-color: transparent; color: #0B0A09; font-weight: 600;
+  }
+  .fl-chip-in:focus-visible + .fl-chip { outline: 2px solid var(--gold,#E8C547); outline-offset: 3px; }
+
+  /* Spam trap — real people never see it, bots fill it in. */
+  .fl-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
   /* ───────── enquiry form ───────── */
   .fl-form { display: grid; gap: 12px; max-width: 560px; margin: 0 auto; text-align: left; }
   .fl-input {
@@ -384,6 +406,8 @@
     .fl-stat-n { font-size: 29px; }
     .fl-actions { flex-direction: column; align-items: stretch; }
     .fl-btn { justify-content: center; }
+    /* Keep the package chips at a comfortable touch target. */
+    .fl-chip { padding: 13px 20px; }
   }
 
   /* compact nav trigger, shown only on small screens */
@@ -690,7 +714,7 @@
         <div class="fl-tier-price">$<span class="fl-count" data-count="120">120</span></div>
         <div class="fl-tier-meta">One page · 3-day delivery</div>
         <p class="fl-tier-copy">A single landing page with up to five sections. Right for one offer, one audience, one call to action.</p>
-        <a class="fl-btn" href="#start">Start with Starter</a>
+        <a class="fl-btn" href="#start" data-pick="pk-starter">Start with Starter</a>
         <ul class="fl-tier-list">
           <li>One landing page, up to 5 sections</li>
           <li>Designed around your offer</li>
@@ -706,7 +730,7 @@
         <div class="fl-tier-price">$<span class="fl-count" data-count="260">260</span></div>
         <div class="fl-tier-meta">One page · 5-day delivery</div>
         <p class="fl-tier-copy">A full landing page with no section limit, custom scroll motion and the copy sharpened around your offer.</p>
-        <a class="fl-btn" data-primary="" href="#start">Start with Complete</a>
+        <a class="fl-btn" data-primary="" href="#start" data-pick="pk-complete">Start with Complete</a>
         <ul class="fl-tier-list">
           <li>Everything in Starter</li>
           <li>No limit on sections</li>
@@ -722,7 +746,7 @@
         <div class="fl-tier-price">$<span class="fl-count" data-count="520">520</span></div>
         <div class="fl-tier-meta">Up to 3 pages · 8-day delivery</div>
         <p class="fl-tier-copy">A small site rather than a single page — the Cedar Basin build in the work section is this package.</p>
-        <a class="fl-btn" href="#start">Start with Studio</a>
+        <a class="fl-btn" href="#start" data-pick="pk-studio">Start with Studio</a>
         <ul class="fl-tier-list">
           <li>Everything in Complete</li>
           <li>Up to 3 pages, one design system</li>
@@ -737,7 +761,7 @@
 
     <div class="fl-work-foot" style="max-width:1140px;margin-left:auto;margin-right:auto">
       <p><strong style="color:rgba(245,241,232,.72);font-weight:500">Something bigger, or not sure which fits?</strong> Send the details and I'll quote it before either of us commits. Prices are in USD and cover design, build and handover.</p>
-      <a class="fl-btn" href="#start">Ask for a quote<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11"></path><path d="M9.5 4l4 4-4 4"></path></svg></a>
+      <a class="fl-btn" href="#start" data-pick="pk-unsure">Ask for a quote<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11"></path><path d="M9.5 4l4 4-4 4"></path></svg></a>
     </div>
   </section>
   </sc-if>
@@ -783,13 +807,32 @@
     <div style="position:absolute;bottom:-420px;left:50%;transform:translateX(-50%);width:1100px;height:820px;background:radial-gradient(circle at 50% 50%, rgba(232,197,71,.16), rgba(232,197,71,0) 62%);pointer-events:none"></div>
     <div data-pad="" data-tight="" style="position:relative;max-width:880px;margin:0 auto;padding:128px 40px;text-align:center">
       <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(40px,5.4vw,72px);line-height:1.02;letter-spacing:-.022em;margin:0 0 22px;text-wrap:balance">Tell me about the page.</h2>
-      <p style="font-size:19px;line-height:1.6;color:rgba(245,241,232,.66);margin:0 auto 40px;max-width:33em;text-wrap:pretty">What you sell, who buys it, and when you need it live. I'll reply with a fixed price and a delivery date — usually the same day.</p>
+      <p style="font-size:19px;line-height:1.6;color:rgba(245,241,232,.66);margin:0 auto 40px;max-width:33em;text-wrap:pretty">Three taps and you're done. I'll reply with a fixed price and a delivery date, usually the same day.</p>
 
       <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ true }}">
         <form class="fl-form" sc-camel-on-submit="{{ submit }}">
-          <input class="fl-input" type="email" name="email" required="" placeholder="you@company.com" autocomplete="email" style-focus="border-color:var(--gold,#E8C547)">
-          <textarea class="fl-input fl-textarea" name="project" rows="3" placeholder="What's the page for? Any deadline or link to your current site." style-focus="border-color:var(--gold,#E8C547)"></textarea>
+          <input class="fl-input" type="email" name="email" required="required" placeholder="Your email" autocomplete="email" style-focus="border-color:var(--gold,#E8C547)">
+
+          <div class="fl-chips" role="radiogroup" aria-label="Which package are you after?">
+            <input class="fl-chip-in" type="radio" id="pk-starter" name="package" value="Starter ($120)">
+            <label class="fl-chip" for="pk-starter">Starter</label>
+            <input class="fl-chip-in" type="radio" id="pk-complete" name="package" value="Complete ($260)">
+            <label class="fl-chip" for="pk-complete">Complete</label>
+            <input class="fl-chip-in" type="radio" id="pk-studio" name="package" value="Studio ($520)">
+            <label class="fl-chip" for="pk-studio">Studio</label>
+            <input class="fl-chip-in" type="radio" id="pk-unsure" name="package" value="Not sure yet">
+            <label class="fl-chip" for="pk-unsure">Not sure yet</label>
+          </div>
+
+          <textarea class="fl-input fl-textarea" name="about" rows="2" placeholder="One line on what the page is for (optional)" style-focus="border-color:var(--gold,#E8C547)"></textarea>
+
           <button class="fl-submit" type="submit" style-hover="background:var(--gold-deep,#C9A62F)">{{ submitLabel }}</button>
+
+          <input type="hidden" name="_subject" value="New enquiry — Suyash Web Studio">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_autoresponse" value="Thanks for getting in touch with Suyash Web Studio. I've got your message and I'll come back with a fixed price and a delivery date, usually within a few hours.">
+          <input class="fl-honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
         </form>
       </sc-if>
 
@@ -830,9 +873,6 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E8C547&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#E8C547&quot;,&quot;#E8481F&quot;,&quot;#5B8CFF&quot;,&quot;#3DDC97&quot;],&quot;section&quot;:&quot;Look&quot;},&quot;showBadge&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conversion&quot;},&quot;showPricing&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conversion&quot;}}">
 class Component extends DCLogic {
-  // ⚠ Paste your Formspree endpoint here (https://formspree.io/f/xxxxxxxx).
-  //   Until you do, the form shows an error instead of silently losing enquiries.
-  static FORM_ENDPOINT = 'https://formspree.io/f/PASTE_YOUR_FORM_ID';
 
   state = { submitted: false, sending: false, error: null };
 
@@ -958,6 +998,18 @@ class Component extends DCLogic {
       sections.forEach((s) => this.spy.observe(s));
     }
 
+    // ── package chips ────────────────────────────────────────────────────
+    // `checked` is left out of the markup on purpose: the runtime would turn
+    // it into a controlled React prop with no onChange and freeze the radios.
+    const pick = (id) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = true;
+    };
+    pick('pk-unsure');
+    document.querySelectorAll('[data-pick]').forEach((cta) => {
+      on(cta, 'click', () => pick(cta.getAttribute('data-pick')));
+    });
+
     // ── count-up on first view ───────────────────────────────────────────
     const nums = [...document.querySelectorAll('[data-count]')];
     if (nums.length && !reduced && 'IntersectionObserver' in window) {
@@ -1011,18 +1063,19 @@ class Component extends DCLogic {
     };
   }
 
-  // Static hosting has no backend, so the form posts to Formspree, which
-  // emails each enquiry. Until FORM_ENDPOINT is set the form refuses to
-  // pretend it worked — a silent no-op would lose real leads.
+  // Static hosting has no backend. FormSubmit forwards each submission to the
+  // studio inbox; the address lives in the endpoint, so there is no account or
+  // API key to keep in sync. Swap in the alias endpoint FormSubmit shows after
+  // activation if you would rather the address were not in the page source.
+  static FORM_ENDPOINT = 'https://formsubmit.co/ajax/suyashsingh2711@gmail.com';
+
   async sendEnquiry(e) {
     e.preventDefault();
     if (this.state.sending) return;
 
     const form = e.target;
     if (!Component.FORM_ENDPOINT || Component.FORM_ENDPOINT.includes('PASTE_YOUR')) {
-      this.setState({
-        error: 'This form is not connected yet. Create a free form at formspree.io and put its endpoint in FORM_ENDPOINT (src/foldline.template.html) — until then nothing is delivered.'
-      });
+      this.setState({ error: 'This form is not connected yet — set FORM_ENDPOINT in src/foldline.template.html.' });
       return;
     }
 
@@ -1033,12 +1086,28 @@ class Component extends DCLogic {
         body: new FormData(form),
         headers: { Accept: 'application/json' }
       });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      // FormSubmit answers 200 even when it refuses the submission (unactivated
+      // form, bad origin, spam block), so the status code alone would report a
+      // delivery that never happened. Trust the payload's own success flag.
+      if ('success' in data && String(data.success) !== 'true') {
+        const pending = /activat/i.test(String(data.message || ''));
+        this.setState({
+          sending: false,
+          error: pending
+            ? 'This inbox is not confirmed yet, so that did not reach me. Please try again shortly.'
+            : 'That did not send. Email me directly at suyashsingh2711@gmail.com and I will pick it up from there.'
+        });
+        return;
+      }
+
       this.setState({ sending: false, submitted: true, error: null });
     } catch (err) {
       this.setState({
         sending: false,
-        error: 'That did not send (' + err.message + '). Email me directly and I will pick it up from there.'
+        error: 'That did not send (' + err.message + '). Email me directly at suyashsingh2711@gmail.com and I will pick it up from there.'
       });
     }
   }
