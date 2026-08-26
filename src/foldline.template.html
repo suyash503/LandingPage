@@ -181,7 +181,7 @@
   .fl-sheet a:last-of-type { border-bottom: 0; }
 
   /* ───────── work cards ───────── */
-  .fl-work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .fl-work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
 
   .fl-card {
     container-type: inline-size;
@@ -619,8 +619,8 @@
       <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-bottom:52px">
         <div style="max-width:640px">
           <div style="font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold,#E8C547);margin-bottom:22px">Selected work</div>
-          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.04;letter-spacing:-.02em;margin:0 0 18px;text-wrap:balance">Three pages you can open right now.</h2>
-          <p style="font-size:17px;line-height:1.62;color:rgba(245,241,232,.62);margin:0;max-width:44em;text-wrap:pretty">All three are live, not mockups in a case-study PDF. Hit <em style="font-style:normal;color:var(--gold,#E8C547)">Load live preview</em> and the real page renders right there in the card — or open it full screen, resize it, read the copy, view the source.</p>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.04;letter-spacing:-.02em;margin:0 0 18px;text-wrap:balance">Four pages you can open right now.</h2>
+          <p style="font-size:17px;line-height:1.62;color:rgba(245,241,232,.62);margin:0;max-width:44em;text-wrap:pretty">All four are live, not mockups in a case-study PDF. Hit <em style="font-style:normal;color:var(--gold,#E8C547)">Load live preview</em> and the real page renders right there in the card — or open it full screen, resize it, read the copy, view the source.</p>
         </div>
       </div>
 
@@ -705,10 +705,36 @@
           </div>
         </article>
 
+        <article class="fl-card" data-tilt="">
+          <div class="fl-stage">
+            <img class="fl-shot" src="assets/work/northgate.webp" width="1000" height="625" alt="Northgate Roofing landing page — a photographic hero with a three-question roof quote estimator" loading="lazy" decoding="async">
+            <iframe class="fl-live" data-src="4/northgate.html" title="Northgate Roofing, live preview" loading="lazy" tabindex="-1" aria-hidden="true" scrolling="no"></iframe>
+            <button class="fl-badge" type="button" data-loadlive=""><i></i><span class="fl-badge-t">Load live preview</span></button>
+          </div>
+          <div class="fl-card-body">
+            <div class="fl-card-head">
+              <h3 class="fl-card-title">Northgate Roofing</h3>
+              <span class="fl-card-kind">Local service · Paid ads</span>
+            </div>
+            <p class="fl-card-copy">A page built to convert cold traffic rather than to be browsed: no nav, one offer, and a three-question estimator that prices a roof from real arithmetic before anyone picks up a phone. The cost table underneath runs the same maths, and a hand-drawn cut-away shows what the price is actually buying.</p>
+            <div class="fl-tags">
+              <span class="fl-tag">Lead generation</span>
+              <span class="fl-tag">Interactive pricing</span>
+              <span class="fl-tag">SVG illustration</span>
+              <span class="fl-tag">Mobile-first</span>
+              <span class="fl-tag">Responsive</span>
+            </div>
+            <div class="fl-actions">
+              <a class="fl-btn" data-primary="" href="4/northgate.html" target="_blank" rel="noopener">Open live<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7"></path><path d="M13 3 3.5 12.5"></path></svg></a>
+              <button class="fl-btn" type="button" data-quicklook="ql-northgate">Quick look</button>
+            </div>
+          </div>
+        </article>
+
       </div>
 
       <div class="fl-work-foot">
-        <p>All three are concept builds made to show range — the brands are invented, the craft is not. Client work is shared privately on request.</p>
+        <p>All four are concept builds made to show range — the brands are invented, the craft is not. Client work is shared privately on request.</p>
         <a class="fl-btn" data-primary="" href="#start">Brief a page like these<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11"></path><path d="M9.5 4l4 4-4 4"></path></svg></a>
       </div>
     </div>
@@ -728,6 +754,14 @@
       <button class="fl-ql-close" type="button" data-qlclose="">Close</button>
     </div>
     <iframe class="fl-ql-frame" data-src="3/ai-saas-landing.html" title="Throughline, full preview"></iframe>
+  </div>
+
+  <div class="fl-ql" id="ql-northgate" popover="auto">
+    <div class="fl-ql-bar">
+      <span class="fl-ql-name"><span class="fl-ql-dots"><span></span><span></span><span></span></span>Northgate Roofing — a real price range in 60 seconds</span>
+      <button class="fl-ql-close" type="button" data-qlclose="">Close</button>
+    </div>
+    <iframe class="fl-ql-frame" data-src="4/northgate.html" title="Northgate Roofing, full preview"></iframe>
   </div>
 
   <div class="fl-ql" id="ql-cedar" popover="auto">

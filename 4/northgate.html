@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northgate Roofing — a real price range in 60 seconds</title>
+<meta name="description" content="Answer three questions and get a written roof quote range for your house — asphalt, metal, flat or cedar. Free inspection, insurance paperwork handled, 25-year workmanship warranty. Concept build.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------------------
+   Northgate Roofing — concept landing page.
+   Palette + pattern sourced from ui-ux-pro-max (Trust & Authority + Conversion,
+   Corporate Trust type pairing). Accent #EA580C carries ink-coloured text, not
+   white — white on this orange is 3.3:1 and fails AA.
+   --------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body, h1, h2, h3, h4, p, ul, ol, li, figure, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+img, svg { display: block; max-width: 100%; }
+button, input, select { font: inherit; color: inherit; }
+
+:root {
+  --ink:        #0F1B2D;
+  --navy:       #16324F;
+  --accent:     #EA580C;
+  --accent-dk:  #C2410C;
+  --bg:         #F7F5F2;
+  --card:       #FFFFFF;
+  --line:       #E4DED6;
+  --line-strong:#CFC7BC;
+  --muted:      #55606F;
+  --good:       #17673F;
+  --sans:       'Source Sans 3', system-ui, -apple-system, Segoe UI, sans-serif;
+  --display:    'Lexend', system-ui, -apple-system, Segoe UI, sans-serif;
+  --wrap:       1180px;
+  --r:          12px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .num { font-family: var(--display); letter-spacing: -0.02em; line-height: 1.1; font-weight: 600; }
+
+a { color: inherit; }
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: 24px; }
+.eyebrow {
+  font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent-dk);
+}
+.note {
+  font-size: 12.5px; color: var(--muted); letter-spacing: .01em;
+}
+
+/* --- buttons --------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: 52px; padding: 0 26px;
+  border: 1px solid transparent; border-radius: 10px;
+  font-family: var(--display); font-size: 16.5px; font-weight: 600; letter-spacing: -.01em;
+  text-decoration: none; cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+}
+.btn-primary { background: var(--accent); color: var(--ink); }
+.btn-primary:hover { background: var(--accent-dk); color: #fff; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.btn-ghost:hover { border-color: var(--ink); background: rgba(15,27,45,.04); }
+.btn-block { width: 100%; }
+/* A disabled CTA that looks live is a click that silently does nothing. */
+.btn:disabled, .btn:disabled:hover {
+  background: var(--line); color: var(--muted);
+  border-color: transparent; cursor: not-allowed;
+}
+
+/* --- header ---------------------------------------------------------------- */
+/* No nav links: this page is bought traffic with one job. The only outbound
+   route is the phone number. */
+.hdr {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(10,18,31,.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  color: #fff;
+}
+.hdr-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: -.02em; }
+.logo svg { flex: none; }
+.hdr-right { display: flex; align-items: center; gap: 20px; }
+.hdr-lic { font-size: 13px; color: rgba(255,255,255,.62); }
+.hdr-tel {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 14px;
+  font-family: var(--display); font-weight: 600; font-size: 16px;
+  text-decoration: none; border-radius: 9px; border: 1px solid rgba(255,255,255,.30);
+}
+.hdr-tel:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+/* --- hero ------------------------------------------------------------------ */
+/* Photograph behind a two-part scrim: a horizontal one so the copy side stays
+   near-solid, and a vertical one so the header and the section below meet it
+   cleanly. Text sits on roughly #0A121F, not on the photo. */
+.hero {
+  position: relative; isolation: isolate;
+  padding: 82px 0 92px;
+  background: #0A121F; color: #fff;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background: url("assets/crew-on-site.webp") center 42% / cover no-repeat;
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(101deg, rgba(10,18,31,.95) 0%, rgba(10,18,31,.88) 36%, rgba(10,18,31,.52) 66%, rgba(10,18,31,.44) 100%),
+    linear-gradient(to bottom, rgba(10,18,31,.62), rgba(10,18,31,.20) 42%, rgba(10,18,31,.86));
+}
+.hero .eyebrow { color: #FDBA74; }
+.hero .note { color: rgba(255,255,255,.55); }
+.hero .hero-sub { color: rgba(255,255,255,.78); }
+.hero .hero-sub strong { color: #fff; }
+.hero .trust li { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.17); color: #fff; }
+.hero .trust svg { color: #7BD6A4; }
+.hero .hero-aside { border-top-color: rgba(255,255,255,.17); }
+.hero .hero-aside p { color: rgba(255,255,255,.70); }
+.est { box-shadow: 0 2px 4px rgba(0,0,0,.18), 0 30px 70px -26px rgba(0,0,0,.75); }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.hero h1 { font-size: clamp(38px, 4.6vw, 58px); max-inline-size: 15ch; text-wrap: balance; margin: 16px 0 0; }
+.hero-sub { font-size: 19px; max-inline-size: 46ch; margin-top: 20px; }
+.hero-sub strong { font-weight: 600; }
+
+.trust { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.trust li {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 999px; padding: 8px 15px 8px 12px;
+  font-size: 14.5px; font-weight: 500;
+}
+.trust svg { color: var(--good); flex: none; }
+
+.hero-aside { margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line); }
+.hero-aside p { font-size: 15px; color: var(--muted); max-inline-size: 44ch; }
+
+/* --- estimator ------------------------------------------------------------- */
+.est {
+  background: var(--card); color: var(--ink); border: 1px solid var(--line-strong);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15,27,45,.04), 0 18px 46px -22px rgba(15,27,45,.28);
+}
+.est-head { padding: 22px 26px 18px; border-bottom: 1px solid var(--line); }
+.est-head h2 { font-size: 20px; }
+.est-steps { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.est-dot { height: 5px; flex: 1; border-radius: 3px; background: var(--line); overflow: hidden; }
+.est-dot i { display: block; height: 100%; width: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.est-dot[data-done] i { transform: scaleX(1); }
+.est-count { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+.est-body { padding: 26px; min-height: 372px; display: flex; flex-direction: column; }
+.panel { display: none; flex: 1; flex-direction: column; }
+.panel[data-active] { display: flex; }
+.panel h3 { font-size: 21px; margin-bottom: 4px; }
+.panel > p { font-size: 15px; color: var(--muted); margin-bottom: 20px; }
+
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.opt {
+  display: flex; align-items: flex-start; gap: 12px; text-align: left;
+  min-height: 76px; padding: 15px 16px;
+  background: var(--bg); border: 1.5px solid var(--line); border-radius: var(--r);
+  cursor: pointer; transition: border-color .16s ease, background-color .16s ease;
+}
+.opt:hover { border-color: var(--line-strong); background: #fff; }
+.opt[aria-pressed="true"] { border-color: var(--accent); background: #FFF7ED; }
+.opt svg { color: var(--navy); flex: none; margin-top: 2px; }
+.opt b { display: block; font-family: var(--display); font-size: 15.5px; font-weight: 600; }
+.opt span { display: block; font-size: 13.5px; color: var(--muted); line-height: 1.42; margin-top: 2px; }
+
+.field { margin-bottom: 22px; }
+.field label { display: block; font-family: var(--display); font-size: 15px; font-weight: 600; margin-bottom: 9px; }
+.readout { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.readout .num { font-size: 34px; font-weight: 700; }
+.readout span { font-size: 15px; color: var(--muted); }
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 44px; background: transparent; cursor: pointer;
+}
+input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 4px; background: var(--line); }
+input[type=range]::-moz-range-track { height: 6px; border-radius: 4px; background: var(--line); }
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 28px; height: 28px; margin-top: -11px;
+  border-radius: 50%; background: var(--accent); border: 3px solid #fff;
+  box-shadow: 0 1px 6px rgba(15,27,45,.32);
+}
+input[type=range]::-moz-range-thumb {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); border: 3px solid #fff;
+  box-shadow: 0 1px 6px rgba(15,27,45,.32);
+}
+.scale { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: -2px; }
+
+.seg { display: flex; gap: 8px; }
+.seg button {
+  flex: 1; min-height: 48px; border-radius: 10px;
+  background: var(--bg); border: 1.5px solid var(--line);
+  font-family: var(--display); font-weight: 600; font-size: 15px; cursor: pointer;
+  transition: border-color .16s ease, background-color .16s ease;
+}
+.seg button:hover { border-color: var(--line-strong); }
+.seg button[aria-pressed="true"] { border-color: var(--accent); background: #FFF7ED; }
+
+.est-foot { margin-top: auto; padding-top: 20px; display: flex; align-items: center; gap: 12px; }
+.est-back {
+  background: none; border: none; cursor: pointer; padding: 12px 4px;
+  font-size: 15px; font-weight: 600; color: var(--muted); text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.est-back:hover { color: var(--ink); }
+.est-foot .btn { margin-left: auto; }
+
+/* result */
+.result-band {
+  background: var(--ink); color: #fff; border-radius: var(--r);
+  padding: 22px 24px; margin-bottom: 20px;
+}
+.result-band .num { font-size: clamp(32px, 4.6vw, 42px); font-weight: 700; color: #fff; }
+.result-spec { font-size: 14px; color: rgba(255,255,255,.72); margin-top: 6px; }
+.bar { height: 6px; border-radius: 4px; background: rgba(255,255,255,.16); margin-top: 18px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.bar-legend { display: flex; justify-content: space-between; font-size: 12.5px; color: rgba(255,255,255,.6); margin-top: 8px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-row .field, .est-form .field { margin-bottom: 14px; }
+.est-form input[type=text], .est-form input[type=tel] {
+  width: 100%; min-height: 48px; padding: 0 14px;
+  background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px;
+}
+.est-form input:hover { border-color: var(--line-strong); }
+.est-form input:focus { border-color: var(--accent); background: #fff; }
+.hint { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
+
+.done { text-align: center; padding: 26px 8px; }
+.done-mark {
+  width: 60px; height: 60px; margin: 0 auto 18px;
+  display: grid; place-items: center;
+  border-radius: 50%; background: #E7F3EC; color: var(--good);
+}
+.done h3 { font-size: 23px; margin-bottom: 10px; }
+.done p { color: var(--muted); max-inline-size: 38ch; margin-inline: auto; }
+
+/* --- sections -------------------------------------------------------------- */
+section { padding: 74px 0; }
+.sec-head { max-inline-size: 40ch; margin-bottom: 40px; }
+.sec-head h2 { font-size: clamp(30px, 3.6vw, 42px); text-wrap: balance; margin-top: 14px; }
+.sec-head p { color: var(--muted); margin-top: 16px; font-size: 17.5px; }
+
+.band-dark { background: var(--ink); color: #fff; }
+.band-dark .sec-head p, .band-dark .note { color: rgba(255,255,255,.66); }
+.band-dark .eyebrow { color: #FDBA74; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.stat { border-top: 2px solid var(--accent); padding-top: 18px; }
+.stat .num { font-size: clamp(32px, 3.6vw, 44px); font-weight: 700; }
+.stat p { font-size: 14.5px; color: rgba(255,255,255,.7); margin-top: 8px; max-inline-size: 22ch; }
+
+.steps3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.step {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 28px 26px;
+}
+.step-n {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: 50%; background: var(--ink); color: #fff;
+  font-family: var(--display); font-weight: 600; font-size: 16px; margin-bottom: 18px;
+}
+.step h3 { font-size: 19px; margin-bottom: 10px; }
+.step p { font-size: 15.5px; color: var(--muted); }
+
+/* --- photo band ------------------------------------------------------------ */
+.shot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.shots img {
+  width: 100%; height: auto; display: block;
+  border-radius: var(--r); border: 1px solid var(--line);
+}
+.shots figcaption { margin-top: 13px; font-size: 14.5px; color: var(--muted); }
+
+/* --- assembly drawing ------------------------------------------------------ */
+.sheet-grid { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,.88fr); gap: 46px; align-items: start; }
+.sheet {
+  /* min-width:0 or the grid item refuses to shrink below the drawing's
+     min-width and pushes the whole page wider than the viewport. */
+  position: relative; min-width: 0; padding: 20px 20px 64px;
+  background-color: #FCFBF9;
+  background-image:
+    linear-gradient(rgba(15,27,45,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15,27,45,.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+  border: 1px solid var(--line-strong); border-radius: var(--r);
+}
+.sheet-scroll { min-width: 0; overflow-x: auto; }
+.sheet .cut { width: 100%; height: auto; }
+.titleblock {
+  position: absolute; right: 20px; bottom: 20px;
+  display: flex; border: 1px solid var(--line-strong); border-radius: 6px;
+  background: var(--card); overflow: hidden;
+}
+.titleblock span {
+  padding: 8px 14px; font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); border-right: 1px solid var(--line);
+}
+.titleblock span:first-child { font-family: var(--display); font-weight: 600; color: var(--ink); letter-spacing: .04em; }
+.titleblock span:last-child { border-right: none; }
+
+.layers li { display: flex; gap: 15px; padding: 17px 0; border-bottom: 1px solid var(--line); }
+.layers li:last-child { border-bottom: none; }
+.ln {
+  flex: none; display: grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 50%; border: 2px solid var(--ink);
+  font-family: var(--display); font-weight: 600; font-size: 14.5px;
+}
+.layers b { display: block; font-family: var(--display); font-size: 16.5px; font-weight: 600; }
+.layers p { font-size: 14.8px; color: var(--muted); margin-top: 5px; line-height: 1.55; }
+
+table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--r); overflow: hidden; }
+caption { text-align: left; font-size: 13px; color: var(--muted); padding-bottom: 12px; }
+th, td { text-align: left; padding: 15px 20px; border-bottom: 1px solid var(--line); font-size: 16px; }
+th { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: #FBFAF8; }
+td:first-child { font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+.td-num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.review {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 26px;
+}
+.stars { display: flex; gap: 3px; color: var(--accent); margin-bottom: 14px; }
+.review p { font-size: 16px; }
+.review footer { font-size: 14px; color: var(--muted); margin-top: 16px; }
+
+.split { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+.claim-list li {
+  display: flex; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--line);
+  font-size: 16.5px;
+}
+.claim-list li:last-child { border-bottom: none; }
+.claim-list svg { color: var(--accent); flex: none; margin-top: 4px; }
+
+details {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r); margin-bottom: 10px;
+}
+summary {
+  cursor: pointer; list-style: none;
+  padding: 19px 22px; min-height: 60px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  font-family: var(--display); font-weight: 600; font-size: 17px;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+  content: ""; flex: none; width: 11px; height: 11px;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg) translateY(-3px);
+  transition: transform .2s ease;
+}
+details[open] summary::after { transform: rotate(-135deg) translateY(-3px); }
+details p { padding: 0 22px 21px; color: var(--muted); font-size: 16px; max-inline-size: 68ch; }
+
+.final { text-align: center; }
+.final h2 { font-size: clamp(32px, 4.2vw, 48px); max-inline-size: 20ch; margin: 14px auto 18px; text-wrap: balance; }
+.final p { color: rgba(255,255,255,.7); max-inline-size: 48ch; margin: 0 auto 30px; font-size: 18px; }
+.final-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.band-dark .btn-ghost { color: #fff; border-color: rgba(255,255,255,.3); }
+.band-dark .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+footer.site { padding: 46px 0 40px; border-top: 1px solid var(--line); }
+.foot-in { display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+.foot-in p { font-size: 14px; color: var(--muted); max-inline-size: 52ch; }
+.concept {
+  margin-top: 22px; padding: 15px 18px;
+  border: 1px dashed var(--line-strong); border-radius: 10px;
+  font-size: 13.5px; color: var(--muted); max-inline-size: 62ch;
+}
+
+/* --- sticky mobile call bar ------------------------------------------------ */
+.mobile-bar { display: none; }
+
+/* --- reveal (JS adds .no-js removal; base state stays visible) -------------- */
+.js .reveal { opacity: 0; }
+
+/* --- breakpoints ----------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .sheet-grid { grid-template-columns: minmax(0,1fr); gap: 30px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero h1 { max-inline-size: 20ch; }
+  .split { grid-template-columns: 1fr; gap: 34px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 28px; }
+}
+@media (max-width: 860px) {
+  .steps3, .cards, .shot-grid { grid-template-columns: 1fr; }
+  .hdr-lic { display: none; }
+  section { padding: 58px 0; }
+}
+@media (max-width: 620px) {
+  body { font-size: 16.5px; }
+  .wrap { padding-inline: 18px; }
+  .hero { padding: 44px 0 52px; }
+  .opts { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .est-body { padding: 20px; }
+  .est-head { padding: 18px 20px 16px; }
+  .stats { grid-template-columns: 1fr; gap: 22px; }
+  .sheet { padding: 12px 12px 58px; background-size: 20px 20px; }
+  /* Below this width the callout numbers stop being readable, so hold a floor
+     and let the drawing pan inside its own sheet rather than the page. */
+  .sheet .cut { min-width: 560px; }
+  .titleblock { right: 12px; bottom: 12px; }
+  .titleblock span { padding: 7px 9px; font-size: 10.5px; }
+  /* The sheet is narrower than the title block wants; drop the middle field. */
+  .titleblock span:nth-child(2) { display: none; }
+  .seg { flex-wrap: wrap; }
+  .seg button { flex: 1 1 30%; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+  /* Sticky call bar earns its space only on phones. */
+  .mobile-bar {
+    display: flex; gap: 10px;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(247,245,242,.94);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line-strong);
+  }
+  .mobile-bar .btn { flex: 1; min-height: 50px; padding: 0 14px; font-size: 15.5px; }
+  body { padding-bottom: 76px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+  .js .reveal { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+<script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M2 11.5 12 3l10 8.5" stroke="#EA580C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 10.5V21h14V10.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Northgate Roofing
+    </div>
+    <div class="hdr-right">
+      <span class="hdr-lic">Licensed &amp; insured · MN BC-000000</span>
+      <a class="hdr-tel" href="tel:+16125550147">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6.5 3h3l1.5 4.5-2 1.5a13 13 0 0 0 6 6l1.5-2L21 14.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6.5 3Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/>
+        </svg>
+        (612) 555-0147
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================ HERO + ESTIMATOR ======================== -->
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap hero-grid">
+
+    <div class="hero-copy">
+      <p class="eyebrow reveal" data-r>Twin Cities · Storm damage &amp; full replacement</p>
+      <h1 id="h1" class="reveal" data-r>Know what your roof costs before anyone knocks on your door.</h1>
+      <p class="hero-sub reveal" data-r>
+        Answer three questions and get the range we'd actually quote —
+        built from the <strong>340 roofs we replaced this year</strong>.
+        No one calls until you ask them to.
+      </p>
+
+      <ul class="trust reveal" data-r>
+        <li>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Free 40-minute inspection
+        </li>
+        <li>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          25-year workmanship warranty
+        </li>
+        <li>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          We file the insurance claim
+        </li>
+      </ul>
+
+      <div class="hero-aside reveal" data-r>
+        <p>
+          Most roofers won't price anything without a visit. We will — the
+          estimator uses the same rates our crews are booked at, and the
+          written quote either matches it or explains why.
+        </p>
+      </div>
+    </div>
+
+    <!-- The signature interaction: three questions, a live price band. -->
+    <div class="est reveal" data-r id="quote">
+      <div class="est-head">
+        <h2>What will my roof cost?</h2>
+        <div class="est-steps">
+          <span class="est-dot" data-dot="1"><i></i></span>
+          <span class="est-dot" data-dot="2"><i></i></span>
+          <span class="est-dot" data-dot="3"><i></i></span>
+          <span class="est-count" id="stepCount" aria-live="polite">Step 1 of 3</span>
+        </div>
+      </div>
+
+      <div class="est-body">
+
+        <!-- step 1 -->
+        <div class="panel" data-panel="1" data-active>
+          <h3>What's on your roof now?</h3>
+          <p>If you're not sure, pick the closest — we'll confirm on the inspection.</p>
+          <div class="opts" role="group" aria-label="Current roof material">
+            <button class="opt" type="button" aria-pressed="false" data-mat="asphalt">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9h18M3 15h18M7 9v6M12 9v6M17 9v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span><b>Asphalt shingle</b><span>The usual. Grey, brown or black tabs.</span></span>
+            </button>
+            <button class="opt" type="button" aria-pressed="false" data-mat="metal">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20 8 4M10 20l4-16M16 20l4-16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span><b>Standing seam metal</b><span>Long vertical panels with raised ribs.</span></span>
+            </button>
+            <button class="opt" type="button" aria-pressed="false" data-mat="flat">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18M5 12v6h14v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span><b>Flat / low slope</b><span>Rubber or TPO membrane, little pitch.</span></span>
+            </button>
+            <button class="opt" type="button" aria-pressed="false" data-mat="cedar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h16M4 13h16M4 18h16M9 8v5M15 13v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span><b>Cedar shake or tile</b><span>Wood shakes, slate or clay tile.</span></span>
+            </button>
+          </div>
+          <div class="est-foot">
+            <button class="btn btn-primary" type="button" data-next disabled>Next question</button>
+          </div>
+        </div>
+
+        <!-- step 2 -->
+        <div class="panel" data-panel="2">
+          <h3>How big is the house?</h3>
+          <p>Ground-floor footprint, roughly. We add for pitch and overhang.</p>
+
+          <div class="field">
+            <label for="sqft">Footprint</label>
+            <div class="readout">
+              <span class="num" id="sqftOut">2,400</span>
+              <span>sq ft</span>
+            </div>
+            <input type="range" id="sqft" min="800" max="4500" step="50" value="2400"
+                   aria-describedby="sqftHint">
+            <div class="scale" id="sqftHint"><span>800</span><span>4,500 sq ft</span></div>
+          </div>
+
+          <div class="field">
+            <label id="storeysLabel">Storeys</label>
+            <div class="seg" role="group" aria-labelledby="storeysLabel">
+              <button type="button" aria-pressed="true"  data-storeys="1">1</button>
+              <button type="button" aria-pressed="false" data-storeys="2">2</button>
+              <button type="button" aria-pressed="false" data-storeys="3">3+</button>
+            </div>
+          </div>
+
+          <div class="est-foot">
+            <button class="est-back" type="button" data-back>Back</button>
+            <button class="btn btn-primary" type="button" data-next>Next question</button>
+          </div>
+        </div>
+
+        <!-- step 3 -->
+        <div class="panel" data-panel="3">
+          <h3>When do you need it done?</h3>
+          <p>Emergency work costs more — we pull a crew off another job.</p>
+          <div class="opts" role="group" aria-label="Timeline">
+            <button class="opt" type="button" aria-pressed="false" data-when="emergency">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 8v5m0 3.5v.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3l-7.7-13.5a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span><b>There's water coming in</b><span>We tarp within 24 hours.</span></span>
+            </button>
+            <button class="opt" type="button" aria-pressed="false" data-when="soon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span><b>Next one to three months</b><span>Normal scheduling.</span></span>
+            </button>
+            <button class="opt" type="button" aria-pressed="false" data-when="planning">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3.5V6M16 3.5V6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span><b>Planning ahead</b><span>Off-season booking, better rate.</span></span>
+            </button>
+            <button class="opt" type="button" aria-pressed="false" data-when="insurance">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 4.5 6.5v5.7c0 4.2 3 7.4 7.5 8.8 4.5-1.4 7.5-4.6 7.5-8.8V6.5L12 3.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              <span><b>Waiting on insurance</b><span>We'll deal with the adjuster.</span></span>
+            </button>
+          </div>
+          <div class="est-foot">
+            <button class="est-back" type="button" data-back>Back</button>
+            <button class="btn btn-primary" type="button" data-next disabled>See my range</button>
+          </div>
+        </div>
+
+        <!-- result -->
+        <div class="panel" data-panel="4">
+          <div class="result-band">
+            <div class="num" id="range" aria-live="polite">$13,400 – $17,300</div>
+            <p class="result-spec" id="spec">2,400 sq ft · asphalt shingle · 1 storey</p>
+            <div class="bar"><i id="bar"></i></div>
+            <div class="bar-legend"><span>Typical Northgate quote</span><span id="mid">midpoint $15,200</span></div>
+          </div>
+
+          <!-- Demo form. Deliberately wired to nothing — it shows an inline
+               success state and sends no data anywhere. -->
+          <form class="est-form" id="quoteForm" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="fname">Your name</label>
+                <input type="text" id="fname" name="fname" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="fzip">ZIP code</label>
+                <input type="text" id="fzip" name="fzip" inputmode="numeric" autocomplete="postal-code" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="fphone">Phone</label>
+              <input type="tel" id="fphone" name="fphone" autocomplete="tel" required>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Send me the written quote</button>
+            <p class="hint">One call to book the inspection. No mailing list, no drive-bys.</p>
+          </form>
+        </div>
+
+        <!-- success -->
+        <div class="panel" data-panel="5">
+          <div class="done">
+            <div class="done-mark">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>That's booked.</h3>
+            <p id="doneCopy">Dan will call you from (612) 555-0147 within two business hours to set the inspection. Your range is saved against your ZIP.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="wrap" style="margin-top:16px">
+    <p class="note">Estimator output is an illustrative figure for a concept build — not a real quote.</p>
+  </div>
+</section>
+
+<!-- ============================ PROOF ================================== -->
+<section class="band-dark" aria-labelledby="proof">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Since 2004</p>
+      <h2 id="proof">Roofs, not impressions.</h2>
+    </div>
+    <div class="stats">
+      <div class="stat" data-r>
+        <div class="num" data-count="340">340</div>
+        <p>roofs replaced in the last twelve months</p>
+      </div>
+      <div class="stat" data-r>
+        <div class="num" data-count="11">11</div>
+        <p>days on average from quote to crew on site</p>
+      </div>
+      <div class="stat" data-r>
+        <div class="num" data-count="25">25</div>
+        <p>year workmanship warranty, transferable once</p>
+      </div>
+      <div class="stat" data-r>
+        <div class="num" data-count="218">218</div>
+        <p>reviews, averaging 4.9 out of 5</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:32px">Illustrative figures — concept piece.</p>
+  </div>
+</section>
+
+<!-- ============================ ON SITE ================================ -->
+<section class="shots" aria-labelledby="onsite">
+  <div class="wrap">
+    <h2 id="onsite" class="visually-hidden">On site</h2>
+    <div class="shot-grid">
+      <figure data-r>
+        <img src="assets/laying-shingles.webp" width="820" height="615" loading="lazy" decoding="async"
+             alt="A roofer kneeling on a part-finished roof, nailing down a fresh course of asphalt shingles beside a stack of bundles.">
+        <figcaption>New courses go down over the underlayment the same day the old roof comes off. Nothing is left open overnight.</figcaption>
+      </figure>
+      <figure data-r>
+        <img src="assets/ridge-work.webp" width="820" height="615" loading="lazy" decoding="async"
+             alt="A roofer in a hard hat working along the ridge of a steep dark roof against an overcast sky.">
+        <figcaption>Everything comes off to the deck — old shingles, old felt and every nail. Chimney flashing gets replaced, never reused.</figcaption>
+      </figure>
+    </div>
+    <p class="note" style="margin-top:22px">Stock photography, not Northgate crews — see the note in the footer.</p>
+  </div>
+</section>
+
+<!-- ============================ HOW IT WORKS =========================== -->
+<section aria-labelledby="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">How it goes</p>
+      <h2 id="how">Three steps, and only one of them is yours.</h2>
+    </div>
+    <div class="steps3">
+      <article class="step" data-r>
+        <div class="step-n">1</div>
+        <h3>We look at it properly</h3>
+        <p>Forty minutes: drone pass over the deck, then up in the attic for the
+           part that actually tells us the story. You get the photos either way.</p>
+      </article>
+      <article class="step" data-r>
+        <div class="step-n">2</div>
+        <h3>You get it in writing</h3>
+        <p>Itemised — tear-off, decking, underlayment, flashing, disposal. Valid
+           60 days. If it's higher than your estimator range, the quote says why.</p>
+      </article>
+      <article class="step" data-r>
+        <div class="step-n">3</div>
+        <h3>We handle the claim</h3>
+        <p>If it's storm damage, we meet the adjuster on your roof and argue the
+           scope. You sign two things and we do the rest.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ASSEMBLY =============================== -->
+<section aria-labelledby="assembly" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The assembly</p>
+      <h2 id="assembly">What you're paying for, from the deck up.</h2>
+      <p>Every roof on this page is five layers and a great many nails. This is the
+         order they go on in — and the parts a cheap quote quietly leaves out.</p>
+    </div>
+    <div class="sheet-grid">
+      <figure class="sheet" data-r>
+        <div class="sheet-scroll">
+        <svg class="cut" viewBox="60 158 748 292" role="img" aria-labelledby="cutTitle cutDesc">
+        <title id="cutTitle">Cut-away of a Northgate roof assembly</title>
+        <desc id="cutDesc">A roof drawn in section with each layer peeled back to reveal the one below it: rafters, an oriented strand board deck, ice and water barrier at the eave, synthetic underlayment, and architectural shingles, with a drip edge and soffit intake at the eave.</desc>
+        <defs><pattern id="grain" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)"><line x1="0" y1="0" x2="0" y2="8" stroke="#6E5D49" stroke-width="1" opacity=".38"/></pattern><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#F7F5F2" stroke-width="1.4" opacity=".5"/></pattern></defs>
+        <polygon points="190.2,391.6 223.2,383.8 209.9,327.4 176.9,335.1" fill="#C4B7A6"/>
+        <polygon points="215.3,385.7 223.2,383.8 209.9,327.4 202.0,329.2" fill="#0F1B2D" opacity=".12"/>
+        <polygon points="315.6,362.1 348.6,354.4 335.3,297.9 302.3,305.7" fill="#C4B7A6"/>
+        <polygon points="340.7,356.2 348.6,354.4 335.3,297.9 327.4,299.8" fill="#0F1B2D" opacity=".12"/>
+        <polygon points="441.0,332.7 474.0,324.9 460.7,268.5 427.7,276.2" fill="#C4B7A6"/>
+        <polygon points="466.1,326.8 474.0,324.9 460.7,268.5 452.8,270.3" fill="#0F1B2D" opacity=".12"/>
+        <polygon points="566.4,303.2 599.4,295.5 586.1,239.0 553.1,246.8" fill="#C4B7A6"/>
+        <polygon points="591.5,297.3 599.4,295.5 586.1,239.0 578.2,240.9" fill="#0F1B2D" opacity=".12"/>
+        <polygon points="691.8,273.8 724.8,266.0 711.5,209.6 678.5,217.3" fill="#C4B7A6"/>
+        <polygon points="716.9,267.9 724.8,266.0 711.5,209.6 703.6,211.4" fill="#0F1B2D" opacity=".12"/>
+        <polygon points="124.1,347.5 784.1,192.5 779.1,171.1 119.1,326.1" fill="#A8967E"/>
+        <polygon points="124.1,347.5 784.1,192.5 779.1,171.1 119.1,326.1" fill="url(#grain)"/>
+        <polygon points="124.1,347.5 784.1,192.5 783.0,187.7 123.0,342.7" fill="#0F1B2D" opacity=".15"/>
+        <polygon points="119.1,326.1 317.1,279.6 314.3,267.9 116.3,314.4" fill="#EA580C"/>
+        <polygon points="117.0,317.3 315.0,270.8 314.3,267.9 116.3,314.4" fill="#0F1B2D" opacity=".16"/>
+        <polygon points="317.1,279.6 541.5,226.9 538.7,215.2 314.3,267.9" fill="#44546B"/>
+        <polygon points="315.0,270.8 539.4,218.1 538.7,215.2 314.3,267.9" fill="#FFFFFF" opacity=".12"/>
+        <polygon points="182.3,298.9 236.5,286.2 231.4,264.8 177.3,277.5" fill="#1C2C42"/>
+        <polygon points="178.0,280.4 232.1,267.7 231.4,264.8 177.3,277.5" fill="#0F1B2D" opacity=".42"/>
+        <polygon points="182.3,298.9 186.3,298.0 181.3,276.6 177.3,277.5" fill="#0F1B2D" opacity=".34"/>
+        <polygon points="232.5,287.1 286.6,274.4 281.6,253.0 227.5,265.7" fill="#26394F"/>
+        <polygon points="228.2,268.6 282.3,255.9 281.6,253.0 227.5,265.7" fill="#0F1B2D" opacity=".42"/>
+        <polygon points="232.5,287.1 236.5,286.2 231.4,264.8 227.5,265.7" fill="#0F1B2D" opacity=".34"/>
+        <polygon points="282.7,275.4 336.8,262.7 331.8,241.2 277.6,253.9" fill="#1C2C42"/>
+        <polygon points="278.3,256.9 332.4,244.2 331.8,241.2 277.6,253.9" fill="#0F1B2D" opacity=".42"/>
+        <polygon points="282.7,275.4 286.6,274.4 281.6,253.0 277.6,253.9" fill="#0F1B2D" opacity=".34"/>
+        <polygon points="332.8,263.6 386.9,250.9 381.9,229.5 327.8,242.2" fill="#26394F"/>
+        <polygon points="328.5,245.1 382.6,232.4 381.9,229.5 327.8,242.2" fill="#0F1B2D" opacity=".42"/>
+        <polygon points="332.8,263.6 336.8,262.7 331.8,241.2 327.8,242.2" fill="#0F1B2D" opacity=".34"/>
+        <polygon points="383.0,251.8 433.1,240.0 428.1,218.6 378.0,230.4" fill="#1C2C42"/>
+        <polygon points="378.6,233.3 428.8,221.5 428.1,218.6 378.0,230.4" fill="#0F1B2D" opacity=".42"/>
+        <polygon points="383.0,251.8 386.9,250.9 381.9,229.5 378.0,230.4" fill="#0F1B2D" opacity=".34"/>
+        <polygon points="124.1,347.5 111.3,293.0 96.3,297.0 109.1,351.5" fill="#0F1B2D" opacity=".62"/>
+        <polygon points="124.1,347.5 111.3,293.0 96.3,297.0 109.1,351.5" fill="url(#hatch)"/>
+        <path d="M103.3 296.0 L98.1 361.5 L84.1 397.5" fill="none" stroke="#CED4DA" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M72.1 409.5 l32 -12" stroke="#17673F" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9"/>
+        <path d="M104.1 397.5 l-8 -1 l1 7 Z" fill="#17673F" opacity=".9"/>
+        <path d="M72.1 423.5 l32 -12" stroke="#17673F" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9"/>
+        <path d="M104.1 411.5 l-8 -1 l1 7 Z" fill="#17673F" opacity=".9"/>
+        <path d="M72.1 437.5 l32 -12" stroke="#17673F" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9"/>
+        <path d="M104.1 425.5 l-8 -1 l1 7 Z" fill="#17673F" opacity=".9"/>
+        <g font-family="Lexend, system-ui, sans-serif" font-size="16" font-weight="600">
+        <circle cx="143.3" cy="295.8" r="16" fill="#F7F5F2" stroke="#0F1B2D" stroke-width="2.2"/>
+        <text x="143.3" y="301.6" text-anchor="middle" fill="#0F1B2D">1</text>
+        <circle cx="293.4" cy="237.9" r="16" fill="#F7F5F2" stroke="#0F1B2D" stroke-width="2.2"/>
+        <text x="293.4" y="243.7" text-anchor="middle" fill="#0F1B2D">2</text>
+        <circle cx="483.2" cy="215.9" r="16" fill="#F7F5F2" stroke="#0F1B2D" stroke-width="2.2"/>
+        <text x="483.2" y="221.7" text-anchor="middle" fill="#0F1B2D">3</text>
+        <circle cx="644.3" cy="190.4" r="16" fill="#F7F5F2" stroke="#0F1B2D" stroke-width="2.2"/>
+        <text x="644.3" y="196.2" text-anchor="middle" fill="#0F1B2D">4</text>
+        <circle cx="688.7" cy="245.8" r="16" fill="#F7F5F2" stroke="#0F1B2D" stroke-width="2.2"/>
+        <text x="688.7" y="251.6" text-anchor="middle" fill="#0F1B2D">5</text>
+        <circle cx="132.4" cy="368.2" r="16" fill="#F7F5F2" stroke="#0F1B2D" stroke-width="2.2"/>
+        <text x="132.4" y="374.0" text-anchor="middle" fill="#0F1B2D">6</text>
+        </g></svg>
+        </div>
+        <figcaption class="titleblock">
+          <span>Northgate Roofing</span>
+          <span>Std. assembly — asphalt</span>
+          <span>Not to scale</span>
+        </figcaption>
+      </figure>
+      <ol class="layers" data-r>
+        <li><span class="ln">1</span><div><b>Ice &amp; water barrier</b><p>A rubberised membrane running six feet up from the eave — the strip where ice dams form. It self-seals around every nail driven through it.</p></div></li>
+        <li><span class="ln">2</span><div><b>Architectural shingles</b><p>Laid in courses, each one nailed through the course beneath it. Six nails per shingle, not four. The difference shows up in the first real wind.</p></div></li>
+        <li><span class="ln">3</span><div><b>Synthetic underlayment</b><p>The second skin, over the whole deck. Not felt — felt tears under a roofer's boot on a July afternoon and you never see where.</p></div></li>
+        <li><span class="ln">4</span><div><b>7/16&quot; OSB deck</b><p>Replaced by the sheet where it's soft, not by the roof. You get the sheet count in writing before anyone starts pulling shingles.</p></div></li>
+        <li><span class="ln">5</span><div><b>Rafters and ventilation</b><p>If the attic can't breathe, the deck cooks and the shingles age at double speed. We check the intake before we quote, not after.</p></div></li>
+        <li><span class="ln">6</span><div><b>Drip edge and soffit intake</b><p>Metal at the eave carries water off the fascia; the soffit lets air in beneath it. Both get skipped constantly, and both are cheap now and expensive later.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COST =================================== -->
+<section aria-labelledby="cost" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What it costs</p>
+      <h2 id="cost">The numbers we quote from.</h2>
+      <p>Published because you'll find them out anyway, and because the roofer
+         who won't say is the one you should worry about.</p>
+    </div>
+    <table>
+      <caption>Illustrative figures — concept piece. Totals assume a 2,400 sq ft single-storey footprint on normal scheduling — the same maths the estimator above runs.</caption>
+      <thead>
+        <tr><th scope="col">Material</th><th scope="col">Per sq ft</th><th scope="col">Typical total</th><th scope="col">Expected life</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Asphalt shingle</td><td class="td-num">$4.85 – $6.30</td><td class="td-num">$13,400 – $17,300</td><td class="td-num">20 – 30 yrs</td></tr>
+        <tr><td>Standing seam metal</td><td class="td-num">$10.60 – $13.75</td><td class="td-num">$29,300 – $37,900</td><td class="td-num">40 – 70 yrs</td></tr>
+        <tr><td>Flat / low slope membrane</td><td class="td-num">$7.10 – $9.20</td><td class="td-num">$19,600 – $25,300</td><td class="td-num">20 – 30 yrs</td></tr>
+        <tr><td>Cedar shake or tile</td><td class="td-num">$13.30 – $17.20</td><td class="td-num">$36,700 – $47,500</td><td class="td-num">30 – 50 yrs</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ INSURANCE ============================== -->
+<section aria-labelledby="claim" style="padding-top:0">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">The hail conversation</p>
+      <h2 id="claim" style="font-size:clamp(28px,3.4vw,40px);margin:14px 0 18px;text-wrap:balance">Your claim got denied. That is not the end of it.</h2>
+      <p style="color:var(--muted);font-size:17.5px">
+        Adjusters miss things — soft metal test squares, granule loss on the
+        north slope, the difference between wear and impact. Around a third of
+        the denials we re-open get reversed. It costs you nothing to have us
+        look at the report.
+      </p>
+      <a class="btn btn-ghost" href="#quote" style="margin-top:26px">Have us read the denial</a>
+    </div>
+    <ul class="claim-list" data-r>
+      <li>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        We meet the adjuster on the roof rather than emailing photos
+      </li>
+      <li>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Supplements filed for code upgrades your policy already covers
+      </li>
+      <li>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        You pay your deductible and nothing above it
+      </li>
+      <li>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        No lien, no assignment of benefits, no signing your claim over
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ REVIEWS ================================ -->
+<section aria-labelledby="said" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Sample copy</p>
+      <h2 id="said">What the reviews say.</h2>
+    </div>
+    <div class="cards">
+      <article class="review" data-r>
+        <div class="stars" aria-label="5 out of 5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+        </div>
+        <p>"The estimate on the website came in at thirteen-four to seventeen-three.
+           The written quote was fifteen-one. That's the first time a number
+           on a website has meant anything."</p>
+        <footer>Sample copy — concept build</footer>
+      </article>
+      <article class="review" data-r>
+        <div class="stars" aria-label="5 out of 5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+        </div>
+        <p>"State Farm denied it twice. Northgate met the adjuster on the roof
+           with a chalk square and it got approved the same afternoon."</p>
+        <footer>Sample copy — concept build</footer>
+      </article>
+      <article class="review" data-r>
+        <div class="stars" aria-label="5 out of 5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.7 6.2.7-4.6 4.2 1.2 6.1L12 16.8 6.6 19.7l1.2-6.1L3.2 9.4l6.2-.7L12 3Z"/></svg>
+        </div>
+        <p>"Crew was on the roof eight days after I signed. Gutters swept, magnet
+           over the whole lawn twice. My neighbour booked them off the driveway."</p>
+        <footer>Sample copy — concept build</footer>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ==================================== -->
+<section aria-labelledby="faq" style="padding-top:0">
+  <div class="wrap" style="max-width:840px">
+    <div class="sec-head">
+      <p class="eyebrow">Before you call</p>
+      <h2 id="faq">The questions we get every week.</h2>
+    </div>
+
+    <details>
+      <summary>How close is the estimator to the real quote?</summary>
+      <p>Within about 12% on a straightforward replacement. It knows your
+         material, footprint, storeys and timing — it doesn't know about a
+         rotted deck, three layers of old shingle, or a chimney that needs
+         re-flashing. Those are what move the number, and they're what the
+         inspection is for.</p>
+    </details>
+    <details>
+      <summary>Do you do repairs, or only full replacements?</summary>
+      <p>Both. If you've lost a dozen shingles off one slope we'll say so
+         rather than sell you a roof — a repair on a roof with ten good years
+         left is the right answer and we'd rather be the ones who told you.</p>
+    </details>
+    <details>
+      <summary>What happens if my insurance denies the claim?</summary>
+      <p>We read the adjuster's report, re-inspect, and file a supplement if
+         there's a case. Roughly a third of the denials we re-open get
+         reversed. If there's no case we'll tell you that too, and you'll have
+         a written quote you can pay for directly.</p>
+    </details>
+    <details>
+      <summary>How long does the work actually take?</summary>
+      <p>A typical asphalt replacement is one to two days on site. Metal runs
+         three to five. The wait to get on the calendar is the real variable —
+         eleven days on average, longer in the four weeks after a hailstorm.</p>
+    </details>
+    <details>
+      <summary>Are you licensed, and who's on my roof?</summary>
+      <p>Licensed and insured in Minnesota, and our own crews do the work —
+         no day-labour subcontracting. The foreman's name is on your quote
+         before anyone shows up.</p>
+    </details>
+    <details>
+      <summary>What does the 25-year warranty actually cover?</summary>
+      <p>Our workmanship — flashing, fastening, ventilation, anything we
+         installed wrong. Materials carry the manufacturer's own warranty on
+         top, usually 30 to 50 years. It transfers once if you sell the house.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============================ FINAL CTA ============================== -->
+<section class="band-dark final" aria-labelledby="last">
+  <div class="wrap">
+    <p class="eyebrow">Two minutes</p>
+    <h2 id="last">Get the range, then decide if you want us.</h2>
+    <p>No one from Northgate calls you until you ask. That's the whole offer.</p>
+    <div class="final-btns">
+      <a class="btn btn-primary" href="#quote">Price my roof</a>
+      <a class="btn btn-ghost" href="tel:+16125550147">Call (612) 555-0147</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap foot-in">
+    <div>
+      <div class="logo" style="margin-bottom:14px">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M2 11.5 12 3l10 8.5" stroke="#EA580C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 10.5V21h14V10.5" stroke="#0F1B2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Northgate Roofing
+      </div>
+      <p>1400 Larpenteur Ave, Saint Paul MN · Licensed &amp; insured, MN BC-000000 ·
+         Serving the Twin Cities metro and the eastern suburbs.</p>
+      <p class="concept">
+        <strong>Concept build.</strong> Northgate Roofing is an invented company
+        made to demonstrate a lead-generation landing page. Every figure,
+        review, licence number and phone number on this page is fabricated.
+        Photography is free-licence stock and shows unrelated roofing crews,
+        not employees of anything. Nothing here is a real quote and the form
+        sends no data anywhere.
+      </p>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">Designed and built by Foldline.</p>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <a class="btn btn-ghost" href="tel:+16125550147">Call</a>
+  <a class="btn btn-primary" href="#quote">Price my roof</a>
+</div>
+
+<script src="motion-mini.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Motion's mini build ships `animate` only. If the script failed to load the
+  // page still works — every animated element is visible by default.
+  var animate = (window.Motion && window.Motion.animate) || null;
+
+  // A hidden document pauses its animation timeline, so anything waiting on an
+  // animation to fade in would stay at opacity 0 forever — which is how a
+  // headless screenshot and a background preview iframe both load this page.
+  // In that case skip the motion entirely and render the finished state.
+  var inert = reduce || !animate || document.hidden;
+
+  function show(el, opts) {
+    if (inert) { el.style.opacity = 1; el.style.transform = 'none'; return; }
+    return animate(el, { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0px)'] },
+      Object.assign({ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }, opts || {}));
+  }
+
+  /* ---------- hero entrance ---------- */
+  var heroBits = document.querySelectorAll('.hero [data-r]');
+  Array.prototype.forEach.call(heroBits, function (el, i) {
+    show(el, { delay: 0.06 * i, duration: 0.55 });
+  });
+
+  /* ---------- scroll reveals ---------- */
+  var deferred = document.querySelectorAll('section:not(.hero) [data-r]');
+  Array.prototype.forEach.call(deferred, function (el) {
+    if (!inert) { el.style.opacity = 0; }
+  });
+
+  function countTo(el, target) {
+    if (inert) { el.textContent = target; return; }
+    var start = performance.now(), dur = 900;
+    (function tick(now) {
+      var t = Math.min(1, (now - start) / dur);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(target * eased);
+      if (t < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+
+  if (inert || !('IntersectionObserver' in window)) {
+    Array.prototype.forEach.call(deferred, function (el) {
+      el.style.opacity = 1;
+      var cs = el.hasAttribute('data-count') ? [el] : el.querySelectorAll('[data-count]');
+      Array.prototype.forEach.call(cs, function (c) { c.textContent = c.getAttribute('data-count'); });
+    });
+  } else if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        io.unobserve(el);
+        show(el);
+        var counters = el.querySelectorAll('[data-count]');
+        if (el.hasAttribute('data-count')) counters = [el];
+        Array.prototype.forEach.call(counters, function (c) {
+          countTo(c, parseInt(c.getAttribute('data-count'), 10));
+        });
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+    Array.prototype.forEach.call(deferred, function (el) { io.observe(el); });
+  }
+
+  /* ---------- estimator ---------- */
+  var RATES   = { asphalt: 5.50, metal: 12.05, flat: 8.05, cedar: 15.10 };
+  var LABELS  = { asphalt: 'asphalt shingle', metal: 'standing seam metal',
+                  flat: 'flat membrane', cedar: 'cedar shake or tile' };
+  var STOREYS = { 1: 1.00, 2: 1.12, 3: 1.22 };
+  var TIMING  = { emergency: 1.10, soon: 1.00, planning: 0.96, insurance: 1.00 };
+
+  var state = { mat: null, sqft: 2400, storeys: 1, when: null, step: 1 };
+
+  var panels   = document.querySelectorAll('[data-panel]');
+  var dots     = document.querySelectorAll('[data-dot]');
+  var stepCount= document.getElementById('stepCount');
+
+  function panel(n) { return document.querySelector('[data-panel="' + n + '"]'); }
+
+  function goto(n) {
+    var current = document.querySelector('.panel[data-active]');
+    var next = panel(n);
+    if (!next || current === next) return;
+
+    current.removeAttribute('data-active');
+    next.setAttribute('data-active', '');
+    state.step = n;
+
+    if (!inert) {
+      animate(next, { opacity: [0, 1], transform: ['translateX(18px)', 'translateX(0px)'] },
+        { duration: 0.34, ease: [0.22, 0.61, 0.36, 1] });
+    }
+
+    Array.prototype.forEach.call(dots, function (d, i) {
+      var done = (i + 1) <= Math.min(n, 3);
+      var fill = d.querySelector('i');
+      if (done) { d.setAttribute('data-done', ''); } else { d.removeAttribute('data-done'); }
+      if (!inert) {
+        animate(fill, { transform: done ? 'scaleX(1)' : 'scaleX(0)' }, { duration: 0.3 });
+      }
+    });
+
+    stepCount.textContent = n <= 3 ? ('Step ' + n + ' of 3')
+                          : (n === 4 ? 'Your range' : 'Done');
+
+    // Move focus so keyboard and screen-reader users land in the new panel.
+    var target = next.querySelector('h3, .num');
+    if (target) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
+  }
+
+  function pressGroup(buttons, btn) {
+    Array.prototype.forEach.call(buttons, function (b) {
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+  }
+
+  // step 1 — material
+  var mats = document.querySelectorAll('[data-mat]');
+  Array.prototype.forEach.call(mats, function (b) {
+    b.addEventListener('click', function () {
+      state.mat = b.getAttribute('data-mat');
+      pressGroup(mats, b);
+      panel(1).querySelector('[data-next]').disabled = false;
+    });
+  });
+
+  // step 2 — size
+  var sqft = document.getElementById('sqft');
+  var sqftOut = document.getElementById('sqftOut');
+  sqft.addEventListener('input', function () {
+    state.sqft = parseInt(sqft.value, 10);
+    sqftOut.textContent = state.sqft.toLocaleString('en-US');
+  });
+
+  var storeyBtns = document.querySelectorAll('[data-storeys]');
+  Array.prototype.forEach.call(storeyBtns, function (b) {
+    b.addEventListener('click', function () {
+      state.storeys = parseInt(b.getAttribute('data-storeys'), 10);
+      pressGroup(storeyBtns, b);
+    });
+  });
+
+  // step 3 — timing
+  var whens = document.querySelectorAll('[data-when]');
+  Array.prototype.forEach.call(whens, function (b) {
+    b.addEventListener('click', function () {
+      state.when = b.getAttribute('data-when');
+      pressGroup(whens, b);
+      panel(3).querySelector('[data-next]').disabled = false;
+    });
+  });
+
+  function money(n) {
+    return '$' + (Math.round(n / 100) * 100).toLocaleString('en-US');
+  }
+
+  function price() {
+    // Footprint -> roof area allows for pitch and overhang, then material rate,
+    // a labour premium for height, and a timing multiplier.
+    var area = state.sqft * 1.15;
+    var base = area * RATES[state.mat] * STOREYS[state.storeys] * TIMING[state.when];
+    var lo = base * 0.88, hi = base * 1.14;
+
+    document.getElementById('range').textContent = money(lo) + ' – ' + money(hi);
+    document.getElementById('spec').textContent =
+      state.sqft.toLocaleString('en-US') + ' sq ft · ' + LABELS[state.mat] + ' · ' +
+      state.storeys + (state.storeys === 3 ? '+ storeys' : (state.storeys === 1 ? ' storey' : ' storeys'));
+    document.getElementById('mid').textContent = 'midpoint ' + money(base);
+
+    var bar = document.getElementById('bar');
+    // Position the band against a $60k ceiling so expensive materials visibly
+    // sit further along the scale.
+    var frac = Math.max(0.12, Math.min(1, hi / 60000));
+    if (!inert) {
+      bar.style.transform = 'scaleX(0)';
+      animate(bar, { transform: 'scaleX(' + frac.toFixed(3) + ')' },
+        { duration: 0.7, ease: [0.22, 0.61, 0.36, 1], delay: 0.15 });
+    } else {
+      bar.style.transform = 'scaleX(' + frac.toFixed(3) + ')';
+    }
+  }
+
+  document.querySelectorAll('[data-next]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var n = state.step + 1;
+      if (n === 4) price();
+      goto(n);
+    });
+  });
+  document.querySelectorAll('[data-back]').forEach(function (b) {
+    b.addEventListener('click', function () { goto(state.step - 1); });
+  });
+
+  /* ---------- demo form: no network, inline success ---------- */
+  var form = document.getElementById('quoteForm');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var zip = document.getElementById('fzip').value.trim();
+    var name = document.getElementById('fname').value.trim();
+    if (name) {
+      document.getElementById('doneCopy').textContent =
+        'Dan will call you from (612) 555-0147 within two business hours to set the inspection'
+        + (zip ? ', and your range is saved against ' + zip + '.' : '.');
+    }
+    goto(5);
+  });
+})();
+</script>
+</body>
+</html>
