@@ -19,5 +19,8 @@
   "description": "",
   "dependencies": {
     "motion": "^13.1.1"
+  },
+  "devDependencies": {
+    "qrcode": "^1.5.4"
   }
 }

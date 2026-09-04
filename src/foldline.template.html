@@ -182,6 +182,15 @@
 
   /* ───────── work cards ───────── */
   .fl-work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  /* An odd number of cards would leave a dead cell in the 2-up grid. Let the
+     orphan span instead, so the newest piece reads as the featured one. The
+     selector only fires when the count is actually odd. */
+  @media (min-width: 861px) {
+    .fl-work-grid > .fl-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    /* The stage keeps 16/10 — the poster's own ratio — so spanning shows the
+       whole shot rather than cropping the device off at the card edge. */
+    .fl-work-grid > .fl-card:last-child:nth-child(odd) .fl-card-copy { max-width: 74ch; }
+  }
 
   .fl-card {
     container-type: inline-size;
@@ -731,10 +740,36 @@
           </div>
         </article>
 
+        <article class="fl-card" data-tilt="">
+          <div class="fl-stage">
+            <img class="fl-shot" src="assets/work/tallwood.webp" width="1000" height="625" alt="Tallwood app landing page — a phone drawn in CSS showing a shared household balance of $47.20" loading="lazy" decoding="async">
+            <iframe class="fl-live" data-src="5/tallwood.html" title="Tallwood, live preview" loading="lazy" tabindex="-1" aria-hidden="true" scrolling="no"></iframe>
+            <button class="fl-badge" type="button" data-loadlive=""><i></i><span class="fl-badge-t">Load live preview</span></button>
+          </div>
+          <div class="fl-card-body">
+            <div class="fl-card-head">
+              <h3 class="fl-card-title">Tallwood</h3>
+              <span class="fl-card-kind">Consumer app · Launch</span>
+            </div>
+            <p class="fl-card-copy">An app launch page with no screenshots in it. The phone is drawn in CSS and the app inside it actually runs — take someone out of a split and every share recalculates to the cent. Below it, one continuous session is scrubbed by scroll position rather than triggered by it, built on scroll-driven CSS with no animation library.</p>
+            <div class="fl-tags">
+              <span class="fl-tag">App launch</span>
+              <span class="fl-tag">Playable UI</span>
+              <span class="fl-tag">Scroll-scrubbed</span>
+              <span class="fl-tag">Zero screenshots</span>
+              <span class="fl-tag">Responsive</span>
+            </div>
+            <div class="fl-actions">
+              <a class="fl-btn" data-primary="" href="5/tallwood.html" target="_blank" rel="noopener">Open live<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7"></path><path d="M13 3 3.5 12.5"></path></svg></a>
+              <button class="fl-btn" type="button" data-quicklook="ql-tallwood">Quick look</button>
+            </div>
+          </div>
+        </article>
+
       </div>
 
       <div class="fl-work-foot">
-        <p>All four are concept builds made to show range — the brands are invented, the craft is not. Client work is shared privately on request.</p>
+        <p>All five are concept builds made to show range — the brands are invented, the craft is not. Client work is shared privately on request.</p>
         <a class="fl-btn" data-primary="" href="#start">Brief a page like these<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11"></path><path d="M9.5 4l4 4-4 4"></path></svg></a>
       </div>
     </div>
@@ -754,6 +789,14 @@
       <button class="fl-ql-close" type="button" data-qlclose="">Close</button>
     </div>
     <iframe class="fl-ql-frame" data-src="3/ai-saas-landing.html" title="Throughline, full preview"></iframe>
+  </div>
+
+  <div class="fl-ql" id="ql-tallwood" popover="auto">
+    <div class="fl-ql-bar">
+      <span class="fl-ql-name"><span class="fl-ql-dots"><span></span><span></span><span></span></span>Tallwood — the arithmetic happens by itself</span>
+      <button class="fl-ql-close" type="button" data-qlclose="">Close</button>
+    </div>
+    <iframe class="fl-ql-frame" data-src="5/tallwood.html" title="Tallwood, full preview"></iframe>
   </div>
 
   <div class="fl-ql" id="ql-northgate" popover="auto">

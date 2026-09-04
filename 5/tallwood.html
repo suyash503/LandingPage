@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tallwood — shared household money, without the group chat</title>
+<meta name="description" content="Scan the receipt, pick who's in, and let the maths sort itself out. Tallwood keeps count of who owes what in a shared house so everyone settles once a month. Concept build.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------------------
+   Tallwood — concept landing page for an invented shared-household money app.
+
+   The rule this page is built on: there is not one raster screenshot of the
+   app anywhere in this file. Every pixel of app interface below is live DOM.
+   The phone is drawn in CSS, the hero screen is operable, and the scrolled
+   session is scrubbed with native CSS scroll-driven animation — no library.
+
+   Motion strategy:
+     - Hero device      : real state, vanilla JS state machine
+     - Scrolled session : animation-timeline on a view-timeline, zero JS
+     - Two-phone sync   : CSS keyframe loop, gated by IntersectionObserver
+   Every one of those degrades to a composed static state under
+   prefers-reduced-motion, without animation-timeline support, or without JS.
+   --------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body, h1, h2, h3, h4, p, ul, ol, li, figure, blockquote, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+img, svg { display: block; max-width: 100%; }
+button, input, select { font: inherit; color: inherit; }
+
+:root {
+  --bg:       #EDEDF0;
+  --surface:  #FFFFFF;
+  --line:     rgba(16,16,20,.10);
+  --line-2:   rgba(16,16,20,.16);
+  --ink:      #101014;
+  --muted:    rgba(16,16,20,.58);
+  --faint:    rgba(16,16,20,.40);
+  --accent:   #4B3BFF;
+  --accent-d: #3628E0;
+  --settled:  #12C08A;
+  --screen:   #FBFBFC;   /* a half-step whiter and warmer than the page */
+  --wrap:     1180px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .disp { font-family: Manrope, Inter, sans-serif; letter-spacing: -.03em; line-height: 1.05; }
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: 24px; }
+.num { font-variant-numeric: tabular-nums; }
+
+:where(a, button, summary, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 18px;
+}
+.lede { font-size: 18px; line-height: 1.6; color: var(--muted); text-wrap: pretty; }
+.note { font-size: 12.5px; color: var(--faint); }
+
+/* ---- buttons ------------------------------------------------------------ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: 48px; padding: 0 22px; border-radius: 14px;
+  border: 1px solid var(--line-2); background: var(--surface); color: var(--ink);
+  font-size: 15px; font-weight: 600; text-decoration: none; cursor: pointer;
+  transition: transform .18s cubic-bezier(.2,.9,.3,1.2), background .18s, border-color .18s;
+}
+.btn:hover { border-color: rgba(16,16,20,.3); }
+.btn:active { transform: scale(.97); }
+.btn[data-primary] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn[data-primary]:hover { background: var(--accent-d); border-color: var(--accent-d); }
+.btn[data-ghost] { background: transparent; }
+
+/* ---- nav ---------------------------------------------------------------- */
+.nav {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(237,237,240,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent; transition: border-color .25s, background .25s;
+}
+.nav[data-stuck] { border-bottom-color: var(--line); background: rgba(237,237,240,.92); }
+.nav-in { display: flex; align-items: center; gap: 28px; height: 68px; }
+.mark { display: flex; align-items: center; gap: 9px; font-family: Manrope, sans-serif; font-weight: 800; font-size: 17.5px; letter-spacing: -.02em; text-decoration: none; color: var(--ink); }
+.mark-glyph { width: 22px; height: 22px; border-radius: 7px; background: var(--accent); position: relative; flex: none; }
+/* Three lines of unequal length — a list of amounts, not a hamburger menu. */
+.mark-glyph::before { content: ""; position: absolute; left: 6px; top: 6px; width: 10px; height: 2px; border-radius: 2px; background: #fff; }
+.mark-glyph::after { content: ""; position: absolute; left: 6px; top: 10px; width: 7px; height: 2px; border-radius: 2px; background: #fff; box-shadow: 0 4px 0 rgba(255,255,255,.55); }
+.nav-links { display: flex; gap: 26px; margin-left: auto; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 14.5px; font-weight: 500; }
+.nav-links a:hover { color: var(--ink); }
+.nav .btn { min-height: 42px; padding: 0 17px; font-size: 14px; }
+@media (max-width: 860px) { .nav-links { display: none; } .nav-in { gap: 16px; } .nav .btn { margin-left: auto; } }
+
+/* ---- section rhythm ----------------------------------------------------- */
+.sec { padding: 108px 0; }
+.sec-head { max-width: 640px; margin-bottom: 52px; }
+.sec-head h2 { font-size: clamp(30px, 3.8vw, 46px); margin-bottom: 16px; }
+@media (max-width: 860px) { .sec { padding: 74px 0; } }
+
+/* =========================================================================
+   THE DEVICE — drawn, never imported.
+   Authored once at a 390x844 logical viewport and scaled as a whole, so the
+   app UI never reflows at any breakpoint.
+   ========================================================================= */
+.phone {
+  --s: .78;
+  position: relative; flex: none;
+  width: calc(414px * var(--s));
+  height: calc(868px * var(--s));
+}
+.device {
+  position: absolute; top: 0; left: 0;
+  width: 414px; height: 868px;
+  transform: scale(var(--s)); transform-origin: 0 0;
+  border-radius: 58px; padding: 12px;
+  background: linear-gradient(160deg, #26262E 0%, #0B0B0F 42%, #17171D 100%);
+  box-shadow: 0 2px 0 rgba(255,255,255,.14) inset, 0 60px 90px -50px rgba(16,16,40,.55), 0 12px 30px -18px rgba(16,16,40,.35);
+}
+.screen {
+  position: relative; width: 390px; height: 844px;
+  border-radius: 46px; overflow: hidden;
+  background: var(--screen);
+  font-size: 15px; line-height: 1.45;
+}
+.island {
+  position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+  width: 108px; height: 30px; border-radius: 999px; background: #08080B; z-index: 20;
+}
+/* status bar */
+.sbar { position: relative; z-index: 10; height: 54px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 26px 6px; font-size: 13.5px; font-weight: 600; letter-spacing: -.01em; }
+.sbar-r { display: flex; align-items: center; gap: 5px; }
+.sig { display: flex; align-items: flex-end; gap: 2px; height: 10px; }
+.sig i { width: 3px; border-radius: 1px; background: var(--ink); }
+.sig i:nth-child(1) { height: 4px; } .sig i:nth-child(2) { height: 6px; } .sig i:nth-child(3) { height: 8px; } .sig i:nth-child(4) { height: 10px; }
+.batt { width: 24px; height: 11.5px; border: 1.4px solid rgba(16,16,20,.4); border-radius: 3.5px; position: relative; }
+.batt::after { content: ""; position: absolute; inset: 1.6px; width: 62%; border-radius: 1.5px; background: var(--ink); }
+.batt::before { content: ""; position: absolute; right: -3.4px; top: 3.4px; width: 2px; height: 4px; border-radius: 0 2px 2px 0; background: rgba(16,16,20,.4); }
+
+/* ---- app chrome --------------------------------------------------------- */
+.a-body { position: absolute; inset: 54px 0 0; display: flex; flex-direction: column; }
+.a-head { padding: 6px 22px 14px; display: flex; align-items: center; justify-content: space-between; }
+.a-house { font-family: Manrope, sans-serif; font-weight: 800; font-size: 21px; letter-spacing: -.03em; }
+.a-sub { font-size: 12.5px; color: var(--faint); font-weight: 500; margin-top: 1px; }
+.a-pill { font-size: 11.5px; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: rgba(75,59,255,.09); color: var(--accent); }
+
+.a-screens { position: relative; flex: 1; min-height: 0; }
+.a-screen { position: absolute; inset: 0; padding: 0 22px; overflow: hidden; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .28s ease, transform .34s cubic-bezier(.2,.9,.3,1.15), visibility .28s; }
+.a-screen.is-on { opacity: 1; visibility: visible; transform: none; }
+
+.a-tabs { display: flex; padding: 8px 18px 26px; border-top: 1px solid rgba(16,16,20,.07); background: rgba(255,255,255,.7); backdrop-filter: blur(8px); }
+.a-tab { flex: 1; min-height: 46px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; border-radius: 12px; cursor: pointer; color: var(--faint); font-size: 11px; font-weight: 600; letter-spacing: -.01em; transition: color .2s, transform .18s cubic-bezier(.2,.9,.3,1.2); }
+.a-tab:active { transform: scale(.94); }
+.a-tab[aria-selected="true"] { color: var(--accent); }
+.a-tab svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---- app: balance card -------------------------------------------------- */
+.a-bal { border-radius: 20px; padding: 20px; background: var(--ink); color: #fff; position: relative; overflow: hidden; transition: background .5s ease; }
+.a-bal.is-settled { background: var(--settled); }
+.a-bal-l { font-size: 12.5px; font-weight: 600; opacity: .66; letter-spacing: .01em; }
+.a-bal-v { font-family: Manrope, sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -.035em; margin-top: 4px; }
+.a-bal-n { font-size: 12.5px; opacity: .7; margin-top: 3px; }
+
+/* ---- app: list rows ----------------------------------------------------- */
+.a-lab { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin: 22px 0 10px; }
+.a-row { display: flex; align-items: center; gap: 13px; padding: 12px 0; border-bottom: 1px solid rgba(16,16,20,.07); }
+.a-row:last-child { border-bottom: 0; }
+.a-ico { width: 38px; height: 38px; border-radius: 12px; flex: none; display: grid; place-items: center; background: rgba(16,16,20,.05); }
+.a-ico svg { width: 18px; height: 18px; stroke: var(--ink); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; opacity: .8; }
+.a-row > span:not([class]) { flex: 1; min-width: 0; }
+.a-row-t { display: block; font-size: 14.5px; font-weight: 600; letter-spacing: -.01em; }
+.a-row-s { display: block; font-size: 12.5px; color: var(--faint); line-height: 1.35; }
+.a-row-a { flex: none; margin-left: auto; text-align: right; font-size: 14.5px; font-weight: 700; letter-spacing: -.02em; white-space: nowrap; }
+.a-row-a small { display: block; font-size: 11.5px; font-weight: 500; color: var(--faint); letter-spacing: 0; }
+
+/* ---- app: avatars ------------------------------------------------------- */
+.a-people { display: flex; gap: 10px; margin: 14px 0 4px; }
+.a-av {
+  flex: 1; border: 1.5px solid var(--line-2); background: var(--surface); border-radius: 15px;
+  padding: 11px 4px 9px; cursor: pointer; text-align: center;
+  transition: transform .2s cubic-bezier(.2,.9,.3,1.3), border-color .2s, background .2s, opacity .2s;
+}
+.a-av:active { transform: scale(.95); }
+.a-av[aria-pressed="false"] { opacity: .42; }
+.a-av[aria-pressed="true"] { border-color: var(--accent); background: rgba(75,59,255,.06); }
+.a-av-d { width: 34px; height: 34px; margin: 0 auto 7px; border-radius: 999px; display: grid; place-items: center; font-size: 12.5px; font-weight: 700; color: #fff; letter-spacing: -.01em; }
+.a-av-n { display: block; font-size: 11.5px; font-weight: 600; line-height: 1.3; }
+.a-av-s { display: block; font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; min-height: 15px; line-height: 1.3; }
+.c-ju { background: #E0723C; } .c-dan { background: #3D8F7A; } .c-mara { background: #8B5CF6; } .c-you { background: var(--ink); }
+
+/* ---- app: receipt ------------------------------------------------------- */
+.a-rec { border: 1px solid var(--line); border-radius: 16px; background: var(--surface); padding: 16px 17px; }
+.a-rec-h { display: flex; align-items: baseline; justify-content: space-between; }
+.a-rec-n { font-size: 15px; font-weight: 700; letter-spacing: -.02em; }
+.a-rec-t { font-family: Manrope, sans-serif; font-size: 19px; font-weight: 800; letter-spacing: -.03em; }
+.a-rec-d { font-size: 11.5px; color: var(--faint); margin-top: 1px; }
+.a-li { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); padding: 5px 0; border-bottom: 1px dashed rgba(16,16,20,.1); }
+.a-li:last-of-type { border-bottom: 0; }
+
+.a-cta { width: 100%; min-height: 50px; border-radius: 15px; border: 0; background: var(--accent); color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -.01em; cursor: pointer; margin-top: 16px; transition: transform .18s cubic-bezier(.2,.9,.3,1.3), background .25s, opacity .2s; }
+.a-cta:active { transform: scale(.97); }
+.a-cta:disabled { opacity: .4; cursor: not-allowed; }
+.a-cta.is-done { background: var(--settled); }
+
+.a-toast {
+  position: absolute; left: 22px; right: 22px; bottom: 16px; z-index: 15;
+  background: var(--ink); color: #fff; border-radius: 14px; padding: 12px 15px;
+  font-size: 13.5px; font-weight: 600; letter-spacing: -.01em;
+  display: flex; align-items: center; gap: 9px;
+  opacity: 0; transform: translateY(14px); pointer-events: none;
+  transition: opacity .3s, transform .42s cubic-bezier(.2,.9,.3,1.25);
+}
+.a-toast.is-on { opacity: 1; transform: none; }
+.a-toast i { width: 18px; height: 18px; border-radius: 999px; background: var(--settled); display: grid; place-items: center; flex: none; }
+
+/* who-owes rows settle to green, one after another */
+.a-owe { transition: color .35s, opacity .35s; }
+.a-owe .a-row-a { transition: color .35s; }
+.a-owe.is-clear .a-row-a { color: var(--settled); }
+.a-owe.is-clear .a-row-s { color: var(--settled); opacity: .8; }
+
+.hero-live { font-size: 13.5px; color: var(--faint); margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); max-width: 42ch; }
+.replay { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: var(--accent); font-size: 13.5px; font-weight: 700; cursor: pointer; padding: 2px; text-decoration: underline; text-underline-offset: 3px; }
+.replay:hover { color: var(--accent); }
+.replay svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+/* =========================================================================
+   HERO
+   ========================================================================= */
+.hero { padding: 64px 0 96px; }
+.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 64px; align-items: center; }
+.hero h1 { font-size: clamp(40px, 5.4vw, 76px); margin-bottom: 22px; text-wrap: balance; }
+.hero .lede { max-width: 46ch; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.hero-re { font-size: 13.5px; color: var(--faint); margin-top: 16px; }
+.hero .phone { --s: .8; }
+@media (max-width: 1080px) { .hero-grid { gap: 40px; } .hero .phone { --s: .64; } }
+@media (max-width: 900px) {
+  .hero { padding: 40px 0 72px; }
+  .hero-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .hero .lede { margin-inline: auto; }
+  .hero-cta { justify-content: center; }
+  .hero .phone { --s: .76; }
+}
+
+/* =========================================================================
+   PROBLEM — the group chat, rendered
+   ========================================================================= */
+.chat { max-width: 560px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); padding: 22px; }
+.chat-h { display: flex; align-items: center; gap: 10px; padding-bottom: 15px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.chat-h b { font-size: 14.5px; font-weight: 700; letter-spacing: -.01em; }
+.chat-h span { font-size: 12.5px; color: var(--faint); }
+.msg { display: flex; gap: 9px; margin-bottom: 11px; align-items: flex-end; }
+.msg-av { width: 27px; height: 27px; border-radius: 999px; flex: none; display: grid; place-items: center; color: #fff; font-size: 10.5px; font-weight: 700; }
+.msg-b { background: rgba(16,16,20,.055); border-radius: 15px 15px 15px 5px; padding: 9px 13px; font-size: 14px; max-width: 78%; }
+.msg[data-me] { flex-direction: row-reverse; }
+.msg[data-me] .msg-b { background: var(--accent); color: #fff; border-radius: 15px 15px 5px 15px; }
+.dots { display: inline-flex; gap: 4px; padding: 3px 0; }
+.dots i { width: 6px; height: 6px; border-radius: 999px; background: var(--faint); animation: blink 1.3s infinite; }
+.dots i:nth-child(2) { animation-delay: .18s; } .dots i:nth-child(3) { animation-delay: .36s; }
+@keyframes blink { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .dots i { animation: none; opacity: .55; } }
+.prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.prob-punch { font-family: Manrope, sans-serif; font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; letter-spacing: -.03em; line-height: 1.2; margin-top: 26px; }
+@media (max-width: 900px) { .prob-grid { grid-template-columns: 1fr; gap: 34px; } }
+
+/* =========================================================================
+   THE SESSION — one continuous story, scrubbed by scroll.
+   The section owns the view-timeline; the beats are its descendants, so no
+   timeline-scope is needed.
+   ========================================================================= */
+.session { position: relative; padding-bottom: 40px; view-timeline-name: --sess; view-timeline-axis: block; }
+.sess-grid { display: grid; grid-template-columns: auto 1fr; gap: 72px; align-items: start; }
+.sess-stage { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; align-self: start; }
+.sess-stage .phone { --s: .72; }
+/* The stage has to fit inside 100vh, so short viewports step the scale down.
+   Height media queries, not calc() — dividing a length by a number in calc()
+   yields a length, and transform: scale() needs a unitless ratio. */
+@media (max-height: 820px) { .sess-stage .phone { --s: .64; } }
+@media (max-height: 720px) { .sess-stage .phone { --s: .56; } }
+@media (max-height: 620px) { .sess-stage .phone { --s: .48; } }
+.sess-copy { padding-top: 0; }
+.sess-beat { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; max-width: 42ch; }
+.sess-beat .step { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.sess-beat h3 { font-size: clamp(26px, 3.2vw, 38px); margin-bottom: 14px; text-wrap: balance; }
+.sess-beat p { color: var(--muted); font-size: 17px; text-wrap: pretty; }
+
+.beat { position: absolute; inset: 0; padding: 0 22px; opacity: 0; }
+.beat--1 { opacity: 1; }
+
+/* scan frame */
+.scan { margin-top: 8px; border-radius: 20px; background: #14141A; height: 600px; position: relative; overflow: hidden; display: grid; place-items: center; }
+.scan-r { width: 190px; background: #FAF8F3; border-radius: 5px; padding: 15px 15px 20px; transform: rotate(-2.2deg); box-shadow: 0 18px 30px -18px rgba(0,0,0,.6); }
+.scan-r b { font-size: 12px; letter-spacing: -.01em; display: block; margin-bottom: 8px; }
+.scan-r .a-li { font-size: 10.5px; padding: 3px 0; }
+.scan-c { position: absolute; inset: 26px; border-radius: 14px; }
+.scan-c i { position: absolute; width: 22px; height: 22px; border: 2.5px solid rgba(255,255,255,.85); }
+.scan-c i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; border-radius: 8px 0 0 0; }
+.scan-c i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; border-radius: 0 8px 0 0; }
+.scan-c i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; border-radius: 0 0 0 8px; }
+.scan-c i:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; border-radius: 0 0 8px 0; }
+.scan-hint { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: rgba(255,255,255,.72); font-size: 12.5px; font-weight: 600; }
+
+.chip { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(75,59,255,.09); color: var(--accent); }
+.a-nudge { border: 1px solid rgba(224,114,60,.35); background: rgba(224,114,60,.07); border-radius: 15px; padding: 13px 15px; margin-top: 14px; font-size: 13px; color: #A24A1C; font-weight: 600; }
+.a-big { display: grid; place-items: center; text-align: center; height: 300px; }
+.a-check { width: 74px; height: 74px; border-radius: 999px; background: var(--settled); display: grid; place-items: center; margin: 0 auto 18px; }
+.a-check svg { width: 36px; height: 36px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+@keyframes beatIn {
+  0%   { opacity: 0; transform: translateY(14px) scale(.985); }
+  14%  { opacity: 1; transform: none; }
+  86%  { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-12px) scale(.985); }
+}
+@keyframes beatFirst {
+  0%   { opacity: 1; transform: none; }
+  62%  { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-12px) scale(.985); }
+}
+@keyframes beatLast {
+  0%   { opacity: 0; transform: translateY(14px) scale(.985); }
+  38%  { opacity: 1; transform: none; }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes copyLift {
+  0%   { opacity: 0; transform: translateY(22px); }
+  24%  { opacity: 1; transform: none; }
+  74%  { opacity: 1; transform: none; }
+  100% { opacity: .12; transform: translateY(-14px); }
+}
+
+/* Each copy block is exactly 100vh, and the sticky window (`contain`) is the
+   section minus one viewport — so copy block i sits dead centre at contain
+   i/4. The beat ranges are therefore centred on 0 / 25 / 50 / 75 / 100%, which
+   is what keeps the screen and the sentence next to it in lockstep. */
+@supports (animation-timeline: view()) {
+  .beat { animation: beatIn linear both; animation-timeline: --sess; }
+  .beat--1 { animation: beatFirst linear both; animation-timeline: --sess; animation-range: contain 0%  contain 14%; }
+  .beat--2 { animation-range: contain 11% contain 40%; }
+  .beat--3 { animation-range: contain 36% contain 65%; }
+  .beat--4 { animation-range: contain 61% contain 90%; }
+  .beat--5 { animation: beatLast linear both; animation-timeline: --sess; animation-range: contain 86% contain 100%; }
+  .sess-beat { animation: copyLift linear both; animation-timeline: view(); animation-range: cover 0% cover 100%; }
+}
+
+/* One fallback, three failure modes: no scroll-timeline support, reduced
+   motion, and JS off. All three land on the same composed static state —
+   the settled screen, which is the payoff and contains the whole story. */
+@supports not (animation-timeline: view()) {
+  .beat { display: none; }
+  .beat--5 { display: block; opacity: 1; transform: none; }
+  .sess-beat { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beat { display: none; animation: none; }
+  .beat--5 { display: block; opacity: 1; transform: none; animation: none; }
+  .sess-beat { animation: none; opacity: 1; transform: none; }
+}
+
+@media (max-width: 900px) {
+  .sess-grid { grid-template-columns: 1fr; gap: 0; }
+  .sess-stage { top: 68px; height: auto; padding: 14px 0 20px; background: linear-gradient(180deg, var(--bg) 78%, rgba(237,237,240,0)); z-index: 4; }
+  .sess-stage .phone { --s: .46; }
+  .sess-beat { min-height: 78vh; max-width: none; }
+}
+
+/* =========================================================================
+   BOTH SIDES — the second phone reacts a beat late, on purpose
+   ========================================================================= */
+.pair { display: flex; gap: 40px; justify-content: flex-start; align-items: flex-start; flex-wrap: wrap; }
+.pair .phone { --s: .58; }
+.pair-l { text-align: center; font-size: 12.5px; font-weight: 600; color: var(--faint); margin-top: 16px; }
+.pair-w { position: relative; }
+
+/* Both of these live inside the 390x844 screen, so they scale with the device
+   rather than rendering at page scale. */
+.push {
+  position: absolute; top: 60px; left: 14px; right: 14px; z-index: 30;
+  background: #fff; border: 1px solid var(--line); border-radius: 17px; padding: 12px 14px;
+  box-shadow: 0 18px 34px -18px rgba(16,16,40,.45);
+  display: flex; gap: 10px; align-items: flex-start;
+  opacity: 0; transform: translateY(-16px) scale(.96);
+}
+.push b { font-size: 13px; font-weight: 700; letter-spacing: -.01em; display: block; }
+.push > span > span { font-size: 12.5px; color: var(--muted); line-height: 1.36; display: block; margin-top: 1px; }
+.push-i { width: 28px; height: 28px; border-radius: 9px; background: var(--accent); flex: none; }
+.tap-wrap { position: relative; }
+.sides-grid { display: grid; grid-template-columns: auto 1fr; gap: 64px; align-items: center; }
+.sides-copy { max-width: 46ch; }
+.sides-copy h2 { font-size: clamp(30px, 3.6vw, 44px); margin-bottom: 16px; }
+@media (max-width: 1000px) { .sides-grid { grid-template-columns: 1fr; gap: 40px; } .sides-copy { max-width: none; } }
+
+@keyframes pushIn {
+  0%, 12%   { opacity: 0; transform: translateY(-16px) scale(.96); }
+  20%       { opacity: 1; transform: none; }
+  76%       { opacity: 1; transform: none; }
+  86%, 100% { opacity: 0; transform: translateY(-10px) scale(.98); }
+}
+/* Phone A's button visibly presses, then Dan's banner arrives a beat later.
+   The gap between the two is the point of the section. */
+@keyframes tapPress {
+  0%   { transform: none; filter: none; }
+  3%   { transform: scale(.96); filter: brightness(.86); }
+  8%   { transform: none; filter: none; }
+  100% { transform: none; filter: none; }
+}
+.is-live .push { animation: pushIn 5.4s cubic-bezier(.2,.9,.3,1.1) infinite; }
+.is-live .tap-wrap .a-cta { animation: tapPress 5.4s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .is-live .push, .is-live .tap-wrap .a-cta { animation: none; }
+  .push { opacity: 1; transform: none; }
+}
+
+/* =========================================================================
+   FEATURES / ANTI-FEATURES / PRICING / FAQ / GET
+   ========================================================================= */
+.feat { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.feat article { border: 1px solid var(--line); border-radius: 18px; background: var(--surface); padding: 24px; }
+.feat h3 { font-size: 17px; margin: 16px 0 8px; letter-spacing: -.02em; }
+.feat p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+.feat svg { width: 34px; height: 34px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 980px) { .feat { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .feat { grid-template-columns: 1fr; } }
+
+.nots { border-top: 1px solid var(--line); }
+.nots li { display: flex; gap: 16px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--line); font-size: clamp(17px, 2vw, 21px); font-family: Manrope, sans-serif; font-weight: 600; letter-spacing: -.02em; }
+.nots li b { color: var(--accent); font-weight: 700; flex: none; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; min-width: 40px; }
+/* Only the nested span is the explanation — the wrapper must keep the li's
+   display size, or the statement shrinks to caption size. */
+.nots li > span { display: block; }
+.nots li > span > span { color: var(--muted); font-family: Inter, sans-serif; font-weight: 400; font-size: 15px; letter-spacing: 0; display: block; margin-top: 6px; line-height: 1.5; }
+
+.price { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 760px; }
+.price article { border: 1px solid var(--line); border-radius: 20px; background: var(--surface); padding: 30px; }
+.price article[data-hi] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.price h3 { font-size: 19px; letter-spacing: -.02em; }
+.price .amt { font-family: Manrope, sans-serif; font-size: 44px; font-weight: 800; letter-spacing: -.04em; margin: 12px 0 4px; }
+.price .amt small { font-size: 15px; font-weight: 600; color: var(--muted); letter-spacing: -.01em; }
+.price ul { margin: 20px 0 24px; }
+.price li { font-size: 14.5px; color: var(--muted); padding: 7px 0 7px 24px; position: relative; }
+.price li::before { content: ""; position: absolute; left: 2px; top: 15px; width: 9px; height: 5px; border-left: 1.8px solid var(--accent); border-bottom: 1.8px solid var(--accent); transform: rotate(-45deg); }
+@media (max-width: 700px) { .price { grid-template-columns: 1fr; } }
+
+.faq { max-width: 780px; border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { list-style: none; cursor: pointer; padding: 22px 40px 22px 0; font-size: 17px; font-weight: 600; letter-spacing: -.02em; position: relative; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; position: absolute; right: 8px; top: 31px; width: 10px; height: 10px; border-right: 1.8px solid var(--faint); border-bottom: 1.8px solid var(--faint); transform: rotate(45deg); transition: transform .25s; }
+.faq details[open] summary::after { transform: rotate(-135deg); }
+.faq p { padding: 0 0 24px; color: var(--muted); font-size: 15.5px; max-width: 66ch; }
+
+.get { border-radius: 26px; background: var(--ink); color: #fff; padding: clamp(34px, 5vw, 64px); }
+.get-grid { display: grid; grid-template-columns: 1fr auto; gap: 56px; align-items: center; }
+.get h2 { font-size: clamp(28px, 3.6vw, 42px); margin-bottom: 14px; }
+.get p { color: rgba(255,255,255,.62); font-size: 17px; max-width: 44ch; }
+.qr { background: #fff; border-radius: 18px; padding: 16px; }
+.qr svg { width: 168px; height: 168px; display: block; }
+.qr-c { text-align: center; }
+.qr-c figcaption { font-size: 12.5px; color: rgba(255,255,255,.55); margin-top: 12px; }
+.f-row { display: flex; gap: 10px; margin-top: 26px; max-width: 430px; }
+.f-row input { flex: 1; min-height: 50px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.07); color: #fff; font-size: 15px; }
+.f-row input::placeholder { color: rgba(255,255,255,.42); }
+.f-row input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.f-row .btn { background: #fff; border-color: #fff; color: var(--ink); }
+.f-ok { margin-top: 14px; font-size: 14px; color: var(--settled); font-weight: 600; display: none; }
+.f-ok.is-on { display: block; }
+.badges { display: flex; gap: 11px; margin-top: 26px; flex-wrap: wrap; }
+.badge {
+  display: inline-flex; align-items: center; gap: 10px; padding: 11px 17px;
+  border: 1px solid rgba(255,255,255,.22); border-radius: 13px; color: rgba(255,255,255,.85);
+  font-size: 13px; font-weight: 600; cursor: not-allowed;
+}
+.badge svg { width: 19px; height: 19px; fill: currentColor; }
+.badge small { display: block; font-size: 10.5px; font-weight: 500; opacity: .6; letter-spacing: .04em; text-transform: uppercase; }
+@media (max-width: 860px) { .get-grid { grid-template-columns: 1fr; gap: 34px; } .qr-c { justify-self: start; } }
+
+.foot { border-top: 1px solid var(--line); padding: 54px 0 60px; margin-top: 40px; }
+.foot-grid { display: flex; gap: 48px; flex-wrap: wrap; justify-content: space-between; }
+.foot h3 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin-bottom: 14px; font-family: Inter, sans-serif; font-weight: 700; }
+.foot li { padding: 5px 0; }
+.foot a { color: var(--muted); text-decoration: none; font-size: 14.5px; }
+.foot a:hover { color: var(--ink); }
+.concept { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); max-width: 68ch; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="#top"><span class="mark-glyph" aria-hidden="true"></span>Tallwood</a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#does">Features</a>
+      <a href="#price">Pricing</a>
+    </div>
+    <a class="btn" data-primary href="#get">Get the app</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- ===================== HERO — the device leads ===================== -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Tallwood — shared household money</p>
+        <h1>The arithmetic happens by itself.</h1>
+        <p class="lede">Photograph the receipt, tap who was in on it, and let the maths sort itself out. Everyone settles once a month instead of arguing in a group chat.</p>
+        <div class="hero-cta">
+          <a class="btn" data-primary href="#get">Get the app</a>
+          <a class="btn" data-ghost href="#how">See how it works</a>
+        </div>
+        <p class="hero-re">Free for households. No ads, ever.</p>
+        <p class="hero-live">The phone is live. Tap the tabs, change who's in.
+          <button class="replay" type="button" id="replay">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.8-4.3"></path><path d="M13.5 1.5v3h-3"></path></svg>
+            Reset it
+          </button>
+        </p>
+      </div>
+
+      <!-- The hero device. Real state, not a picture of one. -->
+      <div class="phone">
+        <div class="device">
+          <div class="screen" id="demo">
+            <div class="island" aria-hidden="true"></div>
+            <div class="sbar" aria-hidden="true">
+              <span class="num">9:41</span>
+              <span class="sbar-r"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span>
+            </div>
+
+            <div class="a-body">
+              <div class="a-head">
+                <div>
+                  <div class="a-house">Tallwood House</div>
+                  <div class="a-sub">14 Bramble Road · 4 people</div>
+                </div>
+                <span class="a-pill">March</span>
+              </div>
+
+              <div class="a-screens">
+                <!-- HOME -->
+                <div class="a-screen is-on" id="s-home" role="tabpanel" aria-label="Home">
+                  <div class="a-bal" id="bal">
+                    <div class="a-bal-l" id="bal-label">You're owed</div>
+                    <div class="a-bal-v num" id="bal-value">$47.20</div>
+                    <div class="a-bal-n" id="bal-note">Across 3 housemates</div>
+                  </div>
+                  <div class="a-lab">This month</div>
+                  <div class="a-row">
+                    <span class="a-ico"><svg viewBox="0 0 24 24"><path d="M6 7h12l-1 12H7L6 7Z"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg></span>
+                    <span><span class="a-row-t">Groceries</span><span class="a-row-s">Dan paid · 12 Mar</span></span>
+                    <span class="a-row-a num">$63.80<small>your share $15.95</small></span>
+                  </div>
+                  <div class="a-row">
+                    <span class="a-ico"><svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0"></path><path d="M8.5 15.5a5 5 0 0 1 7 0"></path><path d="M12 19h.01"></path></svg></span>
+                    <span><span class="a-row-t">Internet</span><span class="a-row-s">You paid · 3 Mar</span></span>
+                    <span class="a-row-a num">$60.00<small>owed to you $45.00</small></span>
+                  </div>
+                  <div class="a-row">
+                    <span class="a-ico"><svg viewBox="0 0 24 24"><path d="M4 8h16"></path><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"></path><path d="M6 8l1 11h10l1-11"></path></svg></span>
+                    <span><span class="a-row-t">Cleaning supplies</span><span class="a-row-s">Mara paid · 1 Mar</span></span>
+                    <span class="a-row-a num">$18.40<small>your share $4.60</small></span>
+                  </div>
+                  <div class="a-lab">Coming up</div>
+                  <div class="a-row">
+                    <span class="a-ico"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5"></path><path d="M6 10v10h12V10"></path></svg></span>
+                    <span><span class="a-row-t">Rent</span><span class="a-row-s">Every 1st · recurring</span></span>
+                    <span class="a-row-a num">$1,840.00<small>your share $460.00</small></span>
+                  </div>
+                  <div class="a-row">
+                    <span class="a-ico"><svg viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0"></path><path d="M8.5 15.5a5 5 0 0 1 7 0"></path><path d="M12 19h.01"></path></svg></span>
+                    <span><span class="a-row-t">Internet</span><span class="a-row-s">Every 3rd · recurring</span></span>
+                    <span class="a-row-a num">$60.00<small>your share $15.00</small></span>
+                  </div>
+                </div>
+
+                <!-- ADD -->
+                <div class="a-screen" id="s-add" role="tabpanel" aria-label="Add a receipt" hidden>
+                  <div class="a-rec">
+                    <div class="a-rec-h">
+                      <div><div class="a-rec-n">Corner Market</div><div class="a-rec-d">12 March · 9 items</div></div>
+                      <div class="a-rec-t num">$63.80</div>
+                    </div>
+                    <div style="margin-top:12px">
+                      <div class="a-li"><span>Oat milk ×2</span><span class="num">$7.40</span></div>
+                      <div class="a-li"><span>Coffee beans</span><span class="num">$11.50</span></div>
+                      <div class="a-li"><span>Vegetables</span><span class="num">$18.90</span></div>
+                      <div class="a-li"><span>+ 6 more items</span><span class="num">$26.00</span></div>
+                    </div>
+                  </div>
+                  <div class="a-lab">Split between</div>
+                  <div class="a-people" id="people"></div>
+                  <p class="a-sub" id="split-note" style="margin-top:10px">Tap a face to leave them out.</p>
+                  <button class="a-cta" type="button" id="split-btn">Split $63.80</button>
+                </div>
+
+                <!-- PEOPLE -->
+                <div class="a-screen" id="s-people" role="tabpanel" aria-label="People" hidden>
+                  <div class="a-lab">Who owes who</div>
+                  <div class="a-row a-owe" data-owe>
+                    <span class="a-av-d c-dan" style="width:38px;height:38px;margin:0">DA</span>
+                    <span><span class="a-row-t">Dan</span><span class="a-row-s">owes you</span></span>
+                    <span class="a-row-a num">$15.95</span>
+                  </div>
+                  <div class="a-row a-owe" data-owe>
+                    <span class="a-av-d c-ju" style="width:38px;height:38px;margin:0">JU</span>
+                    <span><span class="a-row-t">Ju</span><span class="a-row-s">owes you</span></span>
+                    <span class="a-row-a num">$31.25</span>
+                  </div>
+                  <div class="a-row a-owe" data-owe>
+                    <span class="a-av-d c-mara" style="width:38px;height:38px;margin:0">MA</span>
+                    <span><span class="a-row-t">Mara</span><span class="a-row-s">you owe</span></span>
+                    <span class="a-row-a num">$4.60</span>
+                  </div>
+                  <button class="a-cta" type="button" id="settle-btn">Settle up</button>
+                  <p class="a-sub" style="margin-top:12px">One payment clears everything, in both directions.</p>
+                </div>
+              </div>
+
+              <div class="a-toast" id="toast"><i aria-hidden="true"></i><span id="toast-t">Split saved</span></div>
+
+              <div class="a-tabs" role="tablist" aria-label="Tallwood">
+                <button class="a-tab" role="tab" aria-selected="true" data-tab="home" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5"></path><path d="M6 10v10h12V10"></path></svg>Home
+                </button>
+                <button class="a-tab" role="tab" aria-selected="false" data-tab="add" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 9v6M9 12h6"></path></svg>Add
+                </button>
+                <button class="a-tab" role="tab" aria-selected="false" data-tab="people" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3.2"></circle><path d="M3.5 19a5.5 5.5 0 0 1 11 0"></path><path d="M16 6.5a3 3 0 0 1 0 5.6"></path><path d="M17.5 19a5.4 5.4 0 0 0-1.6-3.8"></path></svg>People
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROBLEM ===================== -->
+  <section class="sec" id="problem">
+    <div class="wrap prob-grid">
+      <div>
+        <p class="eyebrow">The current system</p>
+        <h2 style="font-size:clamp(30px,3.8vw,46px)">Nobody wants to be the one who asks.</h2>
+        <p class="lede" style="margin-top:16px">Somebody always fronts the money. Nobody remembers who owes what. And chasing $12 costs more in awkwardness than the $12 is worth, so it quietly gets written off — usually by the same person, every month.</p>
+        <p class="prob-punch">The spreadsheet lasts about five weeks. Tallwood just keeps count.</p>
+      </div>
+      <div>
+        <div class="chat">
+          <div class="chat-h">
+            <div><b>Tallwood House</b><br><span>4 people</span></div>
+          </div>
+          <div class="msg"><span class="msg-av c-dan">DA</span><span class="msg-b">did anyone pay the internet</span></div>
+          <div class="msg"><span class="msg-av c-ju">JU</span><span class="msg-b">I paid it in March?</span></div>
+          <div class="msg" data-me><span class="msg-av c-you">YOU</span><span class="msg-b">that was February</span></div>
+          <div class="msg"><span class="msg-av c-mara">MA</span><span class="msg-b">I still owe someone for the vacuum I think</span></div>
+          <div class="msg"><span class="msg-av c-dan">DA</span><span class="msg-b">ok so who owes who</span></div>
+          <div class="msg"><span class="msg-av c-ju">JU</span><span class="msg-b">give me a sec I'll make a spreadsheet</span></div>
+          <div class="msg"><span class="msg-av c-dan">DA</span><span class="msg-b"><span class="dots" aria-label="typing"><i></i><i></i><i></i></span></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">Scripted illustration — concept piece. Not a customer quote.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== THE SESSION — scrubbed by scroll ===================== -->
+  <section class="session" id="how" aria-labelledby="how-h">
+    <!-- The section is carried visually by the device and the five step
+         headings; this gives it a parent heading without disturbing them. -->
+    <h2 class="sr-only" id="how-h">How Tallwood works</h2>
+    <div class="wrap sess-grid">
+
+      <div class="sess-stage">
+        <div class="phone">
+          <div class="device">
+            <div class="screen">
+              <div class="island" aria-hidden="true"></div>
+              <div class="sbar" aria-hidden="true">
+                <span class="num">9:41</span>
+                <span class="sbar-r"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span>
+              </div>
+              <div class="a-body">
+                <div class="a-head">
+                  <div><div class="a-house">Tallwood House</div><div class="a-sub">14 Bramble Road · 4 people</div></div>
+                  <span class="a-pill">March</span>
+                </div>
+                <div class="a-screens" aria-hidden="true">
+
+                  <div class="beat beat--1">
+                    <div class="scan">
+                      <div class="scan-r">
+                        <b>CORNER MARKET</b>
+                        <div class="a-li"><span>OAT MILK ×2</span><span class="num">7.40</span></div>
+                        <div class="a-li"><span>COFFEE BEANS</span><span class="num">11.50</span></div>
+                        <div class="a-li"><span>VEGETABLES</span><span class="num">18.90</span></div>
+                        <div class="a-li"><span>BREAD</span><span class="num">3.20</span></div>
+                        <div class="a-li"><span>TOTAL</span><span class="num">63.80</span></div>
+                      </div>
+                      <div class="scan-c" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                      <div class="scan-hint">Hold still…</div>
+                    </div>
+                  </div>
+
+                  <div class="beat beat--2">
+                    <div class="a-rec">
+                      <div class="a-rec-h">
+                        <div><div class="a-rec-n">Corner Market</div><div class="a-rec-d">12 March · 9 items</div></div>
+                        <div class="a-rec-t num">$63.80</div>
+                      </div>
+                      <div style="margin-top:12px">
+                        <div class="a-li"><span>Oat milk ×2</span><span class="num">$7.40</span></div>
+                        <div class="a-li"><span>Coffee beans</span><span class="num">$11.50</span></div>
+                        <div class="a-li"><span>Vegetables</span><span class="num">$18.90</span></div>
+                        <div class="a-li"><span>Bread</span><span class="num">$3.20</span></div>
+                        <div class="a-li"><span>+ 5 more items</span><span class="num">$22.80</span></div>
+                      </div>
+                    </div>
+                    <div style="margin-top:14px"><span class="chip">Groceries</span> <span class="chip">Shared</span> <span class="chip">Read in 1.2s</span></div>
+                    <div class="a-lab">Checked</div>
+                    <div class="a-row"><span><span class="a-row-t">Total matches the receipt</span><span class="a-row-s">9 line items add to $63.80</span></span><span class="a-row-a num" style="color:var(--settled)">✓</span></div>
+                    <div class="a-row"><span><span class="a-row-t">Merchant recognised</span><span class="a-row-s">Corner Market · used 6 times</span></span><span class="a-row-a num" style="color:var(--settled)">✓</span></div>
+                    <div class="a-row"><span><span class="a-row-t">Date</span><span class="a-row-s">12 March, 18:42</span></span><span class="a-row-a num" style="color:var(--settled)">✓</span></div>
+                    <p class="a-sub" style="margin-top:14px">Read from the photo. Tap anything to correct it.</p>
+                  </div>
+
+                  <div class="beat beat--3">
+                    <div class="a-lab" style="margin-top:0">Split between</div>
+                    <div class="a-people">
+                      <span class="a-av" aria-pressed="true"><span class="a-av-d c-ju">JU</span><span class="a-av-n">Ju</span><span class="a-av-s num">$15.95</span></span>
+                      <span class="a-av" aria-pressed="true"><span class="a-av-d c-dan">DA</span><span class="a-av-n">Dan</span><span class="a-av-s num">$15.95</span></span>
+                      <span class="a-av" aria-pressed="true"><span class="a-av-d c-mara">MA</span><span class="a-av-n">Mara</span><span class="a-av-s num">$15.95</span></span>
+                      <span class="a-av" aria-pressed="true"><span class="a-av-d c-you">YOU</span><span class="a-av-n">You</span><span class="a-av-s num">$15.95</span></span>
+                    </div>
+                    <div class="a-lab">Result</div>
+                    <div class="a-row"><span><span class="a-row-t">Dan fronted it</span><span class="a-row-s">Corner Market · 12 Mar</span></span><span class="a-row-a num">$63.80</span></div>
+                    <div class="a-row"><span><span class="a-row-t">Three people owe Dan</span><span class="a-row-s">Even split</span></span><span class="a-row-a num">$15.95<small>each</small></span></div>
+                    <div class="a-row"><span><span class="a-row-t">Added to March</span><span class="a-row-s">Settles 28 March with everything else</span></span><span class="a-row-a num">$63.80</span></div>
+                    <button class="a-cta" type="button" tabindex="-1" aria-hidden="true">Save split</button>
+                    <p class="a-sub" style="margin-top:12px">Nobody gets a message about this one on its own. It joins the monthly total.</p>
+                  </div>
+
+                  <div class="beat beat--4">
+                    <div class="a-lab" style="margin-top:0">Month end</div>
+                    <div class="a-row"><span class="a-av-d c-ju" style="width:38px;height:38px;margin:0">JU</span><span><span class="a-row-t">Ju</span><span class="a-row-s">Paid 28 Mar</span></span><span class="a-row-a num" style="color:var(--settled)">Settled</span></div>
+                    <div class="a-row"><span class="a-av-d c-mara" style="width:38px;height:38px;margin:0">MA</span><span><span class="a-row-t">Mara</span><span class="a-row-s">Paid 28 Mar</span></span><span class="a-row-a num" style="color:var(--settled)">Settled</span></div>
+                    <div class="a-row"><span class="a-av-d c-dan" style="width:38px;height:38px;margin:0">DA</span><span><span class="a-row-t">Dan</span><span class="a-row-s">Nothing yet</span></span><span class="a-row-a num">$15.95</span></div>
+                    <div class="a-nudge">Reminder sent to Dan — 29 March, 6:00pm</div>
+                    <div class="a-lab">March so far</div>
+                    <div class="a-row"><span><span class="a-row-t">Collected</span><span class="a-row-s">2 of 3 housemates</span></span><span class="a-row-a num">$47.85</span></div>
+                    <div class="a-row"><span><span class="a-row-t">Outstanding</span><span class="a-row-s">Dan · 1 day late</span></span><span class="a-row-a num">$15.95</span></div>
+                    <p class="a-sub" style="margin-top:14px">On the date the house agreed. Not from you.</p>
+                  </div>
+
+                  <div class="beat beat--5">
+                    <div class="a-big">
+                      <div>
+                        <div class="a-check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"></path></svg></div>
+                        <div class="a-bal-v num" style="color:var(--ink);font-size:44px">$0.00</div>
+                        <div class="a-sub" style="font-size:14px;margin-top:6px">The house is square.<br>Next count starts 1 April.</div>
+                      </div>
+                    </div>
+                    <div class="a-row"><span><span class="a-row-t">March</span><span class="a-row-s">11 receipts · 4 people</span></span><span class="a-row-a num">$412.60</span></div>
+                  </div>
+
+                </div>
+                <div class="a-tabs" aria-hidden="true">
+                  <span class="a-tab" style="color:var(--accent)"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5"></path><path d="M6 10v10h12V10"></path></svg>Home</span>
+                  <span class="a-tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 9v6M9 12h6"></path></svg>Add</span>
+                  <span class="a-tab"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"></circle><path d="M3.5 19a5.5 5.5 0 0 1 11 0"></path><path d="M16 6.5a3 3 0 0 1 0 5.6"></path><path d="M17.5 19a5.4 5.4 0 0 0-1.6-3.8"></path></svg>People</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sess-copy">
+        <div class="sess-beat">
+          <span class="step">Step one</span>
+          <h3>It starts on the counter.</h3>
+          <p>Photograph the receipt before it goes in the bin. That is the entire ritual, and it is the only part a person has to remember.</p>
+        </div>
+        <div class="sess-beat">
+          <span class="step">Step two</span>
+          <h3>Tallwood reads it.</h3>
+          <p>Total, date, line items, category. You don't type anything — and you can correct anything, because scanning a crumpled receipt is not magic and we won't pretend it is.</p>
+        </div>
+        <div class="sess-beat">
+          <span class="step">Step three</span>
+          <h3>Split it the way it actually happened.</h3>
+          <p>Four ways, three ways, or Dan pays for his own oat milk. Tap a face to leave someone out and every share recalculates while you watch.</p>
+        </div>
+        <div class="sess-beat">
+          <span class="step">Step four</span>
+          <h3>Then it does the part nobody likes.</h3>
+          <p>A reminder goes out on the date the house agreed on, from the app rather than from you. Nobody has to be the one who asks, which is the whole reason the spreadsheet failed.</p>
+        </div>
+        <div class="sess-beat">
+          <span class="step">Step five</span>
+          <h3>Once a month, it's zero.</h3>
+          <p>One payment each, in both directions at once, and the house is square again. Then March closes and April starts counting.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== BOTH SIDES ===================== -->
+  <section class="sec" id="sides">
+    <div class="wrap sides-grid">
+
+      <div class="pair" id="pair">
+        <div>
+          <div class="pair-w">
+            <div class="phone">
+              <div class="device">
+                <div class="screen">
+                  <div class="island" aria-hidden="true"></div>
+                  <div class="sbar" aria-hidden="true"><span class="num">9:41</span><span class="sbar-r"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+                  <div class="a-body">
+                    <div class="a-head"><div><div class="a-house">Tallwood House</div><div class="a-sub">You</div></div><span class="a-pill">March</span></div>
+                    <div class="a-screens">
+                      <div class="a-screen is-on" style="position:absolute">
+                        <div class="a-rec">
+                          <div class="a-rec-h"><div><div class="a-rec-n">Corner Market</div><div class="a-rec-d">12 March · 9 items</div></div><div class="a-rec-t num">$63.80</div></div>
+                        </div>
+                        <div class="a-lab">Split between</div>
+                        <div class="a-people">
+                          <span class="a-av" aria-pressed="true"><span class="a-av-d c-ju">JU</span><span class="a-av-n">Ju</span><span class="a-av-s num">$15.95</span></span>
+                          <span class="a-av" aria-pressed="true"><span class="a-av-d c-dan">DA</span><span class="a-av-n">Dan</span><span class="a-av-s num">$15.95</span></span>
+                          <span class="a-av" aria-pressed="true"><span class="a-av-d c-mara">MA</span><span class="a-av-n">Mara</span><span class="a-av-s num">$15.95</span></span>
+                          <span class="a-av" aria-pressed="true"><span class="a-av-d c-you">YOU</span><span class="a-av-n">You</span><span class="a-av-s num">$15.95</span></span>
+                        </div>
+                        <div class="tap-wrap">
+                          <button class="a-cta" type="button" tabindex="-1" aria-hidden="true">Split $63.80</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="a-tabs" aria-hidden="true"><span class="a-tab" style="color:var(--accent)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 9v6M9 12h6"></path></svg>Add</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="pair-l">Your phone — you save the split</p>
+        </div>
+
+        <div>
+          <div class="pair-w">
+            <div class="phone">
+              <div class="device">
+                <div class="screen">
+                  <div class="island" aria-hidden="true"></div>
+                  <div class="sbar" aria-hidden="true"><span class="num">9:41</span><span class="sbar-r"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span></div>
+                  <!-- The 400ms delay is the design. Instant sync reads as fake.
+                       The notification lives inside the 390x844 screen so it
+                       scales with the device instead of at page scale. -->
+                  <div class="push">
+                    <span class="push-i" aria-hidden="true"></span>
+                    <span><b>Tallwood</b><span>Groceries at Corner Market — your share is $15.95. Receipt attached.</span></span>
+                  </div>
+                  <div class="a-body">
+                    <div class="a-head"><div><div class="a-house">Tallwood House</div><div class="a-sub">Dan</div></div><span class="a-pill">March</span></div>
+                    <div class="a-screens">
+                      <div class="a-screen is-on" style="position:absolute">
+                        <div class="a-bal"><div class="a-bal-l">You owe</div><div class="a-bal-v num">$15.95</div><div class="a-bal-n">To you · due 28 March</div></div>
+                        <div class="a-lab">Just added</div>
+                        <div class="a-row"><span class="a-ico"><svg viewBox="0 0 24 24"><path d="M6 7h12l-1 12H7L6 7Z"></path><path d="M9 7V5a3 3 0 0 1 6 0v2"></path></svg></span><span><span class="a-row-t">Groceries</span><span class="a-row-s">Receipt attached</span></span><span class="a-row-a num">$15.95</span></div>
+                      </div>
+                    </div>
+                    <div class="a-tabs" aria-hidden="true"><span class="a-tab" style="color:var(--accent)"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5"></path><path d="M6 10v10h12V10"></path></svg>Home</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="pair-l">Dan's phone — a beat later</p>
+        </div>
+      </div>
+
+      <div class="sides-copy">
+        <p class="eyebrow">Both sides</p>
+        <h2>It only works if it works for everyone.</h2>
+        <p class="lede">Every split lands on the other phone the moment you save it, with the receipt attached — so nobody has to take your word for the number.</p>
+        <p class="lede" style="margin-top:16px">Half of this product is arithmetic. The other half is not having the conversation.</p>
+        <p class="note" style="margin-top:22px">The delay between the two screens is deliberate. Sync that looks instant reads as a mock-up; a beat of lag reads as software.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== WHAT IT DOES ===================== -->
+  <section class="sec" id="does">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">What it does</p>
+        <h2>Four things, done properly.</h2>
+      </div>
+      <div class="feat">
+        <article>
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 11V7h4"></path><path d="M26 11V7h-4"></path><path d="M6 21v4h4"></path><path d="M26 21v4h-4"></path><path d="M9 16h14"></path></svg>
+          <h3>Receipt scanning</h3>
+          <p>Photograph it. Tallwood pulls the total, the date and the line items, and shows you what it read before it saves anything.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9" r="3.4"></circle><path d="M6 26a10 10 0 0 1 20 0"></path><path d="M16 12.4V26"></path></svg>
+          <h3>Uneven splits</h3>
+          <p>By share, by percentage, or by item — for when only two of you drink the coffee that costs $11.50 a bag.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M27 16a11 11 0 1 1-3.2-7.8"></path><path d="M27 5v6h-6"></path><path d="M16 10v6l4 2.5"></path></svg>
+          <h3>Recurring bills</h3>
+          <p>Rent, internet, the boiler service. Set the amount and the day once, and it gets counted every month without anyone posting about it.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 13.5 16 8l11 5.5-11 5.5L5 13.5Z"></path><path d="M5 20.5 16 26l11-5.5"></path></svg>
+          <h3>One-tap settle</h3>
+          <p>One payment clears everything you owe to everyone, and everything owed to you, in the same movement.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT IT DOESN'T DO ===================== -->
+  <section class="sec" id="doesnt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">What it doesn't do</p>
+        <h2>The list most apps leave out.</h2>
+        <p class="lede">Money apps have a habit of becoming something else once they have your data. Here is what this one has decided not to become.</p>
+      </div>
+      <ul class="nots">
+        <li><b>No</b><span><strong style="font-family:Manrope,sans-serif">Ads.</strong><span>Not in the feed, not in the reminders, not in the monthly summary email.</span></span></li>
+        <li><b>No</b><span><strong style="font-family:Manrope,sans-serif">Selling your transaction history.</strong><span>Not to advertisers, not to data brokers, not to a partner bank. There is no version of this business that involves it.</span></span></li>
+        <li><b>No</b><span><strong style="font-family:Manrope,sans-serif">Streaks, badges or 9pm guilt.</strong><span>Reminders go to the person who owes money, on the date the house agreed. Nothing else notifies you, ever.</span></span></li>
+        <li><b>No</b><span><strong style="font-family:Manrope,sans-serif">Credit scores or a card to upsell you.</strong><span>Tallwood is not a stepping stone to a lending product. It counts what four people spent on washing-up liquid.</span></span></li>
+        <li><b>No</b><span><strong style="font-family:Manrope,sans-serif">Mandatory bank login.</strong><span>Connect an account if you want the settle-up shortcut. Or don't, and run the whole house on receipts.</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ===================== -->
+  <section class="sec" id="price">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Pricing</p>
+        <h2>Free for a normal house.</h2>
+      </div>
+      <div class="price">
+        <article data-hi>
+          <h3>House</h3>
+          <div class="amt">Free</div>
+          <p class="note">Up to 6 people</p>
+          <ul>
+            <li>Unlimited receipts and splits</li>
+            <li>Recurring bills</li>
+            <li>Automatic reminders</li>
+            <li>One-tap settle up</li>
+            <li>Export whenever you want</li>
+          </ul>
+          <a class="btn" data-primary href="#get" style="width:100%">Get the app</a>
+        </article>
+        <article>
+          <h3>Big House</h3>
+          <div class="amt">$3<small> / month, for the whole house</small></div>
+          <p class="note">7 people or more</p>
+          <ul>
+            <li>Everything in House</li>
+            <li>Custom categories and budgets</li>
+            <li>Sub-groups for flats within a building</li>
+            <li>Shared receipts archive</li>
+            <li>Priority support from a person</li>
+          </ul>
+          <a class="btn" href="#get" style="width:100%">Get the app</a>
+        </article>
+      </div>
+      <p class="note" style="margin-top:20px">Illustrative figures — concept piece.</p>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section class="sec" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Questions</p>
+        <h2>The ones people actually ask.</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Does everyone in the house need the app?</summary>
+          <p>For the reminders and the settle-up, yes. But you can add a housemate as a name only and still track what they owe — they'll get a plain text message with a link instead of a push notification. One holdout doesn't break the count.</p>
+        </details>
+        <details>
+          <summary>What if someone just won't pay?</summary>
+          <p>Tallwood can't make anyone pay, and it doesn't pretend to. What it does is remove the ambiguity — the amount, the receipt and the date are on record, so the conversation is about the money rather than about whose memory is right.</p>
+        </details>
+        <details>
+          <summary>Do you touch my bank account?</summary>
+          <p>Only if you connect one, and only to move the settle-up payment you approve. Nothing is read, categorised or stored beyond that transaction. The whole app works on receipts alone if you'd rather not.</p>
+        </details>
+        <details>
+          <summary>What happens to my data when I move out?</summary>
+          <p>You keep a full export of everything you were part of, and your personal record is deleted from the house within 30 days. The house keeps its own totals, with your name replaced by "former housemate".</p>
+        </details>
+        <details>
+          <summary>Does it work across currencies?</summary>
+          <p>Yes — each receipt keeps the currency it was paid in, and the house settles in whichever one it picked. Rates are taken on the settle date, and the rate used is shown on every line so nobody has to trust it blindly.</p>
+        </details>
+        <details>
+          <summary>How is this different from a group chat and a spreadsheet?</summary>
+          <p>The spreadsheet works. It just needs one person to maintain it forever, and that person eventually stops. Tallwood is the same arithmetic with nobody assigned to do it, plus the receipts attached and the reminders coming from software instead of a housemate.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GET IT ===================== -->
+  <section class="sec" id="get">
+    <div class="wrap">
+      <div class="get">
+        <div class="get-grid">
+          <div>
+            <h2>It has to end up on a phone.</h2>
+            <p>Scan the code, or send yourself the link and open it when you're next standing in a kitchen holding a receipt.</p>
+
+            <!-- Demo form. Wired to nothing — it shows an inline success state and stops. -->
+            <form class="f-row" id="smsform" novalidate>
+              <label for="phone-in" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Your phone number</label>
+              <input id="phone-in" type="tel" inputmode="tel" placeholder="Your phone number" autocomplete="tel">
+              <button class="btn" type="submit">Text me the link</button>
+            </form>
+            <p class="f-ok" id="smsok" role="status">Sent — check your messages. (Concept build: this form isn't connected to anything.)</p>
+
+            <div class="badges">
+              <span class="badge" aria-disabled="true" title="Concept build — there is no app to download">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 12.5c0-2.4 2-3.5 2-3.5s-1-1.5-3-1.5c-1.5 0-2.3.8-3 .8s-1.6-.8-3-.8c-2 0-4 1.6-4 4.6 0 3.4 2.4 7.4 4 7.4.9 0 1.6-.7 2.7-.7 1.1 0 1.7.7 2.7.7 1.6 0 3.2-3 3.4-3.6-1.3-.6-1.8-1.8-1.8-3.4Z"/><path d="M14.6 5.6c.7-.9.6-2.1.6-2.1s-1.2.1-2 1c-.7.8-.6 2-.6 2s1.2 0 2-.9Z"/></svg>
+                <span><small>Download for</small>iPhone</span>
+              </span>
+              <span class="badge" aria-disabled="true" title="Concept build — there is no app to download">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5v15a.6.6 0 0 0 .95.5l11-7.5a.6.6 0 0 0 0-1l-11-7.5a.6.6 0 0 0-.95.5Z"/></svg>
+                <span><small>Download for</small>Android</span>
+              </span>
+            </div>
+            <p class="note" style="color:rgba(255,255,255,.4);margin-top:16px">Both badges are deliberately inert — Tallwood is an invented company, so there is nothing to download and nowhere honest for them to point.</p>
+          </div>
+
+          <figure class="qr-c">
+            <div class="qr">
+              <svg viewBox="-4 -4 41 41" role="img" aria-label="QR code linking to this page">
+                <path fill="#101014" d="M0 0h7v1h-7zM11 0h2v1h-2zM16 0h1v1h-1zM18 0h3v1h-3zM23 0h1v1h-1zM26 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM15 1h1v1h-1zM21 1h2v1h-2zM26 1h1v1h-1zM32 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM10 2h2v1h-2zM14 2h3v1h-3zM18 2h1v1h-1zM20 2h2v1h-2zM23 2h2v1h-2zM26 2h1v1h-1zM28 2h3v1h-3zM32 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h3v1h-3zM17 3h1v1h-1zM20 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM26 3h1v1h-1zM28 3h3v1h-3zM32 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h3v1h-3zM14 4h7v1h-7zM23 4h1v1h-1zM26 4h1v1h-1zM28 4h3v1h-3zM32 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM12 5h1v1h-1zM18 5h1v1h-1zM21 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h7v1h-7zM8 7h3v1h-3zM14 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM21 7h1v1h-1zM24 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM10 8h2v1h-2zM13 8h2v1h-2zM17 8h1v1h-1zM19 8h2v1h-2zM26 8h5v1h-5zM1 9h1v1h-1zM3 9h2v1h-2zM8 9h3v1h-3zM12 9h2v1h-2zM15 9h3v1h-3zM19 9h2v1h-2zM22 9h2v1h-2zM26 9h2v1h-2zM29 9h2v1h-2zM32 9h1v1h-1zM1 10h1v1h-1zM6 10h1v1h-1zM9 10h1v1h-1zM12 10h5v1h-5zM20 10h3v1h-3zM25 10h1v1h-1zM28 10h1v1h-1zM30 10h2v1h-2zM3 11h1v1h-1zM5 11h1v1h-1zM7 11h2v1h-2zM11 11h3v1h-3zM16 11h1v1h-1zM21 11h1v1h-1zM24 11h2v1h-2zM28 11h4v1h-4zM0 12h7v1h-7zM8 12h2v1h-2zM11 12h1v1h-1zM14 12h1v1h-1zM16 12h2v1h-2zM19 12h1v1h-1zM22 12h1v1h-1zM24 12h1v1h-1zM27 12h3v1h-3zM32 12h1v1h-1zM3 13h3v1h-3zM12 13h2v1h-2zM15 13h1v1h-1zM18 13h6v1h-6zM26 13h1v1h-1zM29 13h1v1h-1zM31 13h2v1h-2zM1 14h1v1h-1zM5 14h4v1h-4zM10 14h2v1h-2zM15 14h2v1h-2zM21 14h2v1h-2zM24 14h3v1h-3zM28 14h1v1h-1zM31 14h1v1h-1zM0 15h6v1h-6zM11 15h1v1h-1zM14 15h2v1h-2zM19 15h4v1h-4zM25 15h2v1h-2zM29 15h2v1h-2zM0 16h2v1h-2zM6 16h7v1h-7zM14 16h2v1h-2zM17 16h1v1h-1zM19 16h1v1h-1zM24 16h2v1h-2zM27 16h2v1h-2zM32 16h1v1h-1zM0 17h2v1h-2zM3 17h3v1h-3zM8 17h3v1h-3zM12 17h3v1h-3zM17 17h7v1h-7zM25 17h3v1h-3zM29 17h2v1h-2zM32 17h1v1h-1zM0 18h1v1h-1zM2 18h5v1h-5zM8 18h1v1h-1zM11 18h6v1h-6zM20 18h1v1h-1zM22 18h1v1h-1zM25 18h4v1h-4zM30 18h2v1h-2zM1 19h1v1h-1zM4 19h2v1h-2zM9 19h1v1h-1zM16 19h1v1h-1zM18 19h5v1h-5zM24 19h7v1h-7zM0 20h1v1h-1zM2 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM8 20h2v1h-2zM12 20h2v1h-2zM18 20h1v1h-1zM22 20h2v1h-2zM27 20h3v1h-3zM31 20h1v1h-1zM0 21h3v1h-3zM11 21h2v1h-2zM14 21h3v1h-3zM18 21h2v1h-2zM21 21h1v1h-1zM23 21h1v1h-1zM25 21h2v1h-2zM29 21h2v1h-2zM32 21h1v1h-1zM0 22h1v1h-1zM2 22h1v1h-1zM4 22h1v1h-1zM6 22h2v1h-2zM9 22h1v1h-1zM13 22h1v1h-1zM17 22h2v1h-2zM21 22h1v1h-1zM29 22h1v1h-1zM31 22h1v1h-1zM0 23h1v1h-1zM2 23h2v1h-2zM8 23h1v1h-1zM11 23h1v1h-1zM13 23h2v1h-2zM16 23h1v1h-1zM18 23h1v1h-1zM20 23h2v1h-2zM23 23h1v1h-1zM25 23h3v1h-3zM29 23h4v1h-4zM0 24h1v1h-1zM3 24h1v1h-1zM5 24h3v1h-3zM9 24h3v1h-3zM13 24h2v1h-2zM17 24h2v1h-2zM23 24h9v1h-9zM8 25h1v1h-1zM10 25h1v1h-1zM12 25h3v1h-3zM16 25h5v1h-5zM22 25h3v1h-3zM28 25h1v1h-1zM30 25h1v1h-1zM32 25h1v1h-1zM0 26h7v1h-7zM9 26h1v1h-1zM11 26h7v1h-7zM22 26h3v1h-3zM26 26h1v1h-1zM28 26h1v1h-1zM30 26h2v1h-2zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM11 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM17 27h8v1h-8zM28 27h3v1h-3zM32 27h1v1h-1zM0 28h1v1h-1zM2 28h3v1h-3zM6 28h1v1h-1zM8 28h1v1h-1zM10 28h1v1h-1zM13 28h2v1h-2zM16 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h6v1h-6zM31 28h2v1h-2zM0 29h1v1h-1zM2 29h3v1h-3zM6 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM13 29h3v1h-3zM17 29h5v1h-5zM23 29h3v1h-3zM28 29h1v1h-1zM30 29h3v1h-3zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h1v1h-1zM8 30h4v1h-4zM13 30h5v1h-5zM20 30h1v1h-1zM23 30h5v1h-5zM30 30h1v1h-1zM0 31h1v1h-1zM6 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM14 31h2v1h-2zM18 31h5v1h-5zM25 31h1v1h-1zM28 31h3v1h-3zM0 32h7v1h-7zM8 32h1v1h-1zM11 32h1v1h-1zM13 32h3v1h-3zM17 32h1v1h-1zM19 32h1v1h-1zM24 32h2v1h-2zM27 32h1v1h-1zM31 32h1v1h-1z"></path>
+              </svg>
+            </div>
+            <figcaption>Scans to this page</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="mark" href="#top"><span class="mark-glyph" aria-hidden="true"></span>Tallwood</a>
+        <p class="note" style="margin-top:12px;max-width:26ch">Shared household money, counted quietly.</p>
+      </div>
+      <div><h3>Product</h3><ul><li><a href="#how">How it works</a></li><li><a href="#does">Features</a></li><li><a href="#price">Pricing</a></li><li><a href="#faq">Questions</a></li></ul></div>
+      <div><h3>Company</h3><ul><li><a href="#top">About</a></li><li><a href="#doesnt">What we don't do</a></li><li><a href="#top">Press</a></li></ul></div>
+      <div><h3>Legal</h3><ul><li><a href="#top">Privacy</a></li><li><a href="#top">Terms</a></li><li><a href="#top">Data export</a></li></ul></div>
+    </div>
+    <p class="concept"><strong>Concept build.</strong> Tallwood is an invented company, made as a portfolio piece to demonstrate a mobile app launch page. Every figure on this page is illustrative, the app does not exist, the download badges point nowhere, and the form is not connected to anything. Every pixel of app interface above is live HTML and CSS — there is not one screenshot in this file.</p>
+  </div>
+</footer>
+
+<script>
+/* ---------------------------------------------------------------------------
+   Three small, independent pieces. Nothing here is required for the page to
+   read correctly — the markup ships in a composed state and CSS handles the
+   scrolled session on its own.
+   --------------------------------------------------------------------------- */
+(function () {
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- nav border on scroll ---------------------------------------------- */
+  var nav = document.getElementById('nav');
+  var onScroll = function () {
+    if (window.scrollY > 8) { nav.setAttribute('data-stuck', ''); }
+    else { nav.removeAttribute('data-stuck'); }
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* --- the playable hero device ------------------------------------------ */
+  var TOTAL = 63.80;
+  var PEOPLE = [
+    { id: 'ju',   name: 'Ju',   init: 'JU',  cls: 'c-ju' },
+    { id: 'dan',  name: 'Dan',  init: 'DA',  cls: 'c-dan' },
+    { id: 'mara', name: 'Mara', init: 'MA',  cls: 'c-mara' },
+    { id: 'you',  name: 'You',  init: 'YOU', cls: 'c-you' }
+  ];
+  var OWED = 47.20;
+
+  var state = { tab: 'home', sel: { ju: true, dan: true, mara: true, you: true }, settled: false };
+
+  var el = {
+    screens: { home: document.getElementById('s-home'), add: document.getElementById('s-add'), people: document.getElementById('s-people') },
+    tabs:    [].slice.call(document.querySelectorAll('.a-tab[data-tab]')),
+    people:  document.getElementById('people'),
+    note:    document.getElementById('split-note'),
+    splitBtn:document.getElementById('split-btn'),
+    settleBtn: document.getElementById('settle-btn'),
+    balBox:  document.getElementById('bal'),
+    balLab:  document.getElementById('bal-label'),
+    balVal:  document.getElementById('bal-value'),
+    balNote: document.getElementById('bal-note'),
+    toast:   document.getElementById('toast'),
+    toastT:  document.getElementById('toast-t'),
+    owes:    [].slice.call(document.querySelectorAll('[data-owe]'))
+  };
+  if (!el.people) { return; }
+
+  var money = function (n) { return '$' + n.toFixed(2); };
+
+  /* Cent-exact shares: the remainder goes to the first people in the list,
+     so four ways of $63.80 is 15.95 each and three ways is 21.27/21.27/21.26. */
+  function shares() {
+    var picked = PEOPLE.filter(function (p) { return state.sel[p.id]; });
+    if (!picked.length) { return []; }
+    var cents = Math.round(TOTAL * 100);
+    var base = Math.floor(cents / picked.length);
+    var rem = cents - base * picked.length;
+    return picked.map(function (p, i) { return { p: p, amt: (base + (i < rem ? 1 : 0)) / 100 }; });
+  }
+
+  function buildPeople() {
+    el.people.innerHTML = '';
+    PEOPLE.forEach(function (p) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'a-av';
+      b.setAttribute('aria-pressed', state.sel[p.id] ? 'true' : 'false');
+      b.setAttribute('aria-label', 'Include ' + p.name + ' in this split');
+      b.innerHTML = '<span class="a-av-d ' + p.cls + '" aria-hidden="true">' + p.init + '</span>' +
+                    '<span class="a-av-n">' + p.name + '</span>' +
+                    '<span class="a-av-s num" data-amt></span>';
+      b.addEventListener('click', function () {
+        state.sel[p.id] = !state.sel[p.id];
+        b.setAttribute('aria-pressed', state.sel[p.id] ? 'true' : 'false');
+        renderSplit();
+      });
+      el.people.appendChild(b);
+    });
+  }
+
+  function renderSplit() {
+    var s = shares();
+    var byId = {};
+    s.forEach(function (x) { byId[x.p.id] = x.amt; });
+    [].slice.call(el.people.children).forEach(function (btn, i) {
+      var p = PEOPLE[i];
+      var slot = btn.querySelector('[data-amt]');
+      slot.textContent = byId[p.id] !== undefined ? money(byId[p.id]) : '—';
+    });
+    if (!s.length) {
+      el.note.textContent = 'Pick at least one person.';
+      el.splitBtn.disabled = true;
+      el.splitBtn.textContent = 'Split ' + money(TOTAL);
+    } else {
+      el.note.textContent = s.length === 1
+        ? 'One person — they cover the whole thing.'
+        : money(TOTAL) + ' between ' + s.length + ' people.';
+      el.splitBtn.disabled = false;
+      el.splitBtn.textContent = 'Split ' + money(TOTAL);
+    }
+  }
+
+  function setTab(name) {
+    state.tab = name;
+    el.tabs.forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-tab') === name ? 'true' : 'false'); });
+    Object.keys(el.screens).forEach(function (k) {
+      var scr = el.screens[k];
+      if (k === name) { scr.hidden = false; scr.classList.add('is-on'); }
+      else { scr.classList.remove('is-on'); scr.hidden = true; }
+    });
+  }
+
+  el.tabs.forEach(function (t) {
+    t.addEventListener('click', function () { setTab(t.getAttribute('data-tab')); });
+  });
+
+  var toastTimer = null;
+  function toast(msg) {
+    el.toastT.textContent = msg;
+    el.toast.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.toast.classList.remove('is-on'); }, 2200);
+  }
+
+  /* Numbers tick rather than snapping. */
+  function tick(node, from, to, ms) {
+    if (reduce) { node.textContent = money(to); return; }
+    var t0 = null;
+    function step(now) {
+      if (t0 === null) { t0 = now; }
+      var k = Math.min(1, (now - t0) / ms);
+      var e = 1 - Math.pow(1 - k, 3);
+      node.textContent = money(from + (to - from) * e);
+      if (k < 1) { requestAnimationFrame(step); }
+    }
+    requestAnimationFrame(step);
+  }
+
+  el.splitBtn.addEventListener('click', function () {
+    var s = shares();
+    if (!s.length) { return; }
+    toast('Split saved — ' + money(s[0].amt) + ' each');
+    setTimeout(function () { setTab('home'); }, 900);
+  });
+
+  function settle() {
+    if (state.settled) { return; }
+    state.settled = true;
+    tick(el.balVal, OWED, 0, 760);
+    el.balBox.classList.add('is-settled');
+    el.balLab.textContent = 'All settled';
+    el.balNote.textContent = 'March closed · next count starts 1 April';
+    el.owes.forEach(function (row, i) {
+      setTimeout(function () {
+        row.classList.add('is-clear');
+        row.querySelector('.a-row-a').textContent = 'Settled';
+        row.querySelector('.a-row-s').textContent = 'Paid just now';
+      }, reduce ? 0 : 140 * i);
+    });
+    el.settleBtn.textContent = 'Settled';
+    el.settleBtn.classList.add('is-done');
+    el.settleBtn.disabled = true;
+    toast('Everyone paid — the house is square');
+  }
+  el.settleBtn.addEventListener('click', settle);
+
+  function reset() {
+    state = { tab: 'home', sel: { ju: true, dan: true, mara: true, you: true }, settled: false };
+    el.balBox.classList.remove('is-settled');
+    el.balLab.textContent = "You're owed";
+    el.balVal.textContent = money(OWED);
+    el.balNote.textContent = 'Across 3 housemates';
+    var vals = ['$15.95', '$31.25', '$4.60'];
+    var subs = ['owes you', 'owes you', 'you owe'];
+    el.owes.forEach(function (row, i) {
+      row.classList.remove('is-clear');
+      row.querySelector('.a-row-a').textContent = vals[i];
+      row.querySelector('.a-row-s').textContent = subs[i];
+    });
+    el.settleBtn.textContent = 'Settle up';
+    el.settleBtn.classList.remove('is-done');
+    el.settleBtn.disabled = false;
+    el.toast.classList.remove('is-on');
+    buildPeople();
+    renderSplit();
+    setTab('home');
+  }
+  var replay = document.getElementById('replay');
+  if (replay) { replay.addEventListener('click', reset); }
+
+  buildPeople();
+  renderSplit();
+  setTab('home');
+
+  /* --- two-phone sync loop, only while on screen -------------------------- */
+  var pair = document.getElementById('pair');
+  if (pair && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { pair.classList.toggle('is-live', e.isIntersecting); });
+    }, { threshold: 0.25 }).observe(pair);
+  } else if (pair) {
+    pair.classList.add('is-live');
+  }
+
+  /* --- demo form: inline success, connected to nothing -------------------- */
+  var form = document.getElementById('smsform');
+  if (form) {
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      document.getElementById('smsok').classList.add('is-on');
+      form.querySelector('input').value = '';
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
